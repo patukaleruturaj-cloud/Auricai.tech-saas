@@ -169,11 +169,48 @@ export default function GeneratePage() {
                 paddingBottom: "64px",
             }}
         >
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                /* ── Generate Page Responsive Styles ── */
+
+                /* Card padding: 1rem on mobile → 2rem on tablet+ */
+                .gen-card { padding: clamp(1rem, 4vw, 2rem); }
+
+                /* Step 2 label + button row: stack on narrow screens */
+                .gen-step2-header {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    gap: 0.5rem;
+                    margin-bottom: 8px;
+                }
+                .gen-step2-header label { margin-bottom: 0; }
+
+                /* Tone switcher: min 44px touch target */
+                .gen-tone-btn {
+                    flex: 1;
+                    min-height: 44px;
+                    border-radius: 6px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    border: none;
+                    transition: all 0.2s ease;
+                    font-family: inherit;
+                    /* Prevent very long tone names from overflowing */
+                    word-break: break-word;
+                }
+
+                /* Output card content */
+                .gen-output-card { padding: clamp(1rem, 4vw, 2rem); }
+                `
+            }} />
+
             {/* Input Form Card */}
             <div
-                className="glass-panel animate-fade-in"
+                className="glass-panel animate-fade-in gen-card"
                 style={{
-                    padding: "32px",
                     display: "flex",
                     flexDirection: "column",
                     gap: "24px",
@@ -255,7 +292,8 @@ export default function GeneratePage() {
 
                     {/* Step 2 */}
                     <div>
-                        <div style={{ display: "flex", justifySelf: "stretch", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "8px" }}>
+                        {/* Wraps label and AI-generate button on narrow screens */}
+                        <div className="gen-step2-header">
                             <label
                                 style={{
                                     display: "block",
@@ -266,7 +304,7 @@ export default function GeneratePage() {
                                 }}
                             >
                                 <span style={{ color: "var(--accent-blue)", marginRight: "6px" }}>2.</span>
-                                What does the company do? <span style={{ color: "var(--text-secondary)", fontWeight: "normal" }}>(optional, improves personalization)</span>
+                                What does the company do? <span style={{ color: "var(--text-secondary)", fontWeight: "normal" }}>(optional)</span>
                             </label>
 
                             <button
@@ -449,7 +487,7 @@ export default function GeneratePage() {
                         </div>
                     </div>
 
-                    {/* Step 4 */}
+                    {/* Step 4: Tone */}
                     <div>
                         <label
                             style={{
@@ -466,6 +504,7 @@ export default function GeneratePage() {
                         <div
                             style={{
                                 display: "flex",
+                                flexWrap: "wrap",
                                 background: "rgba(255,255,255,0.05)",
                                 borderRadius: "8px",
                                 padding: "4px",
@@ -476,17 +515,11 @@ export default function GeneratePage() {
                                 <button
                                     key={t}
                                     onClick={() => setTone(t)}
+                                    className="gen-tone-btn"
                                     style={{
-                                        flex: 1,
-                                        padding: "8px 0",
-                                        borderRadius: "6px",
-                                        fontSize: "0.85rem",
-                                        fontWeight: "600",
-                                        cursor: "pointer",
-                                        border: "none",
                                         background: tone === t ? "rgba(96, 165, 250, 0.2)" : "transparent",
                                         color: tone === t ? "#60a5fa" : "var(--text-secondary)",
-                                        transition: "all 0.2s ease",
+                                        padding: "8px 4px",
                                     }}
                                     onMouseOver={(e) => {
                                         if (tone !== t) e.currentTarget.style.color = "white";
@@ -573,9 +606,8 @@ export default function GeneratePage() {
 
             {/* Output Area Container */}
             <div
-                className="glass-panel animate-fade-in"
+                className="glass-panel animate-fade-in gen-output-card"
                 style={{
-                    padding: "32px",
                     display: "flex",
                     flexDirection: "column",
                     gap: "24px",

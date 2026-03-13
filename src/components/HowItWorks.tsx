@@ -26,23 +26,45 @@ const steps = [
 
 export default function HowItWorks() {
     return (
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)" }}>
+        <section style={{ padding: "clamp(2.5rem, 6vw, 6rem) 0", borderTop: "1px solid var(--border-subtle)" }}>
+            {/* Heading */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                /* Mobile-first: 1 column, scales to 3 on desktop */
+                .hiw-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1.25rem;
+                }
+                @media (min-width: 640px) {
+                    .hiw-grid {
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 2rem;
+                    }
+                }
+                .hiw-h2 {
+                    font-size: clamp(1.5rem, 4vw, 2.5rem);
+                    font-weight: 700;
+                    letter-spacing: -0.02em;
+                }
+            `}} />
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                style={{ textAlign: "center", marginBottom: "4rem" }}
+                style={{ textAlign: "center", marginBottom: "clamp(2rem, 5vw, 4rem)" }}
             >
                 <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-blue)", fontWeight: "600", marginBottom: "0.75rem" }}>
                     How It Works
                 </p>
-                <h2 style={{ fontSize: "2.5rem", fontWeight: "700", letterSpacing: "-0.02em" }}>
+                <h2 className="hiw-h2">
                     From Profile to Personalized DM in <span className="text-gradient">3 Steps</span>
                 </h2>
             </motion.div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
+            {/* 1-col on mobile → 3-col on desktop */}
+            <div className="hiw-grid">
                 {steps.map((item, idx) => (
                     <motion.div
                         key={idx}
@@ -57,7 +79,7 @@ export default function HowItWorks() {
                         }}
                         className="glass-panel"
                         style={{
-                            padding: "2.5rem 2rem",
+                            padding: "clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2.5vw, 2rem)",
                             textAlign: "center",
                             position: "relative",
                             overflow: "hidden",
@@ -82,6 +104,7 @@ export default function HowItWorks() {
                                 willChange: "opacity"
                             }}
                         />
+                        {/* Decorative step number */}
                         <div style={{ position: "absolute", top: "1rem", right: "1.25rem", fontSize: "3rem", fontWeight: "800", color: "rgba(255,255,255,0.03)" }}>
                             {item.step}
                         </div>

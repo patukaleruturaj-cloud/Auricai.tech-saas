@@ -42,3 +42,7 @@ next-env.d.ts
 
 # diagnostic scripts
 /scripts/diagnostic/
+
+# additional user requested ignores
+/dist
+*.log

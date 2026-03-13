@@ -38,23 +38,44 @@ const features = [
 
 export default function Features() {
     return (
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)" }}>
+        <section style={{ padding: "clamp(2.5rem, 6vw, 6rem) 0", borderTop: "1px solid var(--border-subtle)" }}>
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                /* Mobile-first: 1 column, 2-column from 640px */
+                .features-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1.25rem;
+                }
+                @media (min-width: 640px) {
+                    .features-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 1.5rem;
+                    }
+                }
+                .features-h2 {
+                    font-size: clamp(1.5rem, 4vw, 2.5rem);
+                    font-weight: 700;
+                    letter-spacing: -0.02em;
+                }
+            `}} />
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                style={{ textAlign: "center", marginBottom: "4rem" }}
+                style={{ textAlign: "center", marginBottom: "clamp(2rem, 5vw, 4rem)" }}
             >
                 <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.75rem" }}>
                     Core Features
                 </p>
-                <h2 style={{ fontSize: "2.5rem", fontWeight: "700", letterSpacing: "-0.02em" }}>
+                <h2 className="features-h2">
                     Built for Modern <span className="text-gradient">LinkedIn Outbound</span>
                 </h2>
             </motion.div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
+            {/* 1-col on mobile → 2-col on tablet+ */}
+            <div className="features-grid">
                 {features.map((feature, idx) => (
                     <motion.div
                         key={idx}
@@ -69,7 +90,7 @@ export default function Features() {
                         }}
                         className="glass-panel"
                         style={{
-                            padding: "2rem",
+                            padding: "clamp(1.25rem, 3vw, 2rem)",
                             display: "flex",
                             gap: "1.25rem",
                             alignItems: "flex-start",
@@ -96,6 +117,7 @@ export default function Features() {
                             }}
                         />
 
+                        {/* Icon — flexShrink:0 prevents it from squishing */}
                         <div style={{
                             width: "48px", height: "48px", borderRadius: "var(--radius-md)", flexShrink: 0,
                             background: "linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.12))",
@@ -104,7 +126,8 @@ export default function Features() {
                         }}>
                             <feature.icon size={22} color="var(--accent-violet)" />
                         </div>
-                        <div>
+                        <div style={{ minWidth: 0 }}>
+                            {/* minWidth:0 prevents text from overflowing flex container */}
                             <h3 style={{ fontSize: "1.0625rem", fontWeight: "600", marginBottom: "0.5rem" }}>{feature.title}</h3>
                             <p style={{ color: "var(--text-secondary)", fontSize: "0.9375rem", lineHeight: "1.6" }}>{feature.description}</p>
                         </div>

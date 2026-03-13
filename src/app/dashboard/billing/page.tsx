@@ -349,6 +349,25 @@ export default function BillingPage() {
             variants={staggerContainer}
             style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
         >
+            {/* Responsive styles for billing page */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                /* Upgrade plan section header — wraps on mobile */
+                .billing-section-header {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 0.75rem;
+                    margin-bottom: 1.25rem;
+                }
+                /* Billing h1 fluid */
+                .billing-h1 { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 700; margin-bottom: 0.5rem; }
+                /* Toggle stays compact */
+                .billing-toggle { display: flex; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 4px; gap: 4px; flex-shrink: 0; }
+                `
+            }} />
+
             {/* ══════════════════════════════════════════
                 SECTION 0 — TOTAL CREDITS SUMMARY
                ══════════════════════════════════════════ */}
@@ -432,7 +451,7 @@ export default function BillingPage() {
 
             {/* Page Header */}
             <motion.div variants={fadeInUp} transition={{ duration: 0.5 }}>
-                <h1 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "0.5rem" }}>
+                <h1 className="billing-h1">
                     Billing & Subscription
                 </h1>
                 <p style={{ color: "var(--text-secondary)" }}>
@@ -779,19 +798,14 @@ export default function BillingPage() {
                 SECTION 4 — UPGRADE PLAN
                ══════════════════════════════════════════ */}
             <motion.div variants={fadeInUp} transition={{ duration: 0.5 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+                {/* Wraps on narrow screens — title stacks above toggle */}
+                <div className="billing-section-header">
                     <h3 style={{ fontSize: "1.25rem", fontWeight: "600" }}>
                         {billing?.plan === "free" ? "Upgrade Your Plan" : "Change Plan"}
                     </h3>
 
                     {/* Monthly / Yearly toggle */}
-                    <div style={{
-                        display: "flex",
-                        background: "rgba(255,255,255,0.05)",
-                        borderRadius: "10px",
-                        padding: "4px",
-                        gap: "4px",
-                    }}>
+                    <div className="billing-toggle">
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsYearly(false)}
@@ -805,6 +819,7 @@ export default function BillingPage() {
                                 background: !isYearly ? "rgba(96, 165, 250, 0.2)" : "transparent",
                                 color: !isYearly ? "#60a5fa" : "var(--text-secondary)",
                                 transition: "all 0.25s",
+                                minHeight: "36px",
                             }}
                         >
                             Monthly
@@ -822,6 +837,7 @@ export default function BillingPage() {
                                 background: isYearly ? "rgba(74, 222, 128, 0.2)" : "transparent",
                                 color: isYearly ? "#4ade80" : "var(--text-secondary)",
                                 transition: "all 0.25s",
+                                minHeight: "36px",
                             }}
                         >
                             Yearly
