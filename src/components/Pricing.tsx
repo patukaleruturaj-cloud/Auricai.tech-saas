@@ -11,7 +11,7 @@ const PAID_PLANS = [
         planType: "starter",
         description: "Perfect for testing outbound strategies.",
         monthlyPrice: 15,
-        msgs: 150,
+        credits: 150,
         features: [
             "150 credits / month",
             "3 strategic opener variations",
@@ -36,7 +36,7 @@ const PAID_PLANS = [
         planType: "basic",
         description: "For founders testing outbound.",
         monthlyPrice: 29,
-        msgs: 400,
+        credits: 400,
         features: [
             "400 credits / month",
             "3 strategic opener variations",
@@ -61,7 +61,7 @@ const PAID_PLANS = [
         planType: "growth",
         description: "For 1–2 SDR teams scaling outreach.",
         monthlyPrice: 49,
-        msgs: 1200,
+        credits: 1200,
         features: [
             "1,200 credits / month",
             "3 strategic opener variations",
@@ -88,7 +88,7 @@ const PAID_PLANS = [
         planType: "pro",
         description: "For serious outbound teams maximizing reply rates.",
         monthlyPrice: 69,
-        msgs: 3000,
+        credits: 3000,
         features: [
             "3,000 credits / month",
             "3 strategic opener variations",
