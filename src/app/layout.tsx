@@ -54,8 +54,7 @@ export const metadata: Metadata = {
   }
 };
 
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import ConditionalLayout from "@/components/ConditionalLayout";
 
 import Script from "next/script";
 
@@ -114,9 +113,9 @@ export default function RootLayout({
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
           />
-          <Navbar />
-          {children}
-          <Footer />
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
           <PaddleInitializer />
         </body>
       </html>
