@@ -13,8 +13,8 @@ const PAID_PLANS = [
         monthlyPrice: 15,
         msgs: 150,
         features: [
-            "150 messages / month",
-            "3 strategic message variations",
+            "150 credits / month",
+            "3 strategic opener variations",
             "Core Context Intelligence",
             "Standard processing",
             "Email support",
@@ -39,7 +39,7 @@ const PAID_PLANS = [
         msgs: 400,
         features: [
             "400 credits / month",
-            "3 strategic message variations",
+            "3 strategic opener variations",
             "Core Context Intelligence",
             "Standard processing",
             "Email support",
@@ -64,7 +64,7 @@ const PAID_PLANS = [
         msgs: 1200,
         features: [
             "1,200 credits / month",
-            "3 strategic message variations",
+            "3 strategic opener variations",
             "Advanced Context Depth",
             "Reply Rate Optimization",
             "Smart Prospect Memory",
@@ -91,7 +91,7 @@ const PAID_PLANS = [
         msgs: 3000,
         features: [
             "3,000 credits / month",
-            "3 strategic message variations",
+            "3 strategic opener variations",
             "Premium Context Intelligence",
             "Advanced Signal-Based Personalization",
             "Highest priority processing",

@@ -68,7 +68,7 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
       }
   };
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
   try {
     const res = await fetch(url, {
         method: 'POST',

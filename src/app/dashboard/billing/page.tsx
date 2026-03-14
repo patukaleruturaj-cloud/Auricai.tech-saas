@@ -113,8 +113,8 @@ const UPGRADE_PLANS = [
         priceYearly: plans.starter.price_yearly / 12,
         msgs: plans.starter.credits,
         features: [
-            "150 messages / month",
-            "3 strategic message variations",
+            "150 credits / month",
+            "3 strategic opener variations",
             "Core Context Intelligence",
             "Standard processing",
             "Email support",
@@ -129,8 +129,8 @@ const UPGRADE_PLANS = [
         priceYearly: plans.basic.price_yearly / 12,
         msgs: plans.basic.credits,
         features: [
-            "400 messages / month",
-            "3 strategic message variations",
+            "400 credits / month",
+            "3 strategic opener variations",
             "Core Context Intelligence",
             "Standard processing",
             "Email support",
@@ -145,8 +145,8 @@ const UPGRADE_PLANS = [
         priceYearly: plans.growth.price_yearly / 12,
         msgs: plans.growth.credits,
         features: [
-            "1,200 messages / month",
-            "3 strategic message variations",
+            "1,200 credits / month",
+            "3 strategic opener variations",
             "Advanced Context Depth",
             "Reply Rate Optimization",
             "Smart Prospect Memory",
@@ -163,8 +163,8 @@ const UPGRADE_PLANS = [
         priceYearly: plans.pro.price_yearly / 12,
         msgs: plans.pro.credits,
         features: [
-            "3,000 messages / month",
-            "3 strategic message variations",
+            "3,000 credits / month",
+            "3 strategic opener variations",
             "Premium Context Intelligence",
             "Advanced Signal-Based Personalization",
             "Highest priority processing",
@@ -524,7 +524,7 @@ export default function BillingPage() {
                         )}
                     </div>
                     <p style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-                        {billing?.monthlyLimit ?? PLAN_LIMITS.free} messages per month
+                        {billing?.monthlyLimit ?? PLAN_LIMITS.free} credits per month
                     </p>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.25rem", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
                         <Clock size={14} />

@@ -54,7 +54,7 @@ export default function GeneratePage() {
         setIsGeneratingCompany(true);
         setError("");
         try {
-            const res = await fetch("/api/generate/company", {
+            const res = await fetch("/api/extract-company", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ bio }),
