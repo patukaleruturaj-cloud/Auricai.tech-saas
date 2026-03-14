@@ -14,10 +14,6 @@ const faqs = [
         answer: "No. AuricAI is a writing assistant, not a bot. It generates personalized message drafts that you review, edit, and send yourself. Full human control at every step.",
     },
     {
-        question: "Can I cancel anytime?",
-        answer: "Yes. All plans are month-to-month by default. You can cancel your subscription at any time from the billing dashboard — no questions asked, no hidden fees.",
-    },
-    {
         question: "Is there a free trial?",
         answer: "Every new account gets 5 free generations to test the quality before committing to a plan. No credit card required to start.",
     },
