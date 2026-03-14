@@ -4,7 +4,7 @@ export const plans = {
     starter: {
         slug_monthly: "starter_monthly",
         slug_yearly: "starter_yearly",
-        price_monthly: 15,
+        price_monthly: 12,
         price_yearly: 144, // $12/mo
         credits: 150
     },
