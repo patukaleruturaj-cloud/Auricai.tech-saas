@@ -18,6 +18,8 @@ export default function GeneratePage() {
         dms: string[];
         followUp: string;
         subjectLine: string;
+        recommendedOption?: number;
+        recommendedReason?: string;
         credits?: { allowed: boolean; credits_remaining: number };
     } | null>(null);
     const [error, setError] = useState("");
@@ -772,18 +774,61 @@ export default function GeneratePage() {
                                         "3px solid var(--accent-violet)",
                                 }}
                             >
-                                <p
-                                    style={{
-                                        fontSize: "0.75rem",
-                                        textTransform: "uppercase",
-                                        color: "var(--accent-violet)",
-                                        fontWeight: "600",
-                                        marginBottom: "var(--spacing-2)",
-                                        letterSpacing: "0.05em",
-                                    }}
-                                >
-                                    Option {idx + 1}
-                                </p>
+                                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "var(--spacing-2)" }}>
+                                    <p
+                                        style={{
+                                            fontSize: "0.75rem",
+                                            textTransform: "uppercase",
+                                            color: "var(--accent-violet)",
+                                            fontWeight: "600",
+                                            letterSpacing: "0.05em",
+                                            margin: 0
+                                        }}
+                                    >
+                                        Option {idx + 1}
+                                    </p>
+                                    {result.recommendedOption === idx + 1 && (
+                                        <span style={{
+                                            fontSize: "0.7rem",
+                                            padding: "2px 8px",
+                                            borderRadius: "12px",
+                                            background: "rgba(250, 204, 21, 0.15)",
+                                            color: "#fde047",
+                                            fontWeight: "600",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "4px",
+                                            border: "1px solid rgba(250, 204, 21, 0.3)"
+                                        }}>
+                                            ⭐ AI Recommended
+                                        </span>
+                                    )}
+                                </div>
+                                {result.recommendedOption === idx + 1 && result.recommendedReason && (
+                                    <div style={{
+                                        marginBottom: "var(--spacing-3)",
+                                        padding: "10px 12px",
+                                        borderRadius: "8px",
+                                        background: "rgba(255, 255, 255, 0.03)",
+                                        borderLeft: "2px solid #fde047"
+                                    }}>
+                                        <p style={{
+                                            fontSize: "0.75rem",
+                                            fontWeight: "600",
+                                            color: "var(--text-secondary)",
+                                            marginBottom: "4px"
+                                        }}>
+                                            Why AI recommends this:
+                                        </p>
+                                        <p style={{
+                                            fontSize: "0.85rem",
+                                            color: "white",
+                                            lineHeight: "1.5"
+                                        }}>
+                                            {result.recommendedReason}
+                                        </p>
+                                    </div>
+                                )}
                                 <p
                                     style={{
                                         fontSize: "0.9375rem",

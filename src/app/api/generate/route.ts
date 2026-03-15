@@ -222,6 +222,61 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                         subjectLine: parsed.subject || parsed.subjectLine || "Quick question"
                     };
 
+                    // ─── ADDITIVE: SECONDARY AI EVALUATION ───
+                    try {
+                        console.log("STARTING SECONDARY AI EVALUATION");
+                        const evalPrompt = `You are an elite outbound sales expert specializing in LinkedIn messaging.
+
+Analyze the following three LinkedIn outreach openers and determine which one has the highest probability of receiving a reply.
+
+Evaluate based on:
+* personalization strength
+* conversational tone
+* curiosity-driven question
+* clarity
+* message length
+* overall reply probability
+
+Option 1:
+${result.dms[0]}
+
+Option 2:
+${result.dms[1]}
+
+Option 3:
+${result.dms[2]}
+
+Return the result in THIS EXACT JSON FORMAT ONLY:
+{
+  "best_option": 1, // integer 1, 2, or 3
+  "reason": "Short explanation why this opener is the strongest"
+}`;
+                        const evalResponseRaw = await generateWithAI(evalPrompt, {
+                            temperature: 0.1, // Low temp for logic/rating
+                            maxOutputTokens: 500,
+                            responseMimeType: "application/json",
+                        });
+
+                        const cleanedEval = evalResponseRaw
+                            .replace(/```json/g, "")
+                            .replace(/```/g, "")
+                            .replace(/`json/g, "")
+                            .replace(/`/g, "")
+                            .trim();
+
+                        const evalParsed = JSON.parse(cleanedEval);
+
+                        if (evalParsed.best_option && evalParsed.reason) {
+                            result.recommendedOption = evalParsed.best_option;
+                            result.recommendedReason = evalParsed.reason;
+                            console.log("EVALUATION SUCCESS:", evalParsed);
+                        }
+                    } catch (evalErr) {
+                        console.error("SECONDARY AI EVALUATION FAILED (Gracefully ignoring):", evalErr);
+                        // Do NOT throw - we want to ensure the primary response is still returned to the user
+                    }
+                    // ─── END SECONDARY AI EVALUATION ───
+
                     break; // Success!
 
                 } catch (err: any) {
