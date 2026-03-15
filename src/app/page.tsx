@@ -15,6 +15,15 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const [demoStep, setDemoStep] = useState(0);
+  const [typedText, setTypedText] = useState("");
+  const [typedOpenerIndex, setTypedOpenerIndex] = useState(0);
+
+  const demoOpeners = [
+    "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?",
+    "Hi Mark — loved your recent post about product-led growth. Noticed your background in fintech too. Would love to hear how you're thinking about PLG in that space.",
+    "Hey David — congrats on the Series B! Scaling the engineering team is usually a challenge right after. How's the transition to the new infrastructure going?",
+    "Hi Jessica — saw your talk at the GTM Summit. Your point about signal-based outreach really resonated. Are you currently using AI to help with lead research?"
+  ];
 
   // Simple animation sequence for the hero demo
   useEffect(() => {
@@ -23,6 +32,35 @@ export default function Home() {
     }, 3000);
     return () => clearInterval(timer);
   }, []);
+
+  // AI Typing animation effect
+  useEffect(() => {
+    let currentText = "";
+    let isDeleting = false;
+    let charIndex = 0;
+
+    const startTyping = () => {
+      const fullText = demoOpeners[typedOpenerIndex];
+
+      if (!isDeleting && charIndex <= fullText.length) {
+        currentText = fullText.substring(0, charIndex);
+        setTypedText(currentText);
+        charIndex++;
+        setTimeout(startTyping, 40);
+      } else {
+        // Wait for 5 seconds after typing finishes
+        setTimeout(() => {
+          setTypedText("");
+          charIndex = 0;
+          setTypedOpenerIndex((prev) => (prev + 1) % demoOpeners.length);
+          startTyping(); // Restart the loop
+        }, 5000);
+      }
+    };
+
+    const startDelay = setTimeout(startTyping, 1000);
+    return () => clearTimeout(startDelay);
+  }, [typedOpenerIndex]);
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: "var(--spacing-12)" }}>
@@ -75,6 +113,29 @@ export default function Home() {
             max-width: 540px !important;
             margin: 0 auto !important;
           }
+          .hero-typing-card {
+            max-width: 100% !important;
+          }
+        }
+        .hero-typing-card {
+          margin-top: 1.5rem;
+          padding: 1.25rem;
+          background: rgba(15,15,15,0.4);
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.06);
+          max-width: 540px;
+          min-height: 100px;
+        }
+        .cursor {
+          display: inline-block;
+          color: white;
+          width: 3px;
+          margin-left: 4px;
+          animation: blink 1s infinite;
+        }
+        @keyframes blink {
+          0%, 50%, 100% { opacity: 1; }
+          25%, 75% { opacity: 0; }
         }
       `}} />
       {/* Hero Section */}
@@ -96,6 +157,17 @@ export default function Home() {
           <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", maxWidth: "540px", lineHeight: "1.6" }}>
             Generate hyper-personalized LinkedIn openers that feel 1:1 written — at scale. Built for SDRs, founders, and outbound teams who care about reply rates.
           </p>
+
+          {/* AI Typing Animation */}
+          <div className="glass-panel hero-typing-card">
+            <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
+              <Sparkles size={12} style={{ display: "inline-block", marginRight: "4px", verticalAlign: "middle" }} />
+              AuricAI generating opener...
+            </p>
+            <p style={{ fontSize: "1rem", lineHeight: "1.5", color: "var(--text-primary)", fontStyle: "italic", minHeight: "3rem" }}>
+              {typedText}<span className="cursor">|</span>
+            </p>
+          </div>
 
           <div className="hero-cta-group" style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
             <Link href="/sign-up" className="glow-button" style={{
