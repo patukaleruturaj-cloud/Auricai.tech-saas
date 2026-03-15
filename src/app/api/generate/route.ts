@@ -94,40 +94,44 @@ export async function POST(req: Request) {
         };
         const toneInstruction = toneMap[safeTone] ?? toneMap.friendly;
 
-        const MASTER_SYSTEM_INSTRUCTION = `You are an elite outbound copywriter specializing in LinkedIn outreach.
-Your job is to write highly personalized, natural, attention-grabbing LinkedIn messages that feel like they were written by a thoughtful human.
+        const MASTER_SYSTEM_INSTRUCTION = `You are an expert in LinkedIn cold outreach.
 
-Your goal is not to sell immediately.
-Your goal is to start a genuine conversation and maximize the probability of a reply.
+Generate 3 hyper-personalized LinkedIn outreach openers based on the provided prospect information.
 
-Core rules:
-• Use details from the prospect bio
-• Messages must feel one-to-one
-• Avoid generic phrases
-• Avoid corporate buzzwords
-• Avoid sounding like automation
-• End with a natural curiosity question
+Each opener must:
+• Feel natural and human
+• Reference something about the prospect when possible
+• Create curiosity
+• Avoid sounding like a sales pitch
 
-Each message must:
-• be under 220 characters
-• be one short paragraph
-• feel conversational and human
+After generating the openers, evaluate them.
 
-Return ONLY valid JSON in this format:
+Score each opener from 1-10 based on:
+• Personalization
+• Curiosity / hook strength
+• Natural human tone
+• Likelihood of getting a reply
 
+Then choose the best opener.
+
+Return ONLY valid JSON in this exact structure:
 {
- "openers": [
-  "opener 1",
-  "opener 2",
-  "opener 3"
- ],
- "subject": "short subject",
- "follow_up": "short follow up message"
+  "openers": [
+    { "text": "opener 1", "score": 0 },
+    { "text": "opener 2", "score": 0 },
+    { "text": "opener 3", "score": 0 }
+  ],
+  "best_index": 0,
+  "reasoning": "Brief explanation why this opener has the highest reply probability.",
+  "subject": "short subject",
+  "follow_up": "short follow up message"
 }
 
-No markdown.
-No explanations.
-Tone specification: ${toneInstruction}`;
+IMPORTANT
+• best_index must be 0-based (0,1,2)
+• Do NOT return markdown
+• Do NOT return text outside JSON
+• Tone specification: ${toneInstruction}`;
 
         const userPrompt = `Prospect Bio:
 ${safeBio}
@@ -206,76 +210,37 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                         }
                     }
 
-                    let dms = parsed.openers || parsed.dms;
-                    if (!dms || !Array.isArray(dms) || dms.length === 0) {
-                        throw new Error("AI returned malformed JSON structure.");
+                    let openersList = parsed.openers || parsed.dms;
+                    if (!openersList || !Array.isArray(openersList) || openersList.length === 0) {
+                        throw new Error("AI returned malformed JSON structure for openers.");
                     }
 
-                    dms = dms.map((dm: any) => {
-                        const text = String(dm);
-                        return text.length > 220 ? text.substring(0, 217) + "..." : text;
+                    // Format checking and cleaning
+                    const formattedOpeners = openersList.slice(0, 3).map((item: any) => {
+                        // Handle case where AI returns array of strings despite prompt
+                        if (typeof item === 'string') {
+                            const text = item.length > 220 ? item.substring(0, 217) + "..." : item;
+                            return { text, score: 7.0 };
+                        }
+
+                        // Handle correct object case
+                        const text = String(item.text || "").length > 220
+                            ? String(item.text).substring(0, 217) + "..."
+                            : String(item.text || "");
+
+                        return {
+                            text,
+                            score: typeof item.score === 'number' ? item.score : 7.0
+                        };
                     });
 
                     result = {
-                        dms: dms.slice(0, 3),
+                        openers: formattedOpeners,
+                        recommendedIndex: typeof parsed.best_index === 'number' ? parsed.best_index : 0,
+                        recommendedReason: parsed.reasoning || "Best chance of reply based on personalization and curiosity.",
                         followUp: parsed.follow_up || parsed.followUp || "Just checking in to see if you saw my previous message.",
                         subjectLine: parsed.subject || parsed.subjectLine || "Quick question"
                     };
-
-                    // ─── ADDITIVE: SECONDARY AI EVALUATION ───
-                    try {
-                        console.log("STARTING SECONDARY AI EVALUATION");
-                        const evalPrompt = `You are an elite outbound sales expert specializing in LinkedIn messaging.
-
-Analyze the following three LinkedIn outreach openers and determine which one has the highest probability of receiving a reply.
-
-Evaluate based on:
-* personalization strength
-* conversational tone
-* curiosity-driven question
-* clarity
-* message length
-* overall reply probability
-
-Option 1:
-${result.dms[0]}
-
-Option 2:
-${result.dms[1]}
-
-Option 3:
-${result.dms[2]}
-
-Return the result in THIS EXACT JSON FORMAT ONLY:
-{
-  "best_option": 1, // integer 1, 2, or 3
-  "reason": "Short explanation why this opener is the strongest"
-}`;
-                        const evalResponseRaw = await generateWithAI(evalPrompt, {
-                            temperature: 0.1, // Low temp for logic/rating
-                            maxOutputTokens: 500,
-                            responseMimeType: "application/json",
-                        });
-
-                        const cleanedEval = evalResponseRaw
-                            .replace(/```json/g, "")
-                            .replace(/```/g, "")
-                            .replace(/`json/g, "")
-                            .replace(/`/g, "")
-                            .trim();
-
-                        const evalParsed = JSON.parse(cleanedEval);
-
-                        if (evalParsed.best_option && evalParsed.reason) {
-                            result.recommendedOption = evalParsed.best_option;
-                            result.recommendedReason = evalParsed.reason;
-                            console.log("EVALUATION SUCCESS:", evalParsed);
-                        }
-                    } catch (evalErr) {
-                        console.error("SECONDARY AI EVALUATION FAILED (Gracefully ignoring):", evalErr);
-                        // Do NOT throw - we want to ensure the primary response is still returned to the user
-                    }
-                    // ─── END SECONDARY AI EVALUATION ───
 
                     break; // Success!
 

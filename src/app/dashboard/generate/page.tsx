@@ -15,10 +15,10 @@ export default function GeneratePage() {
     const [isSavingOffer, setIsSavingOffer] = useState(false);
     const [offerSaved, setOfferSaved] = useState(false);
     const [result, setResult] = useState<{
-        dms: string[];
+        openers: { text: string; score: number }[];
         followUp: string;
         subjectLine: string;
-        recommendedOption?: number;
+        recommendedIndex?: number;
         recommendedReason?: string;
         credits?: { allowed: boolean; credits_remaining: number };
     } | null>(null);
@@ -764,104 +764,100 @@ export default function GeneratePage() {
                             gap: "var(--spacing-4)",
                         }}
                     >
-                        {result.dms.map((dm, idx) => (
-                            <div
-                                key={idx}
-                                className="glass-panel"
-                                style={{
-                                    padding: "var(--spacing-5)",
-                                    borderLeft:
-                                        "3px solid var(--accent-violet)",
-                                }}
-                            >
-                                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "var(--spacing-2)" }}>
-                                    <p
-                                        style={{
-                                            fontSize: "0.75rem",
-                                            textTransform: "uppercase",
-                                            color: "var(--accent-violet)",
-                                            fontWeight: "600",
-                                            letterSpacing: "0.05em",
-                                            margin: 0
-                                        }}
-                                    >
-                                        Option {idx + 1}
-                                    </p>
-                                    {result.recommendedOption === idx + 1 && (
-                                        <span style={{
-                                            fontSize: "0.7rem",
-                                            padding: "2px 8px",
-                                            borderRadius: "12px",
-                                            background: "rgba(250, 204, 21, 0.15)",
-                                            color: "#fde047",
-                                            fontWeight: "600",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: "4px",
-                                            border: "1px solid rgba(250, 204, 21, 0.3)"
-                                        }}>
-                                            ⭐ AI Recommended
-                                        </span>
-                                    )}
-                                </div>
-                                {result.recommendedOption === idx + 1 && result.recommendedReason && (
-                                    <div style={{
-                                        marginBottom: "var(--spacing-3)",
-                                        padding: "10px 12px",
-                                        borderRadius: "8px",
-                                        background: "rgba(255, 255, 255, 0.03)",
-                                        borderLeft: "2px solid #fde047"
-                                    }}>
-                                        <p style={{
-                                            fontSize: "0.75rem",
-                                            fontWeight: "600",
-                                            color: "var(--text-secondary)",
-                                            marginBottom: "4px"
-                                        }}>
-                                            Why AI recommends this:
-                                        </p>
-                                        <p style={{
-                                            fontSize: "0.85rem",
-                                            color: "white",
-                                            lineHeight: "1.5"
-                                        }}>
-                                            {result.recommendedReason}
+                        {result.openers.map((dm, idx) => {
+                            const isRecommended = idx === result.recommendedIndex;
+
+                            return (
+                                <div
+                                    key={idx}
+                                    className="glass-panel"
+                                    style={{
+                                        padding: "var(--spacing-5)",
+                                        borderLeft: isRecommended ? "none" : "3px solid var(--accent-violet)",
+                                        border: isRecommended ? "1px solid #facc15" : undefined,
+                                        boxShadow: isRecommended ? "0 0 15px rgba(250,204,21,0.35)" : undefined,
+                                        position: "relative"
+                                    }}
+                                >
+                                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "var(--spacing-2)" }}>
+                                        <p
+                                            style={{
+                                                fontSize: "0.75rem",
+                                                textTransform: "uppercase",
+                                                color: isRecommended ? "#facc15" : "var(--accent-violet)",
+                                                fontWeight: "600",
+                                                letterSpacing: "0.05em",
+                                                margin: 0
+                                            }}
+                                        >
+                                            Option {idx + 1}
                                         </p>
                                     </div>
-                                )}
-                                <p
-                                    style={{
-                                        fontSize: "0.9375rem",
-                                        lineHeight: "1.6",
-                                        marginBottom: "var(--spacing-4)",
-                                    }}
-                                >
-                                    {dm}
-                                </p>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        gap: "var(--spacing-2)",
-                                    }}
-                                >
-                                    <button
-                                        className="secondary-button"
+
+                                    {isRecommended && (
+                                        <div style={{ marginBottom: "12px" }}>
+                                            <span style={{
+                                                fontSize: "0.75rem",
+                                                padding: "4px 10px",
+                                                borderRadius: "12px",
+                                                background: "rgba(250, 204, 21, 0.15)",
+                                                color: "#fde047",
+                                                fontWeight: "600",
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: "4px",
+                                                border: "1px solid rgba(250, 204, 21, 0.3)"
+                                            }}>
+                                                ⭐ AI Recommended
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    <p
                                         style={{
-                                            padding: "6px 12px",
-                                            fontSize: "0.75rem",
-                                            gap: "4px",
-                                            color: copiedIndex === idx ? "#34d399" : "inherit"
+                                            fontSize: "0.9375rem",
+                                            lineHeight: "1.6",
+                                            marginBottom: isRecommended ? "var(--spacing-3)" : "var(--spacing-4)",
                                         }}
-                                        onClick={() =>
-                                            copyToClipboard(dm, idx)
-                                        }
                                     >
-                                        <Copy size={14} /> {copiedIndex === idx ? "Copied!" : "Copy"}
-                                    </button>
+                                        {dm.text}
+                                    </p>
+
+                                    {isRecommended && (
+                                        <p style={{
+                                            fontSize: "0.85rem",
+                                            color: "var(--text-secondary)",
+                                            marginBottom: "var(--spacing-4)",
+                                            fontStyle: "italic"
+                                        }}>
+                                            Best chance of reply based on personalization and curiosity.
+                                        </p>
+                                    )}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                            gap: "var(--spacing-2)",
+                                        }}
+                                    >
+                                        <button
+                                            className="secondary-button"
+                                            style={{
+                                                padding: "6px 12px",
+                                                fontSize: "0.75rem",
+                                                gap: "4px",
+                                                color: copiedIndex === idx ? "#34d399" : "inherit"
+                                            }}
+                                            onClick={() =>
+                                                copyToClipboard(dm.text, idx)
+                                            }
+                                        >
+                                            <Copy size={14} /> {copiedIndex === idx ? "Copied!" : "Copy"}
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
 
                         <div
                             className="glass-panel"
