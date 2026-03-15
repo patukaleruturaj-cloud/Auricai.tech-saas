@@ -38,6 +38,9 @@ export default function Home() {
     let isCancelled = false;
     let timeoutId: NodeJS.Timeout;
 
+    // Reset text immediately when opener index changes
+    setTypedText("");
+
     const fullText = demoOpeners[typedOpenerIndex];
     let currentIndex = 0;
 
@@ -47,7 +50,7 @@ export default function Home() {
       if (currentIndex <= fullText.length) {
         setTypedText(fullText.substring(0, currentIndex));
         currentIndex++;
-        timeoutId = setTimeout(type, 40);
+        timeoutId = setTimeout(type, 30); // Slightly faster for responsiveness
       } else {
         // Wait for 5 seconds after typing finishes
         timeoutId = setTimeout(() => {
@@ -57,8 +60,8 @@ export default function Home() {
       }
     };
 
-    // Initial delay before starting to type
-    timeoutId = setTimeout(type, 1000);
+    // Short delay before starting to type the next one
+    timeoutId = setTimeout(type, 400);
 
     return () => {
       isCancelled = true;
@@ -77,6 +80,10 @@ export default function Home() {
             gap: 3rem !important;
             padding: 2rem 1rem !important;
             min-height: auto !important;
+          }
+          .hero-typing-card {
+            max-width: 100% !important;
+            min-height: 140px !important;
           }
           .hero-title {
             font-size: 2.75rem !important;
@@ -117,9 +124,6 @@ export default function Home() {
             max-width: 540px !important;
             margin: 0 auto !important;
           }
-          .hero-typing-card {
-            max-width: 100% !important;
-          }
         }
         .hero-typing-card {
           margin-top: 1.5rem;
@@ -128,14 +132,15 @@ export default function Home() {
           border-radius: 12px;
           border: 1px solid rgba(255,255,255,0.06);
           max-width: 540px;
-          min-height: 100px;
+          min-height: 120px;
         }
         .cursor {
           display: inline-block;
           color: white;
           width: 3px;
-          margin-left: 4px;
+          margin-left: 2px;
           animation: blink 1s infinite;
+          vertical-align: middle;
         }
         @keyframes blink {
           0%, 50%, 100% { opacity: 1; }
@@ -168,7 +173,7 @@ export default function Home() {
               <Sparkles size={12} style={{ display: "inline-block", marginRight: "4px", verticalAlign: "middle" }} />
               AuricAI generating opener...
             </p>
-            <p style={{ fontSize: "1rem", lineHeight: "1.5", color: "var(--text-primary)", fontStyle: "italic", minHeight: "3rem" }}>
+            <p style={{ fontSize: "0.9375rem", lineHeight: "1.5", color: "var(--text-primary)", fontStyle: "italic", minHeight: "4.5rem", wordBreak: "break-word" }}>
               {typedText}<span className="cursor">|</span>
             </p>
           </div>
