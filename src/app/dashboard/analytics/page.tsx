@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { createClient } from "@supabase/supabase-js";
 import { getWallet } from "@/lib/credits";
+import ActivityChart from "./ActivityChart";
 
 export default async function AnalyticsPage() {
     const session = await auth();
@@ -23,12 +24,14 @@ export default async function AnalyticsPage() {
         { data: stats },
         creditState,
         { count: weekCount },
-        { count: monthCount }
+        { count: monthCount },
+        { data: allDatesData }
     ] = await Promise.all([
         supabase.from("user_stats").select("*").eq("user_id", session.userId).single(),
         getWallet(session.userId),
         supabase.from("generations").select('*', { count: 'exact', head: true }).eq("user_id", session.userId).gte("created_at", oneWeekAgo.toISOString()),
-        supabase.from("generations").select('*', { count: 'exact', head: true }).eq("user_id", session.userId).gte("created_at", oneMonthAgo.toISOString())
+        supabase.from("generations").select('*', { count: 'exact', head: true }).eq("user_id", session.userId).gte("created_at", oneMonthAgo.toISOString()),
+        supabase.from("generations").select("created_at").eq("user_id", session.userId)
     ]);
 
     const totalGenerations = stats?.total_generations || 0;
@@ -37,6 +40,30 @@ export default async function AnalyticsPage() {
         : "Never";
 
     const messagesRemaining = creditState?.credits_remaining ?? creditState?.monthly_limit ?? 10;
+
+    // Generate the last 30 days for continuous chart X-axis
+    const chartDataMap = new Map<string, number>();
+    const now = new Date();
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+        chartDataMap.set(dateStr, 0);
+    }
+
+    let hasData = false;
+    if (allDatesData && allDatesData.length > 0) {
+        hasData = true;
+        allDatesData.forEach(item => {
+            const dateObj = new Date(item.created_at);
+            const dateStr = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+            if (chartDataMap.has(dateStr)) {
+                chartDataMap.set(dateStr, chartDataMap.get(dateStr)! + 1);
+            }
+        });
+    }
+
+    const chartData = hasData ? Array.from(chartDataMap.entries()).map(([date, count]) => ({ date, count })) : [];
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-6)" }}>
@@ -133,9 +160,7 @@ export default async function AnalyticsPage() {
                 </div>
             </div>
 
-            <div className="glass-panel" style={{ padding: "var(--spacing-8)", minHeight: "150px", display: "flex", alignItems: "center", justifyContent: "center", marginTop: "var(--spacing-4)" }}>
-                <p style={{ color: "var(--text-secondary)" }}>Interactive charting available in Scale plan.</p>
-            </div>
+            <ActivityChart data={chartData} />
         </div>
     );
 }
