@@ -260,13 +260,24 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
 
 
         // ─── STEP 6: SAVE GENERATION TO DATABASE ───
+        // Extract plain text strings from openers (history expects string[], not {text, score}[])
+        const openerTexts = result.openers.map((o: { text: string; score: number }) => o.text);
+
+        const historyRecord = {
+            openers: openerTexts,
+            recommendedIndex: result.recommendedIndex,
+            recommendedReason: result.recommendedReason,
+            subject: result.subjectLine,
+            followUp: result.followUp,
+        };
+
         const { error: histErr } = await supabaseAdmin.from("generations").insert({
             user_id: clerkId,
             prospect_bio: safeBio,
             company_context: safeCompany,
             offer: safeOffer,
             tone: safeTone,
-            generated_options: result,
+            generated_options: historyRecord,
             subject: result.subjectLine ?? null,
             follow_up: result.followUp ?? null,
         });
