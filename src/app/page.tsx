@@ -35,31 +35,35 @@ export default function Home() {
 
   // AI Typing animation effect
   useEffect(() => {
-    let currentText = "";
-    let isDeleting = false;
-    let charIndex = 0;
+    let isCancelled = false;
+    let timeoutId: NodeJS.Timeout;
 
-    const startTyping = () => {
-      const fullText = demoOpeners[typedOpenerIndex];
+    const fullText = demoOpeners[typedOpenerIndex];
+    let currentIndex = 0;
 
-      if (!isDeleting && charIndex <= fullText.length) {
-        currentText = fullText.substring(0, charIndex);
-        setTypedText(currentText);
-        charIndex++;
-        setTimeout(startTyping, 40);
+    const type = () => {
+      if (isCancelled) return;
+
+      if (currentIndex <= fullText.length) {
+        setTypedText(fullText.substring(0, currentIndex));
+        currentIndex++;
+        timeoutId = setTimeout(type, 40);
       } else {
         // Wait for 5 seconds after typing finishes
-        setTimeout(() => {
-          setTypedText("");
-          charIndex = 0;
+        timeoutId = setTimeout(() => {
+          if (isCancelled) return;
           setTypedOpenerIndex((prev) => (prev + 1) % demoOpeners.length);
-          startTyping(); // Restart the loop
         }, 5000);
       }
     };
 
-    const startDelay = setTimeout(startTyping, 1000);
-    return () => clearTimeout(startDelay);
+    // Initial delay before starting to type
+    timeoutId = setTimeout(type, 1000);
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, [typedOpenerIndex]);
 
   return (
