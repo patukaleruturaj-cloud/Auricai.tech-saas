@@ -267,7 +267,7 @@ export default function BillingPage() {
         };
     }, [fetchBilling, user]);
 
-    const handleCheckout = async (planId: string) => {
+    const handleCheckout = useCallback(async (planId: string) => {
         setCheckoutLoading(planId);
         try {
             const res = await fetch("/api/paddle/create-checkout", {
@@ -318,7 +318,7 @@ export default function BillingPage() {
         } finally {
             setCheckoutLoading(null);
         }
-    };
+    }, []);
 
     // Derived values
     const planLabel = billing ? PLAN_LABELS[billing.plan] ?? billing.plan : "Free";
@@ -499,7 +499,7 @@ export default function BillingPage() {
                     }}>
                         Current Plan
                     </p>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.75rem" }}>
                         <Crown size={20} style={{ color: "#a78bfa" }} />
                         <h2 style={{ fontSize: "1.5rem", fontWeight: "600" }}>
                             {planLabel}

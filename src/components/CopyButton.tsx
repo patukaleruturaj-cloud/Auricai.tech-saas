@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Copy, Check } from "lucide-react";
 
-export function CopyButton({ text }: { text: string }) {
+export const CopyButton = memo(function CopyButton({ text }: { text: string }) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async () => {
@@ -25,4 +25,4 @@ export function CopyButton({ text }: { text: string }) {
             {copied ? <Check size={16} color="var(--accent-green)" /> : <Copy size={16} />}
         </button>
     );
-}
+});

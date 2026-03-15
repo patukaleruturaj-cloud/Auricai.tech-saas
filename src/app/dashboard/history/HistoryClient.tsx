@@ -160,6 +160,7 @@ export default function HistoryClient({ initialHistory }: HistoryClientProps) {
                                         justifyContent: "space-between",
                                         alignItems: "flex-start",
                                         marginBottom: "1rem",
+                                        flexWrap: "wrap",
                                         gap: "1rem",
                                     }}
                                 >
@@ -193,7 +194,7 @@ export default function HistoryClient({ initialHistory }: HistoryClientProps) {
                                             {preview}
                                         </p>
                                     </div>
-                                    <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexShrink: 0 }}>
+                                    <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "1rem", flexShrink: 0 }}>
                                         <div
                                             style={{
                                                 display: "flex",

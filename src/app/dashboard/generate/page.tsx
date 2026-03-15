@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Sparkles, Copy, RefreshCw, AlertCircle, Zap, Wand2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCredits } from "../layout";
@@ -39,17 +39,17 @@ export default function GeneratePage() {
     // Real-time credit state from sidebar context
     const { credits, refreshCredits, updateCreditsLocally } = useCredits();
 
-    const tones = ["Friendly", "Direct", "Bold", "Professional"];
+    const tones = useMemo(() => ["Friendly", "Direct", "Bold", "Professional"], []);
 
-    const COMPANY_CHIPS = [
+    const COMPANY_CHIPS = useMemo(() => [
         "SaaS platform",
         "Fintech startup",
         "Marketing agency",
         "B2B AI tool",
         "Ecommerce brand",
-    ];
+    ], []);
 
-    const handleGenerateCompany = async () => {
+    const handleGenerateCompany = useCallback(async () => {
         if (!bio) return;
         setIsGeneratingCompany(true);
         setError("");
@@ -80,7 +80,7 @@ export default function GeneratePage() {
         } finally {
             setIsGeneratingCompany(false);
         }
-    };
+    }, [bio]);
 
     // Auto-fill offer from user's saved default on page load
     useEffect(() => {
@@ -100,7 +100,7 @@ export default function GeneratePage() {
         loadDefaultOffer();
     }, []);
 
-    const handleSaveOffer = async () => {
+    const handleSaveOffer = useCallback(async () => {
         if (!offer) return;
         setIsSavingOffer(true);
         try {
@@ -118,9 +118,9 @@ export default function GeneratePage() {
         } finally {
             setIsSavingOffer(false);
         }
-    };
+    }, [offer]);
 
-    const handleGenerate = async () => {
+    const handleGenerate = useCallback(async () => {
         setLoading(true);
         setError("");
         try {
@@ -148,7 +148,7 @@ export default function GeneratePage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [bio, company, offer, tone, updateCreditsLocally, refreshCredits]);
 
     // Usage calculations for the inline bar
     const usagePercent = credits
@@ -796,6 +796,7 @@ export default function GeneratePage() {
                                 <div
                                     style={{
                                         display: "flex",
+                                        flexWrap: "wrap",
                                         gap: "var(--spacing-2)",
                                     }}
                                 >

@@ -1,4 +1,5 @@
 "use client";
+import { memo } from "react";
 
 import {
     AreaChart,
@@ -19,7 +20,7 @@ interface ActivityChartProps {
     data: ChartDataPoint[];
 }
 
-export default function ActivityChart({ data }: ActivityChartProps) {
+export const ActivityChart = memo(function ActivityChart({ data }: ActivityChartProps) {
     if (!data || data.length === 0) {
         return (
             <div className="glass-panel" style={{ padding: "var(--spacing-8)", minHeight: "250px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "var(--spacing-4)" }}>
@@ -85,4 +86,6 @@ export default function ActivityChart({ data }: ActivityChartProps) {
             </div>
         </div>
     );
-}
+});
+
+export default ActivityChart;
