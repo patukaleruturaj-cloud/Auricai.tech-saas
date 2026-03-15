@@ -12,6 +12,7 @@ type GenerationItem = {
     tone: string | null;
     generated_options: {
         dms?: string[];
+        openers?: string[];
         [key: string]: any;
     } | null;
     subject: string | null;
@@ -48,7 +49,7 @@ export default function HistoryClient({ initialHistory }: HistoryClientProps) {
             if (item.follow_up?.toLowerCase().includes(query)) return true;
 
             // Check generated options
-            const options = item.generated_options?.dms || [];
+            const options = item.generated_options?.openers || item.generated_options?.dms || [];
             if (options.some((opt) => opt.toLowerCase().includes(query))) return true;
 
             return false;
@@ -140,7 +141,7 @@ export default function HistoryClient({ initialHistory }: HistoryClientProps) {
                                 ? item.prospect_bio.substring(0, 120) + "..."
                                 : item.prospect_bio || "No bio provided";
 
-                        const options: string[] = item.generated_options?.dms || [];
+                        const options: string[] = item.generated_options?.openers || item.generated_options?.dms || [];
 
                         return (
                             <div
