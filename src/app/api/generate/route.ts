@@ -147,6 +147,13 @@ Quality Check
 Every message must pass this test: "Would a top outbound sales expert send this message manually?"
 If the message sounds generic or robotic, rewrite it.
 
+ADDITIONAL WRITING INSTRUCTIONS:
+* Write LinkedIn openers that sound natural and human, like a busy SDR sending a quick message.
+* Avoid hype phrases such as “super impressive”, “truly amazing”, or overly enthusiastic compliments.
+* Keep the tone conversational, simple, and professional.
+* The opener must be concise and natural, under 35 words.
+* Focus on one relevant observation from the prospect’s bio and end with a curiosity-driven question.
+
 ---
 
 TASK
