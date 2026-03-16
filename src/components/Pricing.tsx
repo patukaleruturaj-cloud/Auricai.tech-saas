@@ -17,7 +17,6 @@ const PAID_PLANS = [
             "3 strategic opener variations",
             "Core Context Intelligence",
             "Standard processing",
-            "Email support",
         ],
         popular: false,
         theme: {
@@ -42,7 +41,6 @@ const PAID_PLANS = [
             "3 strategic opener variations",
             "Core Context Intelligence",
             "Standard processing",
-            "Email support",
         ],
         popular: false,
         theme: {
