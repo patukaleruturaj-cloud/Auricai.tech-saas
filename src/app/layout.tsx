@@ -12,7 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "AI LinkedIn Opener Generator | Personalized LinkedIn Outreach | AuricAI",
   description: "Generate hyper-personalized LinkedIn openers in seconds using AI. Increase reply rates and book more meetings with AuricAI's intelligent LinkedIn outreach generator.",
-  keywords: ["AI LinkedIn opener generator", "LinkedIn outreach AI tool", "LinkedIn message generator AI", "personalized LinkedIn outreach", "LinkedIn prospecting AI"],
+  keywords: ["AI LinkedIn opener generator", "LinkedIn opener generator", "LinkedIn message generator", "LinkedIn DM generator", "AI LinkedIn outreach tool", "LinkedIn outreach AI", "LinkedIn cold message generator", "personalized LinkedIn outreach", "LinkedIn prospecting AI", "LinkedIn lead generation tool", "AI sales outreach tool", "LinkedIn prospecting tool", "B2B LinkedIn outreach", "AI prospecting tool", "LinkedIn outreach generator"],
   authors: [{ name: "AuricAI Team" }],
   metadataBase: new URL("https://auricai.tech"),
   alternates: {

@@ -54,7 +54,7 @@ export default function Navbar() {
                     }}>
                     <Image
                         src="/logo.png"
-                        alt="AuricAI Logo"
+                        alt="AI LinkedIn prospecting tool preview"
                         width={40}
                         height={40}
                         priority

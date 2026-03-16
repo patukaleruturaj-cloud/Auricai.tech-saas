@@ -227,7 +227,7 @@ export default function Home() {
               <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-secondary)", letterSpacing: "0.05em", marginBottom: "var(--spacing-2)" }}>Target Prospect</p>
               <div style={{ display: "flex", gap: "var(--spacing-3)", alignItems: "center" }}>
                 <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Image src="/logo.png" alt="AuricAI Logo" width={24} height={24} style={{ filter: "invert(1)", objectFit: "contain" }} />
+                  <Image src="/logo.png" alt="AI LinkedIn opener generator dashboard" width={24} height={24} style={{ filter: "invert(1)", objectFit: "contain" }} />
                 </div>
                 <div>
                   <p style={{ fontWeight: "600" }}>Sarah Jenkins</p>
@@ -293,19 +293,19 @@ export default function Home() {
               Best AI LinkedIn Opener Generator
             </h2>
             <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem" }}>
-              AuricAI is the world's most intelligent <strong>AI LinkedIn opener generator</strong>. Unlike generic templates or automation tools that get your account flagged, AuricAI uses advanced natural language processing to analyze individual LinkedIn profiles. It identifies unique career milestones, shared interests, and specific company updates to craft messages that feel like they were written after an hour of research.
+              AuricAI is the world's most intelligent <strong>AI LinkedIn opener generator</strong> and <strong>LinkedIn message generator</strong>. Unlike generic templates or automation tools that get your account flagged, AuricAI uses advanced natural language processing to analyze individual LinkedIn profiles. It identify unique career milestones, shared interests, and specific company updates to craft messages through our <strong>LinkedIn DM generator</strong> that feel like they were written after an hour of research. Whether you need a <strong>LinkedIn outreach generator</strong> or a <strong>LinkedIn cold message generator</strong>, AuricAI delivers high-converting results.
             </p>
 
             <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
               How to Write LinkedIn Openers That Get Replies
             </h2>
             <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "1.5rem" }}>
-              The secret to high-converting <strong>LinkedIn outreach</strong> isn't in your pitch—it's in your opener. Most professionals ignore 90% of their InMail because it sounds like a template. To increase your reply rates:
+              The secret to high-converting <strong>LinkedIn outreach</strong> isn't in your pitch—it's in your opener. Using an <strong>AI LinkedIn outreach tool</strong> or a <strong>LinkedIn prospecting AI tool</strong> can significantly boost your efficiency. Most professionals ignore 90% of their InMail because it sounds like a template. To increase your reply rates with an <strong>AI tool for LinkedIn prospecting</strong>:
             </p>
             <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
-              <li><strong>Lead with relevance:</strong> Mention a specific achievement from their "About" section.</li>
+              <li><strong>Lead with relevance:</strong> Mention a specific achievement from their "About" section for better <strong>personalized LinkedIn outreach</strong>.</li>
               <li><strong>Keep it short:</strong> Your first message should be under 200 characters.</li>
-              <li><strong>Ask a curiosity question:</strong> Instead of "do you have time?", ask about a specific challenge they might be facing.</li>
+              <li><strong>Ask a curiosity question:</strong> Instead of "do you have time?", ask about a specific challenge they might be facing using our <strong>LinkedIn lead generation tool</strong>.</li>
               <li><strong>Use a natural tone:</strong> Avoid corporate jargon and "SaaS-speak".</li>
             </ul>
 

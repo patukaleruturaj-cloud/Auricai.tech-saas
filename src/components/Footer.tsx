@@ -8,7 +8,7 @@ export default function Footer() {
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "3rem", marginBottom: "3rem" }}>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <Image src="/logo.png" alt="AuricAI Logo" width={24} height={24} style={{ filter: "invert(1)" }} />
+                            <Image src="/logo.png" alt="LinkedIn outreach message generator interface" width={24} height={24} style={{ filter: "invert(1)" }} />
                             <span style={{ fontSize: "1.25rem", fontWeight: "700", color: "white" }}>AuricAI</span>
                         </div>
                         <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>
