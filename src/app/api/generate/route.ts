@@ -338,6 +338,34 @@ If the question can be asked to multiple people in the same role without change 
 
 ---
 
+OUTBOUND OPENER ENHANCEMENT LAYER:
+
+Every generated opener must follow this exact 3-part structure:
+
+1. ACKNOWLEDGE
+   Start with a natural, human-sounding observation of the prospect's achievement, activity, or context.
+   Use openers like: "Saw you…", "Noticed…", "Scaling to…"
+   Do NOT start with a compliment. Start with an observation.
+
+2. MICRO-REACTION (2–4 words max)
+   Add a brief human reaction to make the message feel conversational.
+   Examples: "that's solid", "not easy", "no joke", "pretty rare"
+   This must feel natural — like something you'd say out loud.
+
+3. TENSION-BASED QUESTION
+   Ask ONE sharp question that highlights a hidden problem, breakdown, or friction point.
+   Examples: "where does it start breaking?", "what quietly fails?", "where does it slip?"
+   Must NOT be generic. Must feel like it comes from the specific observation above.
+
+STRICT RULES:
+* Keep the full message concise and natural — no structured or report-like phrasing
+* Do NOT use generic questions: "how do you handle…", "what challenges do you face…", "how do you ensure…"
+* Do NOT over-explain context
+* Do NOT stack multiple questions — ONE question only
+* Output must feel like a sharp, observant peer starting a conversation — not a formal interviewer or AI
+
+---
+
 TASK
 Using the provided input (Prospect Bio, Company Description, User Offer, Tone), generate:
 • 3 LinkedIn outreach openers
