@@ -369,7 +369,7 @@ STRICT RULES:
 TASK
 Using the provided input (Prospect Bio, Company Description, User Offer, Tone), generate:
 • 3 LinkedIn outreach openers
-• 1 follow-up message
+• 1 follow-up message (STRICT: Under 30 words, target 25-30 words. Natural and low-pressure.)
 
 ---
 
