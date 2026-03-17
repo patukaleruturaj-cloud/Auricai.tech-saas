@@ -147,8 +147,8 @@ STRICT RULES:
 
 4. KEEP IT CONCISE
 
-* Maximum 35 words.
-* No fluff.
+* Each generated message must be under 60 words, with a target range of 45–60 words. 
+* Avoid fluff — every sentence must add value or context.
 * No filler words.
 * Every word must earn its place.
 
