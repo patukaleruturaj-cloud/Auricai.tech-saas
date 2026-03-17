@@ -304,6 +304,40 @@ If not → rewrite.
 
 ---
 
+PROBLEM-DRIVEN QUESTION ENFORCEMENT:
+
+Every generated opener must include a real-world friction, breakdown point, or scaling challenge before the question.
+
+STRICT RULES:
+1. DO NOT use generic or safe questions such as:
+   * "How are you approaching…"
+   * "What's your strategy for…"
+   * "What's been the biggest challenge…"
+
+2. Instead, target a SPECIFIC failure point:
+   * where things break at scale
+   * where consistency drops
+   * where repetition starts
+   * where systems fail under volume
+
+STRUCTURE REQUIREMENT:
+Each message must follow:
+* Specific observation (based on real signal from bio)
+* Implicit tension or breakdown
+* Direct, natural question about that tension
+
+EXAMPLES:
+Bad:  "How are you approaching personalization at scale?"
+Good: "Where does personalization start breaking as you scale?"
+
+Bad:  "What's been the biggest challenge managing your SDR team?"
+Good: "What tends to break first when your SDR team scales?"
+
+FINAL RULE:
+If the question can be asked to multiple people in the same role without change → it is too generic → rewrite.
+
+---
+
 TASK
 Using the provided input (Prospect Bio, Company Description, User Offer, Tone), generate:
 • 3 LinkedIn outreach openers
