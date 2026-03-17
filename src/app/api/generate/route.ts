@@ -257,35 +257,68 @@ Using the provided input (Prospect Bio, Company Description, User Offer, Tone), 
 • 3 LinkedIn outreach openers
 • 1 follow-up message
 
-Scoring
-After generating the openers, score each opener from 1–10 based on:
-• personalization
-• curiosity
-• natural tone
-• reply probability
-Select the best opener.
+---
+
+ELITE SCORING (CRITICAL — READ EVERY RULE):
+
+Score each opener out of 100 using these criteria:
+• Specificity (0–25): Does it use a concrete signal (number, achievement, scale)?
+• Human feel (0–25): Does it read like a real person typed it fast?
+• Clarity (0–20): Is the message instantly clear with no confusion?
+• Curiosity strength (0–15): Does the question feel natural and compelling?
+• Uniqueness (0–15): Could this ONLY be sent to this specific person?
+
+SCORING CAP (ABSOLUTE):
+• Maximum score: 92
+• NEVER output 95, 98, or 100
+• A perfect message does not exist
+
+ANTI-INFLATION RULE:
+• Most outputs should land between 72–88
+• Only output 89–92 if the message is genuinely exceptional on all 5 criteria
+• Do NOT inflate scores to seem positive
+
+SCORE DISTRIBUTION (CRITICAL):
+• Scores MUST have visible separation — minimum 5–10 points apart
+• At least ONE option must be noticeably weaker
+• NEVER output similar patterns like: 88 / 89 / 90 or 90 / 92 / 94
+• Target distribution examples: 72 / 83 / 88 or 69 / 78 / 86
+
+PENALTY RULES (apply before finalising):
+• Generic phrasing present → reduce by 8–12 pts
+• Weak or vague curiosity question → reduce by 5–8 pts
+• Slight AI-generated tone detected → reduce by 3–5 pts
+• Missing a strong signal when one was available → reduce by 6–10 pts
+
+BEST OPTION LOGIC:
+• Highest score = best (mark is_best: true)
+• If close, prefer stronger signal and more natural tone
+• Only ONE option may be marked is_best: true
+
+SCORING MINDSET:
+Score like a strict, honest human evaluator — not a flattering AI.
+Ask: "Would I genuinely be impressed by this?" If not, score down.
 
 ---
 
 OUTPUT FORMAT
 Return ONLY valid JSON in this exact structure:
 {
-  "openers": [
-    { "text": "opener 1", "score": 0 },
-    { "text": "opener 2", "score": 0 },
-    { "text": "opener 3", "score": 0 }
+  "options": [
+    { "text": "opener 1 text", "score": 72, "is_best": false },
+    { "text": "opener 2 text", "score": 88, "is_best": true },
+    { "text": "opener 3 text", "score": 79, "is_best": false }
   ],
-  "best_index": 0,
-  "reasoning": "Brief explanation why this opener has the highest reply probability.",
-  "subject": "short subject",
-  "follow_up": "short follow up message"
+  "reasoning": "One sentence: why the best option has the highest reply probability.",
+  "subject": "short subject line",
+  "follow_up": "short follow-up message"
 }
 
 IMPORTANT
-• best_index must be 0-based (0,1,2)
 • Do NOT return markdown
 • Do NOT return text outside JSON
-• Each opener must use a DIFFERENT angle or observation and feel distinct and non-repetitive
+• Scores must be integers between 0–92
+• Each opener must use a DIFFERENT angle or observation
 • Tone specification: ${toneInstruction}`;
 
         const userPrompt = `Prospect Bio:
