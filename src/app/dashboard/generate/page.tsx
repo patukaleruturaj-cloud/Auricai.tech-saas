@@ -15,7 +15,7 @@ export default function GeneratePage() {
     const [isSavingOffer, setIsSavingOffer] = useState(false);
     const [offerSaved, setOfferSaved] = useState(false);
     const [result, setResult] = useState<{
-        openers: { text: string; score: number }[];
+        openers: { text: string; score: number; is_best: boolean }[];
         followUp: string;
         subjectLine: string;
         recommendedIndex?: number;
@@ -31,8 +31,7 @@ export default function GeneratePage() {
         try {
             await navigator.clipboard.writeText(text);
             setCopiedIndex(index);
-            setTimeout(() => setCopiedIndex(null), 2000);
-            alert("Copied!"); // Standard browser alert as requested
+            setTimeout(() => setCopiedIndex(null), 1500);
         } catch (err) {
             console.error("Copy failed", err);
         }
@@ -765,96 +764,152 @@ export default function GeneratePage() {
                         }}
                     >
                         {result.openers.map((dm, idx) => {
-                            const isRecommended = idx === result.recommendedIndex;
+                            const isBest = idx === 0; // always sorted DESC — first is highest score
+
+                            // ─── Score colour tier ───
+                            const scoreColor =
+                                dm.score >= 85 ? "#22c55e"      // Green
+                                    : dm.score >= 75 ? "#86efac"    // Light Green
+                                        : dm.score >= 65 ? "#facc15"    // Yellow
+                                            : "#94a3b8";                     // Gray
+
+                            const borderColor = isBest
+                                ? "rgba(34, 197, 94, 0.6)"
+                                : "rgba(255,255,255,0.08)";
+
+                            const cardShadow = isBest
+                                ? "0 0 0 1px rgba(34,197,94,0.4), 0 8px 32px rgba(34,197,94,0.18), 0 2px 8px rgba(0,0,0,0.3)"
+                                : "0 2px 12px rgba(0,0,0,0.2)";
 
                             return (
                                 <div
                                     key={idx}
-                                    className="glass-panel"
                                     style={{
-                                        padding: "var(--spacing-5)",
-                                        borderLeft: isRecommended ? "none" : "3px solid var(--accent-violet)",
-                                        border: isRecommended ? "1px solid #facc15" : undefined,
-                                        boxShadow: isRecommended ? "0 0 15px rgba(250,204,21,0.35)" : undefined,
-                                        position: "relative"
+                                        padding: "20px 24px",
+                                        borderRadius: "18px",
+                                        border: `1px solid ${borderColor}`,
+                                        boxShadow: cardShadow,
+                                        background: isBest
+                                            ? "rgba(34,197,94,0.04)"
+                                            : "rgba(255,255,255,0.02)",
+                                        position: "relative",
+                                        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                                        cursor: "default",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        (e.currentTarget as HTMLDivElement).style.transform = "scale(1.015)";
+                                        (e.currentTarget as HTMLDivElement).style.boxShadow = isBest
+                                            ? "0 0 0 1px rgba(34,197,94,0.5), 0 16px 48px rgba(34,197,94,0.22), 0 4px 12px rgba(0,0,0,0.35)"
+                                            : "0 8px 28px rgba(0,0,0,0.35)";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        (e.currentTarget as HTMLDivElement).style.transform = "scale(1)";
+                                        (e.currentTarget as HTMLDivElement).style.boxShadow = cardShadow;
                                     }}
                                 >
-                                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "var(--spacing-2)" }}>
-                                        <p
-                                            style={{
-                                                fontSize: "0.75rem",
+                                    {/* ─── Top row: label + score ─── */}
+                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+                                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                                            {/* Option label */}
+                                            <span style={{
+                                                fontSize: "0.7rem",
                                                 textTransform: "uppercase",
-                                                color: isRecommended ? "#facc15" : "var(--accent-violet)",
-                                                fontWeight: "600",
-                                                letterSpacing: "0.05em",
-                                                margin: 0
-                                            }}
-                                        >
-                                            Option {idx + 1}
-                                        </p>
+                                                letterSpacing: "0.08em",
+                                                fontWeight: "700",
+                                                color: "var(--text-secondary)",
+                                                opacity: 0.6,
+                                            }}>
+                                                Option {idx + 1}
+                                            </span>
+
+                                            {/* ⭐ AI Recommended badge */}
+                                            {isBest && (
+                                                <span style={{
+                                                    display: "inline-flex",
+                                                    alignItems: "center",
+                                                    gap: "5px",
+                                                    fontSize: "0.72rem",
+                                                    fontWeight: "700",
+                                                    letterSpacing: "0.04em",
+                                                    color: "#bbf7d0",
+                                                    background: "rgba(34,197,94,0.12)",
+                                                    border: "1px solid rgba(34,197,94,0.3)",
+                                                    borderRadius: "999px",
+                                                    padding: "3px 10px",
+                                                }}>
+                                                    ⭐ AI Recommended
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Score chip */}
+                                        <div style={{ textAlign: "right", flexShrink: 0 }}>
+                                            <div style={{
+                                                fontSize: "1.15rem",
+                                                fontWeight: "800",
+                                                color: scoreColor,
+                                                lineHeight: 1,
+                                            }}>
+                                                {dm.score} <span style={{ fontSize: "0.8rem", fontWeight: "500", color: "rgba(255,255,255,0.3)" }}>/ 100</span>
+                                            </div>
+                                            <div style={{
+                                                fontSize: "0.65rem",
+                                                color: "rgba(255,255,255,0.3)",
+                                                marginTop: "3px",
+                                            }}>
+                                                Based on message quality
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {isRecommended && (
-                                        <div style={{ marginBottom: "12px" }}>
-                                            <span style={{
-                                                fontSize: "0.75rem",
-                                                padding: "4px 10px",
-                                                borderRadius: "12px",
-                                                background: "rgba(250, 204, 21, 0.15)",
-                                                color: "#fde047",
-                                                fontWeight: "600",
-                                                display: "inline-flex",
-                                                alignItems: "center",
-                                                gap: "4px",
-                                                border: "1px solid rgba(250, 204, 21, 0.3)"
-                                            }}>
-                                                ⭐ AI Recommended
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    <p
-                                        style={{
-                                            fontSize: "0.9375rem",
-                                            lineHeight: "1.6",
-                                            marginBottom: isRecommended ? "var(--spacing-3)" : "var(--spacing-4)",
-                                        }}
-                                    >
+                                    {/* ─── Message text ─── */}
+                                    <p style={{
+                                        fontSize: "0.9375rem",
+                                        lineHeight: "1.65",
+                                        color: "rgba(255,255,255,0.92)",
+                                        marginBottom: "16px",
+                                        marginTop: "4px",
+                                    }}>
                                         {dm.text}
                                     </p>
 
-                                    {isRecommended && (
-                                        <p style={{
-                                            fontSize: "0.85rem",
-                                            color: "var(--text-secondary)",
-                                            marginBottom: "var(--spacing-4)",
-                                            fontStyle: "italic"
-                                        }}>
-                                            Best chance of reply based on personalization and curiosity.
-                                        </p>
-                                    )}
-                                    <div
+                                    {/* ─── Copy button ─── */}
+                                    <button
                                         style={{
-                                            display: "flex",
-                                            flexWrap: "wrap",
-                                            gap: "var(--spacing-2)",
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            gap: "6px",
+                                            padding: "7px 14px",
+                                            fontSize: "0.78rem",
+                                            fontWeight: "600",
+                                            borderRadius: "8px",
+                                            border: copiedIndex === idx
+                                                ? "1px solid rgba(34,197,94,0.5)"
+                                                : "1px solid rgba(255,255,255,0.12)",
+                                            background: copiedIndex === idx
+                                                ? "rgba(34,197,94,0.12)"
+                                                : "rgba(255,255,255,0.05)",
+                                            color: copiedIndex === idx ? "#86efac" : "rgba(255,255,255,0.6)",
+                                            cursor: "pointer",
+                                            transition: "all 0.2s ease",
                                         }}
-                                    >
-                                        <button
-                                            className="secondary-button"
-                                            style={{
-                                                padding: "6px 12px",
-                                                fontSize: "0.75rem",
-                                                gap: "4px",
-                                                color: copiedIndex === idx ? "#34d399" : "inherit"
-                                            }}
-                                            onClick={() =>
-                                                copyToClipboard(dm.text, idx)
+                                        onMouseEnter={(e) => {
+                                            if (copiedIndex !== idx) {
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                                                e.currentTarget.style.color = "white";
                                             }
-                                        >
-                                            <Copy size={14} /> {copiedIndex === idx ? "Copied!" : "Copy"}
-                                        </button>
-                                    </div>
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (copiedIndex !== idx) {
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                                                e.currentTarget.style.color = "rgba(255,255,255,0.6)";
+                                            }
+                                        }}
+                                        onClick={() => copyToClipboard(dm.text, idx)}
+                                    >
+                                        <Copy size={13} />
+                                        {copiedIndex === idx ? "✓ Copied" : "Copy"}
+                                    </button>
                                 </div>
                             );
                         })}
