@@ -49,7 +49,8 @@ Structure:
 
 Output Rules:
 - Return exactly 2 follow-up variations.
-- Max 180 characters per message.
+- Max 60 words per message (approx 400 characters).
+- Maintain 45–60 words target range.
 - One short paragraph.
 - Must end with a natural question.
 
@@ -127,10 +128,10 @@ Generate exactly 2 natural follow-up variations. Return ONLY valid JSON.`;
                     throw new Error("Malformed JSON structure");
                 }
 
-                // Validation: max 180 characters
-                const validFollowups = followups.filter(f => typeof f === "string" && f.length <= 180);
+                // Validation: max 400 characters (approx 60 words)
+                const validFollowups = followups.filter(f => typeof f === "string" && f.length <= 400);
                 if (validFollowups.length < 2) {
-                    throw new Error("Character limit exceeded");
+                    throw new Error("Character limit exceeded (max 400)");
                 }
 
                 result = validFollowups.slice(0, 2);
