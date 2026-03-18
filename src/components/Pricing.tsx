@@ -25,9 +25,9 @@ const PAID_PLANS = [
             glowColor: "rgba(251, 146, 60, 1)",
             shimmerColor: "rgba(251, 146, 60, 0.4)",
             bgTint: "rgba(251, 146, 60, 0.02)",
-            glowBase: 0.12,
-            glowHover: 0.20,
-            hoverLift: -6,
+            glowBase: 0.1,
+            glowHover: 0.2,
+            hoverLift: -8,
             baseScale: 1,
             hoverScale: 1.02,
         }
@@ -51,9 +51,9 @@ const PAID_PLANS = [
             glowColor: "rgba(59, 130, 246, 1)",
             shimmerColor: "rgba(59, 130, 246, 0.3)",
             bgTint: "rgba(59, 130, 246, 0.01)",
-            glowBase: 0.08,
-            glowHover: 0.15,
-            hoverLift: -6,
+            glowBase: 0.1,
+            glowHover: 0.2,
+            hoverLift: -8,
             baseScale: 1,
             hoverScale: 1.02,
         }
@@ -76,11 +76,11 @@ const PAID_PLANS = [
         theme: {
             glowColor: "rgba(139, 92, 246, 1)",
             shimmerColor: "rgba(139, 92, 246, 0.4)",
-            bgTint: "rgba(139, 92, 246, 0.04)",
+            bgTint: "rgba(139, 92, 246, 0.08)", // More tint for highlight
             glowBase: 0.3, // Stronger glow
-            glowHover: 0.45,
-            hoverLift: -16, // More lift
-            baseScale: 1.08, // Slightly bigger
+            glowHover: 0.4,
+            hoverLift: -12,
+            baseScale: 1.08, // Larger
             hoverScale: 1.1,
         }
     },
@@ -103,9 +103,9 @@ const PAID_PLANS = [
             glowColor: "rgba(16, 185, 129, 1)",
             shimmerColor: "rgba(16, 185, 129, 0.5)",
             bgTint: "rgba(16, 185, 129, 0.02)",
-            glowBase: 0.12,
-            glowHover: 0.20,
-            hoverLift: -6,
+            glowBase: 0.1,
+            glowHover: 0.2,
+            hoverLift: -8,
             baseScale: 1,
             hoverScale: 1.02,
         }
@@ -122,7 +122,7 @@ export default function Pricing({
     const [isYearly, setIsYearly] = useState(false);
 
     return (
-        <section>
+        <section style={{ padding: "8rem 0" }}>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
                 <h2 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "1rem", letterSpacing: "-0.02em" }}>
                     Turn more LinkedIn messages into real conversations
@@ -196,9 +196,10 @@ export default function Pricing({
                 style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                    gap: "1.5rem",
-                    maxWidth: "1200px",
+                    gap: "2.5rem",
+                    maxWidth: "1250px",
                     margin: "0 auto",
+                    alignItems: "stretch"
                 }}
             >
                 {PAID_PLANS.map((plan, idx) => {
@@ -229,17 +230,18 @@ export default function Pricing({
                             }}
                             className="glass-panel"
                             style={{
-                                padding: "2rem",
+                                padding: "24px",
                                 position: "relative",
                                 border: plan.popular
                                     ? "2px solid var(--accent-blue)"
-                                    : "1px solid var(--border-subtle)",
+                                    : "1px solid rgba(255,255,255,0.08)",
                                 zIndex: plan.popular ? 10 : 1,
-                                borderRadius: "1rem",
+                                borderRadius: "20px",
                                 display: "flex",
                                 flexDirection: "column",
-                                background: `linear-gradient(180deg, var(--bg-surface) 0%, ${plan.theme.bgTint} 100%)`,
-                                willChange: "transform, opacity"
+                                background: `linear-gradient(180deg, rgba(15, 16, 20, 0.95) 0%, ${plan.theme.bgTint} 100%)`,
+                                willChange: "transform, opacity",
+                                height: "100%"
                             }}
                         >
                             {/* Glow Layer (Hardware Accelerated & Tier-Based) */}
@@ -363,12 +365,6 @@ export default function Pricing({
                                         Billed monthly
                                     </p>
                                 )}
-                                <p style={{ fontSize: "0.875rem", color: "var(--accent-blue)", fontWeight: "600", marginTop: "8px" }}>
-                                    {plan.name === "Starter" ? "≈ 10–30 replies/month potential" :
-                                     plan.name === "Basic" ? "≈ 30–80 replies/month potential" :
-                                     plan.name === "Growth" ? "≈ 80–200 replies/month potential" :
-                                     "≈ 200–500+ replies/month potential"}
-                                </p>
                             </div>
 
                             <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -379,50 +375,44 @@ export default function Pricing({
                             {isDashboard ? (
                                 <button
                                     onClick={() => onPlanSelect?.(plan.planType, isYearly)}
-                                    className={
-                                        plan.popular
-                                            ? "glow-button"
-                                            : "secondary-button"
-                                    }
+                                    className="glow-button"
                                     style={{
                                         width: "100%",
                                         textAlign: "center",
                                         display: "block",
                                         marginBottom: "2rem",
-                                        background: plan.popular
-                                            ? "var(--accent-blue)"
-                                            : undefined,
+                                        background: "var(--accent-blue)",
                                         border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Start generating better DMs
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => {
-                                        // Ensure we redirect to the correct auth flow
-                                        window.location.href = "/sign-up";
-                                    }}
-                                    className={
-                                        plan.popular
-                                            ? "glow-button"
-                                            : "secondary-button"
-                                    }
-                                    style={{
-                                        width: "100%",
-                                        textAlign: "center",
-                                        display: "block",
-                                        marginBottom: "2rem",
-                                        background: plan.popular
-                                            ? "var(--accent-blue)"
-                                            : undefined,
-                                        border: "none",
+                                        padding: "1rem",
+                                        borderRadius: "12px",
+                                        fontSize: "1rem",
+                                        fontWeight: "600",
+                                        transition: "all 0.2s ease",
                                         cursor: "pointer"
                                     }}
                                 >
                                     Start generating better DMs
                                 </button>
+                            ) : (
+                                <Link
+                                    href="/sign-up"
+                                    className="glow-button"
+                                    style={{
+                                        width: "100%",
+                                        textAlign: "center",
+                                        display: "block",
+                                        marginBottom: "2rem",
+                                        background: "var(--accent-blue)",
+                                        border: "none",
+                                        padding: "1rem",
+                                        borderRadius: "12px",
+                                        fontSize: "1rem",
+                                        fontWeight: "600",
+                                        transition: "all 0.2s ease"
+                                    }}
+                                >
+                                    Start generating better DMs
+                                </Link>
                             )}
 
                             <ul
@@ -430,7 +420,7 @@ export default function Pricing({
                                     listStyle: "none",
                                     display: "flex",
                                     flexDirection: "column",
-                                    gap: "0.75rem",
+                                    gap: "0.875rem",
                                     marginTop: "auto",
                                 }}
                             >
@@ -439,21 +429,26 @@ export default function Pricing({
                                         key={i}
                                         style={{
                                             display: "flex",
-                                            alignItems: "flex-start",
-                                            gap: "0.75rem",
-                                            fontSize: "0.875rem",
-                                            color: "var(--text-secondary)",
+                                            alignItems: "center",
+                                            gap: "0.875rem",
+                                            fontSize: "0.9375rem",
+                                            color: "rgba(255,255,255,0.7)",
                                         }}
                                     >
-                                        <Check
-                                            size={16}
-                                            color="var(--accent-blue)"
-                                            style={{
-                                                flexShrink: 0,
-                                                marginTop: "2px",
-                                            }}
-                                        />
-                                        <span>✔ {feature}</span>
+                                        <div style={{
+                                            flexShrink: 0,
+                                            width: "20px",
+                                            height: "20px",
+                                            borderRadius: "50%",
+                                            background: "rgba(74, 222, 128, 0.1)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            border: "1px solid rgba(74, 222, 128, 0.2)"
+                                        }}>
+                                            <Check size={12} color="#4ade80" />
+                                        </div>
+                                        <span>{feature}</span>
                                     </li>
                                 ))}
                             </ul>
