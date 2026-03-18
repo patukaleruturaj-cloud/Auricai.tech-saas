@@ -9,65 +9,28 @@ import StickyCTA from "@/components/StickyCTA";
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 // Metadata moved to page.tsx
 export default function Home() {
-  const [demoStep, setDemoStep] = useState(0);
-  const [typedText, setTypedText] = useState("");
-  const [typedOpenerIndex, setTypedOpenerIndex] = useState(0);
+  const [demoStep, setDemoStep] = useState(0); // 0: Input, 1: Generating, 2: Output
+  
+  const prospectDetails = {
+    name: "Sarah Jenkins",
+    role: "VP of Sales",
+    company: "TechCorp"
+  };
 
-  const demoOpeners = [
-    "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?",
-    "Hi Mark — loved your recent post about product-led growth. Noticed your background in fintech too. Would love to hear how you're thinking about PLG in that space.",
-    "Hey David — congrats on the Series B! Scaling the engineering team is usually a challenge right after. How's the transition to the new infrastructure going?",
-    "Hi Jessica — saw your talk at the GTM Summit. Your point about signal-based outreach really resonated. Are you currently using AI to help with lead research?"
-  ];
+  const genericDM = "Hey Sarah, I'm with OutboundAI. We help companies like TechCorp scale their sales. Do you have 15 minutes next week?";
+  const auricAIDM = "Hi Sarah — noticed TechCorp's recent Series B and your focus on scaling the GTM team. Curious if ramping new SDRs while maintaining personalization is a priority for you this quarter?";
 
-  // Simple animation sequence for the hero demo
   useEffect(() => {
     const timer = setInterval(() => {
-      setDemoStep((prev) => (prev + 1) % 5);
-    }, 3000);
+      setDemoStep((prev) => (prev + 1) % 3);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
-
-  // AI Typing animation effect
-  useEffect(() => {
-    let isCancelled = false;
-    let timeoutId: NodeJS.Timeout;
-
-    // Reset text immediately when opener index changes
-    setTypedText("");
-
-    const fullText = demoOpeners[typedOpenerIndex];
-    let currentIndex = 0;
-
-    const type = () => {
-      if (isCancelled) return;
-
-      if (currentIndex <= fullText.length) {
-        setTypedText(fullText.substring(0, currentIndex));
-        currentIndex++;
-        timeoutId = setTimeout(type, 30); // Slightly faster for responsiveness
-      } else {
-        // Wait for 5 seconds after typing finishes
-        timeoutId = setTimeout(() => {
-          if (isCancelled) return;
-          setTypedOpenerIndex((prev) => (prev + 1) % demoOpeners.length);
-        }, 5000);
-      }
-    };
-
-    // Short delay before starting to type the next one
-    timeoutId = setTimeout(type, 400);
-
-    return () => {
-      isCancelled = true;
-      clearTimeout(timeoutId);
-    };
-  }, [typedOpenerIndex]);
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: "var(--spacing-12)" }}>
@@ -167,161 +130,156 @@ export default function Home() {
             Generate hyper-personalized LinkedIn openers that feel 1:1 written — at scale. Built for SDRs, founders, and outbound teams who care about reply rates.
           </p>
 
-          {/* AI Typing Animation */}
-          <div className="glass-panel hero-typing-card">
-            <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
-              <Sparkles size={12} style={{ display: "inline-block", marginRight: "4px", verticalAlign: "middle" }} />
-              AuricAI generating opener...
-            </p>
-            <p style={{ fontSize: "0.9375rem", lineHeight: "1.5", color: "var(--text-primary)", fontStyle: "italic", minHeight: "4.5rem", wordBreak: "break-word" }}>
-              {typedText}<span className="cursor">|</span>
-            </p>
-          </div>
-
           <div className="hero-cta-group" style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
             <Link href="/sign-up" className="glow-button" style={{
               padding: "1.25rem 2rem", fontSize: "1.125rem", gap: "0.5rem",
               background: "var(--accent-blue)",
               boxShadow: "0 0 40px rgba(59, 130, 246, 0.3)"
             }}>
-              Generate My First LinkedIn DM Free <ArrowRight size={20} />
-            </Link>
-            <Link href="#how-it-works" className="secondary-button" style={{ padding: "1.25rem 2rem", fontSize: "1.125rem" }}>
-              See How It Works
+              Generate My First DM Free <ArrowRight size={20} />
             </Link>
           </div>
           <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "-0.5rem" }}>
-            No scraping. No automation spam. Just relevance.
+            No credit card required. Join 500+ outbound pros.
           </span>
         </motion.div>
 
-        {/* Right Demo Animation (Restored from the original) */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: [0, -10, 0] }}
-          transition={{
-            opacity: { duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.15 },
-            y: { duration: 7, ease: "easeInOut", repeat: Infinity }
-          }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="glass-panel hero-demo"
           style={{
             padding: "0",
             display: "flex",
             flexDirection: "column",
             position: "relative",
-            willChange: "transform, opacity",
-            overflow: "hidden"
+            overflow: "hidden",
+            boxShadow: "0 20px 80px -20px rgba(59, 130, 246, 0.3)"
           }}
         >
-          {/* macOS Window Header */}
-          <div style={{ height: "28px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", padding: "0 12px", gap: "6px" }}>
+          {/* subtle glow behind */}
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1), transparent 70%)", pointerEvents: "none" }} />
+          
+          <div style={{ height: "32px", background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", padding: "0 12px", gap: "6px" }}>
             <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#ff5f56" }} />
             <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#ffbd2e" }} />
             <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#27c93f" }} />
           </div>
 
-          <div style={{ padding: "var(--spacing-6)", display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
-            <div style={{ position: "absolute", top: "-10px", right: "-10px", width: "100px", height: "100px", background: "var(--accent-blue)", filter: "blur(60px)", zIndex: -1, opacity: 0.2 }}></div>
-
-            <div style={{ borderBottom: "1px solid var(--border-subtle)", paddingBottom: "var(--spacing-4)" }}>
-              <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-secondary)", letterSpacing: "0.05em", marginBottom: "var(--spacing-2)" }}>Target Prospect</p>
-              <div style={{ display: "flex", gap: "var(--spacing-3)", alignItems: "center" }}>
-                <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Image src="/logo.png" alt="AI LinkedIn opener generator dashboard" width={24} height={24} style={{ filter: "invert(1)", objectFit: "contain" }} />
-                </div>
-                <div>
-                  <p style={{ fontWeight: "600" }}>Sarah Jenkins</p>
-                  <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>VP of Sales @ TechCorp</p>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", minHeight: "150px" }}>
+          <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <AnimatePresence mode="wait">
               {demoStep === 0 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: "var(--spacing-4)", background: "rgba(0,0,0,0.3)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  Mapping Prospect Context...
+                <motion.div key="input" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  <p style={{ fontSize: "0.7rem", textTransform: "uppercase", color: "var(--text-secondary)", letterSpacing: "0.05em" }}>Prospect Input</p>
+                  <div className="glass-panel" style={{ padding: "1rem", background: "rgba(0,0,0,0.2)" }}>
+                    <p style={{ fontWeight: "600", fontSize: "0.9rem" }}>{prospectDetails.name}</p>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{prospectDetails.role} @ {prospectDetails.company}</p>
+                  </div>
                 </motion.div>
               )}
+
               {demoStep === 1 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: "var(--spacing-4)", background: "rgba(0,0,0,0.3)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  Analyzing role authority...
+                <motion.div key="generating" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ height: "120px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+                  <Sparkles className="text-gradient" size={32} />
+                  <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", fontStyle: "italic" }}>Analyzing profile signals...</p>
+                  <div style={{ width: "60%", height: "2px", background: "rgba(255,255,255,0.1)", borderRadius: "1px", overflow: "hidden" }}>
+                    <motion.div animate={{ x: ["-100%", "100%"] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} style={{ width: "40%", height: "100%", background: "var(--accent-blue)" }} />
+                  </div>
                 </motion.div>
               )}
+
               {demoStep === 2 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: "var(--spacing-4)", background: "rgba(0,0,0,0.3)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  Scanning company signals...
+                <motion.div key="output" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <p style={{ fontSize: "0.7rem", textTransform: "uppercase", color: "var(--accent-blue)", fontWeight: "700" }}>AuricAI Result</p>
+                    <div style={{ background: "rgba(74, 222, 128, 0.15)", color: "#4ade80", padding: "4px 10px", borderRadius: "100px", fontSize: "0.7rem", fontWeight: "700" }}>
+                      Reply Score: 94/100
+                    </div>
+                  </div>
+                  <div className="glass-panel" style={{ padding: "1rem", background: "var(--bg-elevated)", border: "1px solid var(--border-focus)" }}>
+                    <p style={{ fontSize: "0.9rem", lineHeight: "1.6" }}>"{auricAIDM}"</p>
+                  </div>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <span style={{ fontSize: "0.7rem", background: "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: "4px", color: "var(--text-secondary)" }}>✨ More specific hook</span>
+                    <span style={{ fontSize: "0.7rem", background: "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: "4px", color: "var(--text-secondary)" }}>✨ Shorten intro</span>
+                  </div>
                 </motion.div>
               )}
-              {demoStep === 3 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)", padding: "var(--spacing-4)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  <Sparkles size={16} className="text-gradient" />
-                  <p>Generating personalized opener...</p>
-                </motion.div>
-              )}
-              {demoStep >= 4 && (
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ padding: "var(--spacing-4)", background: "var(--bg-elevated)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-focus)", position: "relative" }}>
-                  <p style={{ fontSize: "0.6875rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent-blue)", fontWeight: "600", marginBottom: "var(--spacing-2)" }}>Generated Opener</p>
-                  <p style={{ fontSize: "0.9375rem", lineHeight: "1.6" }}>
-                    "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
-                  </p>
-                </motion.div>
-              )}
-            </div>
+            </AnimatePresence>
+          </div>
+
+          {/* Comparison Toggle */}
+          <div style={{ marginTop: "auto", background: "rgba(0,0,0,0.3)", padding: "0.75rem 1.5rem", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", fontSize: "0.75rem" }}>
+            <span style={{ color: "#f87171", opacity: 0.6 }}>❌ Generic: "Do you have 15 mins?"</span>
+            <span style={{ color: "#4ade80" }}>✅ AuricAI: Outcome-driven hooks</span>
           </div>
         </motion.div>
       </div>
 
-      <div id="how-it-works" className="container">
-        <HowItWorks />
-        <Features />
-        <Comparison />
+      <div style={{ background: "rgba(255,255,255,0.02)", borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)" }}>
+        <div id="trust" className="container" style={{ padding: "6rem 0", textAlign: "center" }}>
+          <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-secondary)", marginBottom: "3.5rem", fontWeight: "600" }}>
+            Trusted by founders and SDRs at fast-growing companies
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem" }}>
+            <div className="glass-panel" style={{ padding: "2rem", textAlign: "left", borderRadius: "var(--radius-xl)" }}>
+              <p style={{ color: "#4ade80", fontWeight: "700", marginBottom: "0.75rem", fontSize: "1.125rem" }}>"Reply rates tripled in 2 weeks"</p>
+              <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)" }}>Alex R. — Founder @ GrowthFlow</p>
+            </div>
+            <div className="glass-panel" style={{ padding: "2rem", textAlign: "left", borderRadius: "var(--radius-xl)" }}>
+              <p style={{ color: "#4ade80", fontWeight: "700", marginBottom: "0.75rem", fontSize: "1.125rem" }}>"Saved 10+ hours of writing/week"</p>
+              <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)" }}>James L. — Senior SDR</p>
+            </div>
+            <div className="glass-panel" style={{ padding: "2rem", textAlign: "left", borderRadius: "var(--radius-xl)" }}>
+              <p style={{ color: "#4ade80", fontWeight: "700", marginBottom: "0.75rem", fontSize: "1.125rem" }}>"Actually sounds human. 5/5."</p>
+              <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)" }}>Sarah M. — Head of Sales</p>
+            </div>
+          </div>
+          <p style={{ marginTop: "3.5rem", color: "white", fontWeight: "700", fontSize: "1.125rem" }}>
+            Used by <span className="text-gradient">500+ outbound professionals</span>
+          </p>
+        </div>
+      </div>
 
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
-          <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.75rem" }}>
+      <div id="how-it-works" className="container" style={{ padding: "8rem 0" }}>
+        <HowItWorks />
+        <div style={{ marginTop: "10rem" }}>
+          <Features />
+        </div>
+        <div style={{ marginTop: "10rem" }}>
+          <Comparison />
+        </div>
+
+        <section style={{ padding: "10rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center", position: "relative" }}>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05), transparent 70%)", pointerEvents: "none" }} />
+          <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.15em", color: "var(--accent-violet)", fontWeight: "700", marginBottom: "1rem" }}>
             Simple, Scalable Pricing
           </p>
-          <h2 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "3rem" }}>
-            Start free. Scale as your <span className="text-gradient">outbound grows.</span>
+          <h2 style={{ fontSize: "clamp(2.25rem, 6vw, 4rem)", fontWeight: "900", marginBottom: "5rem", letterSpacing: "-0.04em", lineHeight: "1.1" }}>
+            Start free. Scale as your <br /><span className="text-gradient">outbound grows.</span>
           </h2>
           <Pricing />
+          
+          <div style={{ marginTop: "5rem" }}>
+            <Link href="/sign-up" className="glow-button" style={{ padding: "1.375rem 3rem", fontSize: "1.25rem", borderRadius: "var(--radius-full)" }}>
+              Generate My First DM Free <ArrowRight size={24} style={{ marginLeft: "10px" }} />
+            </Link>
+          </div>
         </section>
 
         {/* SEO Content Sections */}
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)" }}>
-          <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "left" }}>
-            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
+        <section style={{ padding: "10rem 0", borderTop: "1px solid var(--border-subtle)" }}>
+          <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
+            <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: "900", marginBottom: "2rem", color: "white", letterSpacing: "-0.03em" }}>
               Best AI LinkedIn Opener Generator
             </h2>
-            <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem" }}>
-              AuricAI is the world's most intelligent <strong>AI LinkedIn opener generator</strong> and <strong>LinkedIn message generator</strong>. Unlike generic templates or automation tools that get your account flagged, AuricAI uses advanced natural language processing to analyze individual LinkedIn profiles. It identify unique career milestones, shared interests, and specific company updates to craft messages through our <strong>LinkedIn DM generator</strong> that feel like they were written after an hour of research. Whether you need a <strong>LinkedIn outreach generator</strong> or a <strong>LinkedIn cold message generator</strong>, AuricAI delivers high-converting results.
+            <p style={{ color: "var(--text-secondary)", fontSize: "1.25rem", lineHeight: "1.8", marginBottom: "2rem" }}>
+              AuricAI helps you write personalized LinkedIn messages that get replies. It uses real profile context to generate relevant, human-sounding outreach in seconds.
             </p>
-
-            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-              How to Write LinkedIn Openers That Get Replies
-            </h2>
-            <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "1.5rem" }}>
-              The secret to high-converting <strong>LinkedIn outreach</strong> isn't in your pitch—it's in your opener. Using an <strong>AI LinkedIn outreach tool</strong> or a <strong>LinkedIn prospecting AI tool</strong> can significantly boost your efficiency. Most professionals ignore 90% of their InMail because it sounds like a template. To increase your reply rates with an <strong>AI tool for LinkedIn prospecting</strong>:
+            <p style={{ color: "white", fontWeight: "700", fontSize: "1.125rem", letterSpacing: "0.02em" }}>
+              Built for SDRs, founders, and teams doing outbound at scale.
             </p>
-            <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
-              <li><strong>Lead with relevance:</strong> Mention a specific achievement from their "About" section for better <strong>personalized LinkedIn outreach</strong>.</li>
-              <li><strong>Keep it short:</strong> Your first message should be under 200 characters.</li>
-              <li><strong>Ask a curiosity question:</strong> Instead of "do you have time?", ask about a specific challenge they might be facing using our <strong>LinkedIn lead generation tool</strong>.</li>
-              <li><strong>Use a natural tone:</strong> Avoid corporate jargon and "SaaS-speak".</li>
-            </ul>
-
-            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-              Examples of High-Converting LinkedIn Messages
-            </h2>
-            <div style={{ display: "grid", gap: "1.5rem" }}>
-              <div className="glass-panel" style={{ padding: "1.5rem" }}>
-                <p style={{ fontSize: "0.875rem", color: "var(--accent-blue)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: Funding Round</p>
-                <p style={{ color: "white", lineHeight: "1.6" }}>"Hey Sarah—congrats on the Series B! Noticed you're scaling the GTM team. Curious if ramping new SDRs is your main focus this quarter?"</p>
-              </div>
-              <div className="glass-panel" style={{ padding: "1.5rem" }}>
-                <p style={{ fontSize: "0.875rem", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: Specific Skillset</p>
-                <p style={{ color: "white", lineHeight: "1.6" }}>"Hi Mark—loved your recent post about product-led growth. Noticed your background in fintech too. Would love to hear how you're thinking about PLG in that space."</p>
-              </div>
-            </div>
           </div>
         </section>
 

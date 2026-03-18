@@ -77,11 +77,11 @@ const PAID_PLANS = [
             glowColor: "rgba(139, 92, 246, 1)",
             shimmerColor: "rgba(139, 92, 246, 0.4)",
             bgTint: "rgba(139, 92, 246, 0.04)",
-            glowBase: 0.25, // Stronger glow
-            glowHover: 0.35,
-            hoverLift: -12, // More lift
-            baseScale: 1.06, // Slightly bigger
-            hoverScale: 1.08,
+            glowBase: 0.3, // Stronger glow
+            glowHover: 0.45,
+            hoverLift: -16, // More lift
+            baseScale: 1.08, // Slightly bigger
+            hoverScale: 1.1,
         }
     },
     {
@@ -363,6 +363,12 @@ export default function Pricing({
                                         Billed monthly
                                     </p>
                                 )}
+                                <p style={{ fontSize: "0.875rem", color: "var(--accent-blue)", fontWeight: "600", marginTop: "8px" }}>
+                                    {plan.name === "Starter" ? "≈ 10–30 replies/month potential" :
+                                     plan.name === "Basic" ? "≈ 30–80 replies/month potential" :
+                                     plan.name === "Growth" ? "≈ 80–200 replies/month potential" :
+                                     "≈ 200–500+ replies/month potential"}
+                                </p>
                             </div>
 
                             <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -447,7 +453,7 @@ export default function Pricing({
                                                 marginTop: "2px",
                                             }}
                                         />
-                                        <span>{feature}</span>
+                                        <span>✔ {feature}</span>
                                     </li>
                                 ))}
                             </ul>
