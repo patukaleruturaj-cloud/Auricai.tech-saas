@@ -6,37 +6,37 @@ import { Search, Sparkles, Send } from "lucide-react";
 const steps = [
     {
         icon: Search,
-        title: "Context Configuration",
-        description: "User provides the raw profile, company, and offer context to the system.",
+        title: "Structured Input",
+        description: "User provides the prospect profile, company context, and value proposition.",
         bullets: [
-            "Structure input from bio & About section",
-            "Integrate user offer & value proposition",
-            "Select from specialized tone profiles",
-            "Convert context into system signals"
+            "Input LinkedIn bio & About details",
+            "Add specific company momentum",
+            "Define your offer or value",
+            "Select from 4 specialized tones"
         ],
         step: "01",
     },
     {
         icon: Sparkles,
-        title: "Reasoning & Logic",
-        description: "The engine evaluates the signal matrix to determine the best angle.",
+        title: "Strategic Selection",
+        description: "The system evaluates the context to select the highest-relevance angle.",
         bullets: [
-            "Interpret role authority markers",
+            "Interpret role & authority markers",
             "Match tone to prospect seniority",
             "Filter generic compliment patterns",
-            "Align offer with identified signals"
+            "Align offer with business signals"
         ],
         step: "02",
     },
     {
         icon: Send,
-        title: "Synthetic Output",
-        description: "The system generates 3 high-relevance variations for 1:1 outreach.",
+        title: "Message Generation",
+        description: "The system produces 3 unique variations for high-relevance outreach.",
         bullets: [
-            "Synthesize context into unique hooks",
+            "Convert context into 1:1 hooks",
             "Avoid automation-flagged patterns",
-            "Bridge the curiosity gap (low friction)",
-            "Finalize message variations"
+            "Create low-friction curiosity gaps",
+            "Produce 3 non-template variations"
         ],
         step: "03",
     },
@@ -173,10 +173,10 @@ export default function HowItWorks() {
                 <h4 style={{ fontSize: "1.25rem", fontWeight: "700", color: "white", marginBottom: "2rem" }}>Opener Score Breakdown</h4>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "2rem" }}>
                     {[
-                        { label: "Tone Alignment", value: "0–100%", desc: "Seniority & industry norm matching" },
-                        { label: "Signal Relevance", value: "0–100%", desc: "Strength of profile context hook" },
-                        { label: "Curiosity Gap", value: "0–100%", desc: "Low-friction question effectiveness" },
-                        { label: "Reply Probability", value: "High/Low", desc: "Historical pattern performance" }
+                        { label: "Tone Matching", value: "0–100%", desc: "Seniority & industry norms alignment" },
+                        { label: "Context Relevance", value: "0–100%", desc: "Strength of identified profile hook" },
+                        { label: "Curiosity Gap", value: "0–100%", desc: "Effectiveness of concluding question" },
+                        { label: "Reply Probability", value: "0–100%", desc: "Historical pattern performance score" }
                     ].map((metric, i) => (
                         <div key={i} style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                             <div style={{ fontSize: "0.875rem", fontWeight: "600", color: "var(--accent-blue)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{metric.label}</div>
