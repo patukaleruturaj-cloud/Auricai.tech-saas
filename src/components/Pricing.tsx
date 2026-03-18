@@ -25,8 +25,8 @@ const PAID_PLANS = [
             glowColor: "rgba(251, 146, 60, 1)",
             shimmerColor: "rgba(251, 146, 60, 0.4)",
             bgTint: "rgba(251, 146, 60, 0.02)",
-            glowBase: 0.1,
-            glowHover: 0.2,
+            glowBase: 0.12,
+            glowHover: 0.20,
             hoverLift: -8,
             baseScale: 1,
             hoverScale: 1.02,
@@ -51,8 +51,8 @@ const PAID_PLANS = [
             glowColor: "rgba(59, 130, 246, 1)",
             shimmerColor: "rgba(59, 130, 246, 0.3)",
             bgTint: "rgba(59, 130, 246, 0.01)",
-            glowBase: 0.1,
-            glowHover: 0.2,
+            glowBase: 0.08,
+            glowHover: 0.15,
             hoverLift: -8,
             baseScale: 1,
             hoverScale: 1.02,
@@ -76,12 +76,12 @@ const PAID_PLANS = [
         theme: {
             glowColor: "rgba(139, 92, 246, 1)",
             shimmerColor: "rgba(139, 92, 246, 0.4)",
-            bgTint: "rgba(139, 92, 246, 0.08)", // More tint for highlight
+            bgTint: "rgba(139, 92, 246, 0.08)", // Slightly different background
             glowBase: 0.3, // Stronger glow
             glowHover: 0.4,
-            hoverLift: -12,
-            baseScale: 1.08, // Larger
-            hoverScale: 1.1,
+            hoverLift: -12, 
+            baseScale: 1.05, // Refined highlight
+            hoverScale: 1.08,
         }
     },
     {
@@ -103,8 +103,8 @@ const PAID_PLANS = [
             glowColor: "rgba(16, 185, 129, 1)",
             shimmerColor: "rgba(16, 185, 129, 0.5)",
             bgTint: "rgba(16, 185, 129, 0.02)",
-            glowBase: 0.1,
-            glowHover: 0.2,
+            glowBase: 0.12,
+            glowHover: 0.20,
             hoverLift: -8,
             baseScale: 1,
             hoverScale: 1.02,
@@ -195,11 +195,12 @@ export default function Pricing({
             <div
                 style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                     gap: "2.5rem",
-                    maxWidth: "1250px",
+                    maxWidth: "1300px",
                     margin: "0 auto",
-                    alignItems: "stretch"
+                    alignItems: "stretch",
+                    justifyContent: "center"
                 }}
             >
                 {PAID_PLANS.map((plan, idx) => {
@@ -234,14 +235,15 @@ export default function Pricing({
                                 position: "relative",
                                 border: plan.popular
                                     ? "2px solid var(--accent-blue)"
-                                    : "1px solid rgba(255,255,255,0.08)",
+                                    : "1px solid rgba(255, 255, 255, 0.06)",
                                 zIndex: plan.popular ? 10 : 1,
                                 borderRadius: "20px",
                                 display: "flex",
                                 flexDirection: "column",
-                                background: `linear-gradient(180deg, rgba(15, 16, 20, 0.95) 0%, ${plan.theme.bgTint} 100%)`,
+                                background: `linear-gradient(180deg, rgba(15, 15, 18, 0.95) 0%, ${plan.theme.bgTint} 100%)`,
                                 willChange: "transform, opacity",
-                                height: "100%"
+                                height: "100%",
+                                boxShadow: "0 10px 40px -10px rgba(0,0,0,0.5)"
                             }}
                         >
                             {/* Glow Layer (Hardware Accelerated & Tier-Based) */}
@@ -372,56 +374,42 @@ export default function Pricing({
                                 <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{plan.usage}</p>
                             </div>
 
-                            {isDashboard ? (
-                                <button
-                                    onClick={() => onPlanSelect?.(plan.planType, isYearly)}
-                                    className="glow-button"
-                                    style={{
-                                        width: "100%",
-                                        textAlign: "center",
-                                        display: "block",
-                                        marginBottom: "2rem",
-                                        background: "var(--accent-blue)",
-                                        border: "none",
-                                        padding: "1rem",
-                                        borderRadius: "12px",
-                                        fontSize: "1rem",
-                                        fontWeight: "600",
-                                        transition: "all 0.2s ease",
-                                        cursor: "pointer"
-                                    }}
-                                >
-                                    Start generating better DMs
-                                </button>
-                            ) : (
-                                <Link
-                                    href="/sign-up"
-                                    className="glow-button"
-                                    style={{
-                                        width: "100%",
-                                        textAlign: "center",
-                                        display: "block",
-                                        marginBottom: "2rem",
-                                        background: "var(--accent-blue)",
-                                        border: "none",
-                                        padding: "1rem",
-                                        borderRadius: "12px",
-                                        fontSize: "1rem",
-                                        fontWeight: "600",
-                                        transition: "all 0.2s ease"
-                                    }}
-                                >
-                                    Start generating better DMs
-                                </Link>
-                            )}
+                            <button
+                                onClick={() => {
+                                    if (isDashboard) {
+                                        onPlanSelect?.(plan.planType, isYearly);
+                                    } else {
+                                        window.location.href = "/sign-up";
+                                    }
+                                }}
+                                className="glow-button"
+                                style={{
+                                    width: "100%",
+                                    textAlign: "center",
+                                    display: "block",
+                                    marginBottom: "2rem",
+                                    background: "var(--accent-blue)",
+                                    border: "none",
+                                    padding: "1rem",
+                                    borderRadius: "12px",
+                                    fontSize: "1rem",
+                                    fontWeight: "600",
+                                    transition: "all 0.2s ease",
+                                    cursor: "pointer",
+                                    color: "white"
+                                }}
+                            >
+                                Start generating better DMs
+                            </button>
 
                             <ul
                                 style={{
                                     listStyle: "none",
                                     display: "flex",
                                     flexDirection: "column",
-                                    gap: "0.875rem",
+                                    gap: "1rem",
                                     marginTop: "auto",
+                                    padding: 0
                                 }}
                             >
                                 {plan.features.map((feature, i) => (
@@ -440,13 +428,13 @@ export default function Pricing({
                                             width: "20px",
                                             height: "20px",
                                             borderRadius: "50%",
-                                            background: "rgba(74, 222, 128, 0.1)",
+                                            background: "rgba(59, 130, 246, 0.15)",
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center",
-                                            border: "1px solid rgba(74, 222, 128, 0.2)"
+                                            border: "1px solid rgba(59, 130, 246, 0.2)"
                                         }}>
-                                            <Check size={12} color="#4ade80" />
+                                            <Check size={12} color="var(--accent-blue)" />
                                         </div>
                                         <span>{feature}</span>
                                     </li>
