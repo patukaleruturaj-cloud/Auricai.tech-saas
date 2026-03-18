@@ -6,37 +6,37 @@ import { Search, Sparkles, Send } from "lucide-react";
 const steps = [
     {
         icon: Search,
-        title: "Signal Mapping",
-        description: "Analyze profile data points to establish a high-relevance connection.",
+        title: "Context Configuration",
+        description: "User provides the raw profile, company, and offer context to the system.",
         bullets: [
-            "Extract prospect role and tenure",
-            "Map company growth signals",
-            "Identify career milestones",
-            "Cross-reference industry context"
+            "Structure input from bio & About section",
+            "Integrate user offer & value proposition",
+            "Select from specialized tone profiles",
+            "Convert context into system signals"
         ],
         step: "01",
     },
     {
         icon: Sparkles,
         title: "Reasoning & Logic",
-        description: "The system evaluates multiple angles to select the highest-converting approach.",
+        description: "The engine evaluates the signal matrix to determine the best angle.",
         bullets: [
-            "Neutralize generic patterns",
-            "Match tone to target seniority",
-            "Select optimal conversion hook",
-            "Validate business alignment"
+            "Interpret role authority markers",
+            "Match tone to prospect seniority",
+            "Filter generic compliment patterns",
+            "Align offer with identified signals"
         ],
         step: "02",
     },
     {
         icon: Send,
-        title: "Output Generation",
-        description: "Convert logical signals into a personalized, non-template message.",
+        title: "Synthetic Output",
+        description: "The system generates 3 high-relevance variations for 1:1 outreach.",
         bullets: [
-            "Synthesize data into 1:1 outreach",
-            "Avoid flagged automation keywords",
-            "Finalize low-friction curiosity gap",
-            "Generate 3 unique variations"
+            "Synthesize context into unique hooks",
+            "Avoid automation-flagged patterns",
+            "Bridge the curiosity gap (low friction)",
+            "Finalize message variations"
         ],
         step: "03",
     },
