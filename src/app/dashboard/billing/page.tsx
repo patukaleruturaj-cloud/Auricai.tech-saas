@@ -77,30 +77,42 @@ const ADDON_THEMES = [
     },
 ];
 
-const PLAN_THEMES: Record<string, { glow: string; glowHover: string; border: string; accent: string }> = {
+const PLAN_THEMES: Record<string, { glow: string; glowHover: string; border: string; accent: string; baseScale: number; hoverScale: number; hoverLift: number }> = {
     starter: {
         glow: "rgba(251, 146, 60, 0.2)",
         glowHover: "rgba(251, 146, 60, 0.45)",
         border: "rgba(251, 146, 60, 0.15)",
         accent: "#fb923c",
+        baseScale: 1,
+        hoverScale: 1,
+        hoverLift: -6,
     },
     basic: {
         glow: "rgba(59, 130, 246, 0.2)",
         glowHover: "rgba(59, 130, 246, 0.45)",
         border: "rgba(59, 130, 246, 0.15)",
         accent: "#60a5fa",
+        baseScale: 1,
+        hoverScale: 1,
+        hoverLift: -6,
     },
     growth: {
-        glow: "rgba(168, 85, 247, 0.25)",
-        glowHover: "rgba(168, 85, 247, 0.55)",
-        border: "rgba(168, 85, 247, 0.2)",
+        glow: "rgba(168, 85, 247, 0.35)",
+        glowHover: "rgba(168, 85, 247, 0.65)",
+        border: "rgba(168, 85, 247, 0.3)",
         accent: "#a855f7",
+        baseScale: 1.05,
+        hoverScale: 1.08,
+        hoverLift: -12,
     },
     pro: {
-        glow: "rgba(250, 204, 21, 0.2)",
-        glowHover: "rgba(250, 204, 21, 0.45)",
-        border: "rgba(250, 204, 21, 0.15)",
-        accent: "#facc15",
+        glow: "rgba(16, 185, 129, 0.2)",
+        glowHover: "rgba(16, 185, 129, 0.45)",
+        border: "rgba(16, 185, 129, 0.15)",
+        accent: "#10b981",
+        baseScale: 1,
+        hoverScale: 1,
+        hoverLift: -6,
     },
 };
 
@@ -117,7 +129,7 @@ const UPGRADE_PLANS = [
         features: [
             "Personalized messages based on real profile signals",
             "Stronger, more relevant openers that feel human",
-            "Multiple message angles to test what works",
+            "3 strategic opener variations",
             "Standard processing",
         ],
         buttonLabel: "Start generating better DMs",
@@ -132,9 +144,9 @@ const UPGRADE_PLANS = [
         usage: "~10–20 DMs/day",
         msgs: plans.basic.credits,
         features: [
-            "Personalized messages based on real profile signals",
-            "Stronger, more relevant openers that feel human",
-            "Multiple message angles to test what works",
+            "Better context understanding for more relevant messages",
+            "Personalized messages based on profile signals",
+            "3 strategic opener variations",
             "Standard processing",
         ],
         buttonLabel: "Start generating better DMs",
@@ -149,12 +161,12 @@ const UPGRADE_PLANS = [
         usage: "~30–50 DMs/day",
         msgs: plans.growth.credits,
         features: [
-            "Personalized messages based on real profile signals",
-            "Stronger, more relevant openers that feel human",
-            "Multiple message angles to test what works",
-            "Reply Rate Optimization",
+            "Optimized for higher reply rates",
+            "Smarter message angles based on prospect signals",
+            "More natural, human-like message generation",
+            "Best for scaling outbound without losing quality",
             "Smart Prospect Memory",
-            "Priority processing",
+            "Priority support",
         ],
         popular: true,
         buttonLabel: "Start generating better DMs",
@@ -169,11 +181,11 @@ const UPGRADE_PLANS = [
         usage: "50+ DMs/day",
         msgs: plans.pro.credits,
         features: [
-            "Personalized messages based on real profile signals",
-            "Stronger, more relevant openers that feel human",
-            "Multiple message angles to test what works",
-            "Advanced Signal-Based Personalization",
+            "Highest-quality message generation",
+            "Deep personalization based on multiple signals",
+            "Best for teams running high-volume outbound",
             "Highest priority processing",
+            "Highest priority support",
         ],
         buttonLabel: "Start generating better DMs",
     },
@@ -875,7 +887,9 @@ export default function BillingPage() {
                             <motion.div
                                 key={plan.slug}
                                 variants={fadeInUp}
-                                whileHover={{ y: -6 }}
+                                whileHover={{ y: theme.hoverLift, scale: theme.hoverScale }}
+                                initial={{ scale: theme.baseScale }}
+                                animate={{ scale: theme.baseScale }}
                                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
                                 onHoverStart={() => setHoveredPlan(plan.slug)}
                                 onHoverEnd={() => setHoveredPlan(null)}
