@@ -63,7 +63,7 @@ export async function ensureUserProvisioned(
     if (existing?.id) {
         // Ensure wallet + subscription exist
         await supabaseAdmin.from("wallet").upsert(
-            { user_id: existing.id, monthly_limit: 5, credits_remaining: 5, addon_credits: 0 },
+            { user_id: existing.id, monthly_limit: 3, credits_remaining: 3, addon_credits: 0 },
             { onConflict: "user_id", ignoreDuplicates: true }
         );
         await supabaseAdmin.from("subscriptions_v2").upsert(
@@ -89,8 +89,8 @@ export async function ensureUserProvisioned(
 
     await supabaseAdmin.from("wallet").insert({
         user_id: profileId,
-        monthly_limit: 5,
-        credits_remaining: 5,
+        monthly_limit: 3,
+        credits_remaining: 3,
         addon_credits: 0,
     });
 
@@ -103,8 +103,8 @@ export async function ensureUserProvisioned(
 
     await supabaseAdmin.from("credit_transactions").insert({
         user_id: profileId,
-        amount: 5,
-        balance_after: 5,
+        amount: 3,
+        balance_after: 3,
         type: "credit",
         reason: "initial free credits",
     });
@@ -133,8 +133,8 @@ export async function getWallet(clerkId: string): Promise<Wallet | null> {
 
     return {
         user_id: wallet.user_id,
-        monthly_limit: wallet.monthly_limit ?? 5,
-        credits_remaining: wallet.credits_remaining ?? 5,
+        monthly_limit: wallet.monthly_limit ?? 3,
+        credits_remaining: wallet.credits_remaining ?? 3,
         addon_credits: wallet.addon_credits ?? 0,
         last_reset_at: wallet.last_reset_at ?? null,
         next_reset_at: wallet.next_reset_at ?? null,

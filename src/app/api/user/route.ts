@@ -49,7 +49,7 @@ export async function GET() {
         // fall back to PLAN_LIMITS from plans.ts only as a safety net
         const monthlyLimit = wallet.monthly_limit > 0
             ? wallet.monthly_limit
-            : (PLAN_LIMITS[plan as keyof typeof PLAN_LIMITS] ?? 5);
+            : (PLAN_LIMITS[plan as keyof typeof PLAN_LIMITS] ?? 3);
         const creditsUsed = Math.max(0, monthlyLimit - wallet.credits_remaining);
 
         return NextResponse.json({

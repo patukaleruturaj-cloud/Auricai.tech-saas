@@ -53,7 +53,7 @@ AS $_$
 DECLARE
     v_profile_id UUID;
     v_safe_email TEXT;
-    v_default_credits INTEGER := 5; 
+    v_default_credits INTEGER := 3; 
 BEGIN
     v_safe_email := COALESCE(p_email, 'user_' || p_clerk_id || '@generated.com');
     SELECT id INTO v_profile_id FROM public.profiles WHERE clerk_id = p_clerk_id;
@@ -83,7 +83,7 @@ SECURITY DEFINER
 AS $_$
 DECLARE
     v_next_reset TIMESTAMPTZ := NOW() + INTERVAL '30 days';
-    v_monthly_limit INTEGER := 5;
+    v_monthly_limit INTEGER := 3;
 BEGIN
     UPDATE public.subscriptions_v2
     SET plan_type = 'free',
@@ -104,11 +104,11 @@ BEGIN
     WHERE user_id = p_user_id;
 
     INSERT INTO public.credit_transactions (user_id, amount, balance_after, type, reason)
-    VALUES (p_user_id, v_monthly_limit, v_monthly_limit, 'grant', 'downgraded to free plan (5 credits)');
+    VALUES (p_user_id, v_monthly_limit, v_monthly_limit, 'grant', 'downgraded to free plan (3 credits)');
 END;
 $_$;
 
 -- 3. UPDATE DEFAULTS
-UPDATE public.plans SET credits_per_month = 5 WHERE name = 'free';
-ALTER TABLE public.wallet ALTER COLUMN monthly_limit SET DEFAULT 5;
-ALTER TABLE public.wallet ALTER COLUMN credits_remaining SET DEFAULT 5;
+UPDATE public.plans SET credits_per_month = 3 WHERE name = 'free';
+ALTER TABLE public.wallet ALTER COLUMN monthly_limit SET DEFAULT 3;
+ALTER TABLE public.wallet ALTER COLUMN credits_remaining SET DEFAULT 3;

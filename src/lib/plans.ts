@@ -32,7 +32,7 @@ export const plans = {
 };
 
 export const PLAN_LIMITS: Record<PlanType, number> = {
-    free: 5,
+    free: 3,
     starter: plans.starter.credits,
     basic: plans.basic.credits,
     growth: plans.growth.credits,
