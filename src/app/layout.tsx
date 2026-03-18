@@ -15,9 +15,6 @@ export const metadata: Metadata = {
   keywords: ["AI LinkedIn opener generator", "LinkedIn opener generator", "LinkedIn message generator", "LinkedIn DM generator", "AI LinkedIn outreach tool", "LinkedIn outreach AI", "LinkedIn cold message generator", "personalized LinkedIn outreach", "LinkedIn prospecting AI", "LinkedIn lead generation tool", "AI sales outreach tool", "LinkedIn prospecting tool", "B2B LinkedIn outreach", "AI prospecting tool", "LinkedIn outreach generator"],
   authors: [{ name: "AuricAI Team" }],
   metadataBase: new URL("https://auricai.tech"),
-  alternates: {
-    canonical: "https://auricai.tech",
-  },
   openGraph: {
     title: "AI LinkedIn Opener Generator | AuricAI",
     description: "Personalized LinkedIn outreach at scale. Generate opening messages that actually get replies.",

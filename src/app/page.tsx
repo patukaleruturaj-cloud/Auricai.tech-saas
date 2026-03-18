@@ -12,6 +12,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "AI LinkedIn Opener Generator | Personalized LinkedIn Outreach | AuricAI",
+  description: "Generate hyper-personalized LinkedIn openers in seconds using AI. Increase reply rates and book more meetings with AuricAI's intelligent LinkedIn outreach generator.",
+  alternates: {
+    canonical: "https://auricai.tech",
+  },
+};
 
 export default function Home() {
   const [demoStep, setDemoStep] = useState(0);

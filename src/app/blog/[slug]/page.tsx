@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         title: `${title} | AuricAI Blog`,
         description: `Read about ${title.toLowerCase()} and how to improve your LinkedIn outreach results with AuricAI.`,
         alternates: {
-            canonical: `/blog/${params.slug}`,
+            canonical: `https://auricai.tech/blog/${params.slug}`,
         }
     };
 }
