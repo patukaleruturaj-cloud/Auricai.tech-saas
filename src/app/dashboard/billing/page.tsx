@@ -111,7 +111,7 @@ const UPGRADE_PLANS = [
         description: "Get started with better replies",
         priceMonthly: plans.starter.price_monthly,
         priceYearly: plans.starter.price_yearly / 12,
-        valueLine: "150 credits (~150 personalized LinkedIn openers)",
+        valueLine: "150 credits (~150 generations)",
         usage: "Perfect for sending ~5–10 DMs/day",
         msgs: plans.starter.credits,
         features: [
@@ -128,7 +128,7 @@ const UPGRADE_PLANS = [
         description: "Consistent outreach, better conversations",
         priceMonthly: plans.basic.price_monthly,
         priceYearly: plans.basic.price_yearly / 12,
-        valueLine: "400 credits (~400 personalized LinkedIn openers)",
+        valueLine: "400 credits (~400 generations)",
         usage: "~10–20 DMs/day",
         msgs: plans.basic.credits,
         features: [
@@ -145,7 +145,7 @@ const UPGRADE_PLANS = [
         description: "Scale outbound without losing personalization",
         priceMonthly: plans.growth.price_monthly,
         priceYearly: plans.growth.price_yearly / 12,
-        valueLine: "1,200 credits (~1,200 personalized LinkedIn openers)",
+        valueLine: "1,200 credits (~1,200 generations)",
         usage: "~30–50 DMs/day",
         msgs: plans.growth.credits,
         features: [
@@ -165,7 +165,7 @@ const UPGRADE_PLANS = [
         description: "High-volume outreach with premium quality",
         priceMonthly: plans.pro.price_monthly,
         priceYearly: plans.pro.price_yearly / 12,
-        valueLine: "3,000 credits (~3,000 personalized LinkedIn openers)",
+        valueLine: "3,000 credits (~3,000 generations)",
         usage: "50+ DMs/day",
         msgs: plans.pro.credits,
         features: [
@@ -812,8 +812,8 @@ export default function BillingPage() {
                     <p style={{ color: "var(--text-secondary)", fontSize: "1.125rem", marginBottom: "0.5rem" }}>
                         Write highly personalized openers in seconds — without sounding templated.
                     </p>
-                    <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "4px 12px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                        💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit</span> = 1 personalized opener
+                    <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "6px 16px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                        💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit = 1 generation</span> (3 personalized opener variations + follow-up message)
                     </div>
                 </div>
                 <div className="billing-section-header">

@@ -11,7 +11,7 @@ const PAID_PLANS = [
         planType: "starter",
         description: "Get started with better replies",
         monthlyPrice: 15,
-        valueLine: "150 credits (~150 personalized LinkedIn openers/month)",
+        valueLine: "150 credits (~150 generations/month)",
         usage: "Perfect for sending ~5–10 DMs/day",
         msgs: 150,
         features: [
@@ -37,7 +37,7 @@ const PAID_PLANS = [
         planType: "basic",
         description: "Consistent outreach, better conversations",
         monthlyPrice: 29,
-        valueLine: "400 credits (~400 personalized LinkedIn openers/month)",
+        valueLine: "400 credits (~400 generations/month)",
         usage: "~10–20 DMs/day",
         msgs: 400,
         features: [
@@ -63,7 +63,7 @@ const PAID_PLANS = [
         planType: "growth",
         description: "Scale outbound without losing personalization",
         monthlyPrice: 49,
-        valueLine: "1,200 credits (~1,200 personalized LinkedIn openers/month)",
+        valueLine: "1,200 credits (~1,200 generations/month)",
         usage: "~30–50 DMs/day",
         msgs: 1200,
         features: [
@@ -92,7 +92,7 @@ const PAID_PLANS = [
         planType: "pro",
         description: "High-volume outreach with premium quality",
         monthlyPrice: 69,
-        valueLine: "3,000 credits (~3,000 personalized LinkedIn openers/month)",
+        valueLine: "3,000 credits (~3,000 generations/month)",
         usage: "50+ DMs/day",
         msgs: 3000,
         features: [
@@ -134,8 +134,8 @@ export default function Pricing({
                 <p style={{ color: "var(--text-secondary)", fontSize: "1.125rem", marginBottom: "0.5rem" }}>
                     Write highly personalized openers in seconds — without sounding templated.
                 </p>
-                <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "4px 12px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "2rem", border: "1px solid rgba(255,255,255,0.1)" }}>
-                    💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit</span> = 1 personalized opener
+                <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "6px 16px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "2rem", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit = 1 generation</span> (3 personalized opener variations + follow-up message)
                 </div>
                 {/* Billing Toggle */}
                 <div
