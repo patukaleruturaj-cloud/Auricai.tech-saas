@@ -14,20 +14,19 @@ import { Sparkles, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 // Metadata moved to page.tsx
 export default function Home() {
-  const [demoStep, setDemoStep] = useState(0); // 0: Prospect, 1: Generating, 2: Output
+  const [demoStep, setDemoStep] = useState(0); // 0: Analyzing, 1: Output
 
   const prospect = {
     name: "Sarah Jenkins",
-    role: "VP of Sales",
-    company: "TechCorp"
+    role: "VP Sales @ TechCorp"
   };
 
-  const outputMessage = "Hi Sarah — noticed TechCorp's recent focus on scaling the GTM team. Curious if ramping new SDRs while maintaining personalization is a priority for you this quarter?";
+  const outputMessage = "Hey Sarah — saw TechCorp expanding the sales team. Curious if outbound personalization is something you're exploring this quarter?";
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDemoStep((prev) => (prev + 1) % 3);
-    }, 4000); // 4s cycle
+      setDemoStep((prev) => (prev + 1) % 2);
+    }, 4500); // 4.5s cycle for readability
     return () => clearInterval(timer);
   }, []);
 
@@ -89,7 +88,7 @@ export default function Home() {
         }
       `}} />
       {/* Hero Section */}
-      <div className="container hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: "6rem", alignItems: "center", minHeight: "85vh", padding: "6rem 0" }}>
+      <div className="container hero-grid" style={{ display: "grid", gridTemplateColumns: "0.8fr 1.2fr", gap: "6rem", alignItems: "center", minHeight: "85vh", padding: "8rem 0" }}>
         {/* Left Copy */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -126,10 +125,20 @@ export default function Home() {
           </span>
         </motion.div>
 
-        {/* Right Demo Animation (Product-Driven) */}
-        <div style={{ position: "relative" }}>
-          {/* Enhanced Visual Depth Glow */}
-          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "120%", height: "120%", background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.12), transparent 70%)", pointerEvents: "none", zIndex: -1 }}></div>
+        {/* Right Demo Animation (SaaS UI Card) */}
+        <div style={{ position: "relative", width: "100%" }}>
+          {/* Background Glow */}
+          <div style={{ 
+            position: "absolute", 
+            top: "50%", 
+            left: "50%", 
+            transform: "translate(-50%, -50%)", 
+            width: "140%", 
+            height: "140%", 
+            background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent 70%)", 
+            pointerEvents: "none", 
+            zIndex: -1 
+          }}></div>
           
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -142,76 +151,71 @@ export default function Home() {
               flexDirection: "column",
               position: "relative",
               overflow: "hidden",
-              boxShadow: "0 40px 100px -20px rgba(0, 0, 0, 0.6)",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              background: "rgba(10, 11, 15, 0.95)",
+              borderRadius: "24px",
+              boxShadow: "0 50px 100px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)",
+              background: "rgba(10, 11, 15, 0.98)",
+              minHeight: "400px"
             }}
           >
-            {/* macOS Window Header */}
-            <div style={{ height: "32px", background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", padding: "0 14px", gap: "8px" }}>
-              <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#ff5f56", opacity: 0.8 }} />
-              <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#ffbd2e", opacity: 0.8 }} />
-              <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#27c93f", opacity: 0.8 }} />
+            {/* macOS Style Header */}
+            <div style={{ height: "40px", background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", padding: "0 18px", gap: "10px" }}>
+              <div style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: "#ff5f56", opacity: 0.7 }} />
+              <div style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: "#ffbd2e", opacity: 0.7 }} />
+              <div style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: "#27c93f", opacity: 0.7 }} />
             </div>
 
-            <div style={{ padding: "2.5rem", display: "flex", flexDirection: "column", gap: "2rem", minHeight: "360px" }}>
-              {/* Prospect Card Section */}
-              <motion.div 
-                animate={{ opacity: demoStep >= 0 ? 1 : 0.4 }}
-                transition={{ duration: 0.3 }}
-                style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: "1.5rem" }}
-              >
-                <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-secondary)", letterSpacing: "0.08em", fontWeight: "600", marginBottom: "0.75rem" }}>Detected Prospect</p>
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: "linear-gradient(135deg, #1e293b, #0f172a)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.1)" }}>
-                    <Image src="/logo.png" alt="AuricAI" width={28} height={28} style={{ filter: "invert(1)" }} />
-                  </div>
-                  <div>
-                    <p style={{ fontSize: "1.125rem", fontWeight: "700", color: "white" }}>{prospect.name}</p>
-                    <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{prospect.role} @ {prospect.company}</p>
-                  </div>
+            <div style={{ padding: "3rem", display: "flex", flexDirection: "column", gap: "2.5rem", height: "100%" }}>
+              {/* Top: Prospect Info */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                  <h3 style={{ fontSize: "1.5rem", fontWeight: "700", color: "white" }}>{prospect.name}</h3>
+                  <p style={{ fontSize: "1rem", color: "var(--text-secondary)" }}>{prospect.role}</p>
                 </div>
-              </motion.div>
+                
+                {/* Reply Score (Conditional Visibility) */}
+                <div style={{ 
+                  textAlign: "right",
+                  opacity: demoStep === 1 ? 1 : 0,
+                  transform: demoStep === 1 ? "translateY(0)" : "translateY(-10px)",
+                  transition: "all 0.3s ease"
+                }}>
+                  <p style={{ fontSize: "1.5rem", fontWeight: "800", color: "#4ade80", lineHeight: "1" }}>82</p>
+                  <p style={{ fontSize: "0.75rem", fontWeight: "600", color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em", marginTop: "2px" }}>Reply Score</p>
+                  <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.3)" }}>Based on message clarity</p>
+                </div>
+              </div>
 
-              {/* Generating / Output Section */}
-              <div style={{ position: "relative", minHeight: "140px" }}>
-                {demoStep === 1 && (
-                  <motion.div 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem" }}
-                  >
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      style={{ width: "20px", height: "20px", border: "2px solid rgba(59, 130, 246, 0.2)", borderTopColor: "var(--accent-blue)", borderRadius: "50%" }}
-                    />
-                    <p style={{ fontSize: "1rem", color: "var(--text-secondary)", fontStyle: "italic" }}>Generating opener...</p>
-                  </motion.div>
-                )}
+              {/* Middle: State Label */}
+              <div style={{ minHeight: "24px" }}>
+                <motion.p
+                  key={demoStep}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ fontSize: "0.9rem", color: "var(--accent-blue)", fontWeight: "600", letterSpacing: "0.02em" }}
+                >
+                  {demoStep === 0 ? "Analyzing context..." : "Personalized Output Ready"}
+                </motion.p>
+              </div>
 
-                {demoStep === 2 && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }} 
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
-                  >
-                    <div className="glass-panel" style={{ padding: "1.5rem", background: "rgba(59, 130, 246, 0.03)", border: "1px solid rgba(59, 130, 246, 0.2)", borderRadius: "14px", position: "relative", minHeight: "120px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                      <div style={{ position: "absolute", top: "1rem", right: "1.25rem", textAlign: "right" }}>
-                        <p style={{ fontSize: "1.125rem", fontWeight: "800", color: "#4ade80", lineHeight: "1" }}>82</p>
-                        <p style={{ fontSize: "0.65rem", color: "var(--text-secondary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.02em" }}>Reply Score</p>
-                        <p style={{ fontSize: "0.6rem", color: "rgba(255,255,255,0.3)", marginTop: "2px" }}>Based on relevance</p>
-                      </div>
-                      <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--accent-blue)", fontWeight: "700", marginBottom: "1rem", letterSpacing: "0.05em" }}>Personalized Output</p>
-                      <p style={{ fontSize: "1rem", lineHeight: "1.6", color: "rgba(255,255,255,0.9)", maxWidth: "80%" }}>
-                        "{outputMessage}"
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
+              {/* Bottom: Message Box */}
+              <div style={{ marginTop: "auto" }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: demoStep === 1 ? 1 : 0.05, y: demoStep === 1 ? 0 : 10 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ 
+                    padding: "2rem", 
+                    background: "rgba(255,255,255,0.02)", 
+                    border: "1px solid rgba(255,255,255,0.08)", 
+                    borderRadius: "16px",
+                    boxShadow: demoStep === 1 ? "0 20px 40px rgba(0,0,0,0.4)" : "none"
+                  }}
+                >
+                  <p style={{ fontSize: "1.125rem", lineHeight: "1.6", color: "rgba(255,255,255,0.9)", fontWeight: "400" }}>
+                    {demoStep === 1 ? `"${outputMessage}"` : "Calculating high-relevance opening line..."}
+                  </p>
+                </motion.div>
               </div>
             </div>
           </motion.div>
