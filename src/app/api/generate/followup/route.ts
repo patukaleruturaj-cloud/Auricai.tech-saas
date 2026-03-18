@@ -107,7 +107,40 @@ OUTPUT FORMAT (STRICT JSON):
   ]
 }
 
-Return ONLY valid JSON.`;
+Return ONLY valid JSON.
+
+---
+
+CONDITIONAL QUALITY CHECK (SMART REWRITE SYSTEM):
+
+Before finalizing the output, evaluate the message quality internally.
+
+Check for the following:
+
+- Does it sound generic or reusable?
+- Does it feel too clean, structured, or AI-like?
+- Is there any unnecessary filler or weak phrasing?
+- Does it lack a clear, specific situation?
+- Does it feel like something many people could receive unchanged?
+
+IF NONE of the above issues are present:
+→ Return the message as-is (DO NOT rewrite)
+
+IF ANY issue is present:
+→ Rewrite the message ONCE to improve:
+   - natural human tone
+   - specificity
+   - variation in phrasing
+   - realism and flow
+
+IMPORTANT RULES:
+- Do NOT rewrite more than once
+- Do NOT over-polish during rewrite
+- Keep the message natural and slightly imperfect
+- Maintain original intent and context
+
+GOAL:
+Only rewrite when necessary, not by default.`;
 
         const userPrompt = `Prospect Bio: ${bio.substring(0, 1000)}
 Company Description: ${company || "Not provided"}
