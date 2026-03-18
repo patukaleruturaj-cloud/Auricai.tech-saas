@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 export default function B2BLinkedInLeadGeneration() {
   return (
     <SEOLandingPage
-      subheadline="B2B Growth Engine"
-      headline="Turn LinkedIn Into a Consistent Source of B2B Leads"
-      description="Generate qualified conversations and book more meetings using AI-powered personalized outreach."
+      subheadline="Your Pipeline on Autopilot"
+      headline="B2B LinkedIn Lead Generation"
+      description="Turn LinkedIn into a consistent revenue engine. AuricAI helps B2B sales teams find, research, and book meetings with their ideal prospects using intelligent, personalized outreach."
       ctaText="Start Generating Leads"
       supportingLine="More replies → More calls → More deals."
       problemSolution={{

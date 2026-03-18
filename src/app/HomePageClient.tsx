@@ -87,7 +87,7 @@ export default function Home() {
             </span>
           </h1>
           <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", maxWidth: "540px", lineHeight: "1.6" }}>
-            Identify career milestones, shared interests, and company signals to craft LinkedIn openers that get real replies. Built for SDRs, founders, and high-growth outbound teams.
+            Write personalized LinkedIn openers in seconds. No templates. No generic outreach. Just results.
           </p>
 
           <div className="hero-cta-group" style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>

@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 export default function LinkedInColdMessageGenerator() {
   return (
     <SEOLandingPage
-      subheadline="Cold Outreach Reimagined"
-      headline="Send Cold LinkedIn Messages That Don’t Feel Cold"
-      description="Turn cold outreach into real conversations. Create personalized DMs that get noticed, opened, and replied to."
-      ctaText="Create Your Cold Message"
-      supportingLine="Built for real conversations — not spam."
+      subheadline="Scale Your Outbound Revenue"
+      headline="LinkedIn Cold Message Generator"
+      description="Scalable outbound doesn't have to be spammy. Generate cold messages that feel 1:1 using our intelligent LinkedIn cold message generator, built for SDRs and founders."
+      ctaText="Generate Cold Messages Free"
+      supportingLine="More replies → More calls → More deals."
       problemSolution={{
         problem: "Most cold outreach is treated as a numbers game. You send 1,000 messages, hope for 10 replies, and end up burning through your TAM and getting your account restricted.",
         solution: "AuricAI flips the script by automating the research, not just the message. We help you send fewer messages with much higher impact, focusing on quality and relevance."

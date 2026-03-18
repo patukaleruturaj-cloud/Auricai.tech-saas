@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 export default function LinkedInPersonalizationTool() {
   return (
     <SEOLandingPage
-      subheadline="Hyper Personalization"
-      headline="Deep Personalization for LinkedIn That Actually Works"
-      description="Go beyond basic templates. Create messages tailored to every prospect’s profile, content, and context."
+      subheadline="The End of Generic Templates"
+      headline="LinkedIn Personalization Tool"
+      description="Stop guessing what to say. Our LinkedIn personalization tool performs deep research on your prospects to find the specific details that build trust and drive high-value conversations."
       ctaText="Personalize Your Messages"
       supportingLine="Because generic outreach is dead."
       problemSolution={{

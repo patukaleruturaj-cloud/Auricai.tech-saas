@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 export default function LinkedInOpenerGenerator() {
   return (
     <SEOLandingPage
-      subheadline="AI Powered Openers"
-      headline="Write LinkedIn Openers That Actually Get Replies"
-      description="Stop getting ignored. Generate hyper-personalized first messages in seconds using AI trained for real outreach."
+      subheadline="Break the Ice with AI"
+      headline="AI LinkedIn Opener Generator"
+      description="Tired of being left on read? Our AI LinkedIn opener generator crafts personalized, high-converting first messages that break the ice and start real conversations based on deep profile research."
       ctaText="Generate Your First Message Now"
       supportingLine="No templates. No guesswork. Just messages that feel human."
       problemSolution={{
