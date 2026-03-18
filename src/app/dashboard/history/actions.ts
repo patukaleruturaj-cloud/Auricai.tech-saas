@@ -23,3 +23,26 @@ export async function deleteGeneration(id: string) {
 
     return { success: true };
 }
+
+export async function updateGenerationStatus(id: string, status: string) {
+    const session = await auth();
+    if (!session.userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const { error } = await supabaseAdmin
+        .from("generations")
+        .update({ 
+            status, 
+            status_updated_at: new Date().toISOString() 
+        })
+        .eq("id", id)
+        .eq("user_id", session.userId);
+
+    if (error) {
+        console.error("[history_action] update status error:", error);
+        throw new Error("Failed to update generation status");
+    }
+
+    return { success: true };
+}

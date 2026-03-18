@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { MessageSquare, Clock, Search, Trash2 } from "lucide-react";
+import { MessageSquare, Clock, Search, Trash2, ChevronDown, Check } from "lucide-react";
 import { CopyButton } from "@/components/CopyButton";
-import { deleteGeneration } from "./actions";
+import { deleteGeneration, updateGenerationStatus } from "./actions";
 
 // Define the type based on the select query
 type GenerationItem = {
@@ -17,11 +17,150 @@ type GenerationItem = {
     } | null;
     subject: string | null;
     follow_up: string | null;
+    status?: string | null;
     created_at: string;
 };
 
 interface HistoryClientProps {
     initialHistory: GenerationItem[];
+}
+
+const STATUS_OPTIONS = [
+    { value: "not_sent", label: "Not Sent" },
+    { value: "sent", label: "Sent" },
+    { value: "responded", label: "Responded" },
+    { value: "no_response", label: "No Response" },
+];
+
+function StatusDropdown({
+    generationId,
+    currentStatus,
+    onStatusChange
+}: {
+    generationId: string;
+    currentStatus: string;
+    onStatusChange: (id: string, newStatus: string) => void;
+}) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isPending, setIsPending] = useState(false);
+    
+    const activeOption = STATUS_OPTIONS.find(o => o.value === currentStatus) || STATUS_OPTIONS[0];
+
+    const handleSelect = async (newStatus: string) => {
+        if (newStatus === currentStatus) {
+            setIsOpen(false);
+            return;
+        }
+        
+        setIsPending(true);
+        setIsOpen(false);
+        // Optimistic update
+        onStatusChange(generationId, newStatus);
+        
+        try {
+            await updateGenerationStatus(generationId, newStatus);
+        } catch (error) {
+            console.error("Failed to update status", error);
+            // Revert on error
+            onStatusChange(generationId, currentStatus);
+        } finally {
+            setIsPending(false);
+        }
+    };
+
+    return (
+        <div style={{ position: "relative" }}>
+            <button
+                disabled={isPending}
+                onClick={() => setIsOpen(!isOpen)}
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    padding: "6px 12px",
+                    background: "rgba(255, 255, 255, 0.03)",
+                    border: "1px solid var(--border-subtle)",
+                    borderRadius: "8px",
+                    color: "var(--text-secondary)",
+                    fontSize: "0.8125rem",
+                    cursor: isPending ? "wait" : "pointer",
+                    transition: "all 0.2s ease",
+                    opacity: isPending ? 0.7 : 1
+                }}
+                onMouseEnter={(e) => {
+                    if (!isPending) {
+                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.06)";
+                        e.currentTarget.style.border = "1px solid rgba(255, 255, 255, 0.15)";
+                    }
+                }}
+                onMouseLeave={(e) => {
+                    if (!isPending) {
+                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)";
+                        e.currentTarget.style.border = "1px solid var(--border-subtle)";
+                    }
+                }}
+                title="Conversation Status"
+            >
+                {activeOption.label}
+                <ChevronDown size={14} style={{ opacity: 0.5, marginLeft: "4px" }} />
+            </button>
+
+            {isOpen && (
+                <>
+                    <div 
+                        style={{ position: "fixed", inset: 0, zIndex: 40 }} 
+                        onClick={() => setIsOpen(false)}
+                    />
+                    <div style={{
+                        position: "absolute",
+                        top: "100%",
+                        right: 0,
+                        marginTop: "8px",
+                        background: "var(--bg-elevated)",
+                        border: "1px solid var(--border-subtle)",
+                        borderRadius: "8px",
+                        padding: "4px",
+                        minWidth: "140px",
+                        zIndex: 50,
+                        boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
+                    }}>
+                        {STATUS_OPTIONS.map((option) => (
+                            <button
+                                key={option.value}
+                                onClick={() => handleSelect(option.value)}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    width: "100%",
+                                    padding: "8px 12px",
+                                    background: "transparent",
+                                    border: "none",
+                                    borderRadius: "4px",
+                                    color: currentStatus === option.value ? "var(--text-primary)" : "var(--text-secondary)",
+                                    fontSize: "0.8125rem",
+                                    cursor: "pointer",
+                                    textAlign: "left",
+                                    transition: "all 0.15s ease"
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+                                    e.currentTarget.style.color = "var(--text-primary)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = "transparent";
+                                    e.currentTarget.style.color = currentStatus === option.value ? "var(--text-primary)" : "var(--text-secondary)";
+                                }}
+                            >
+                                {option.label}
+                                {currentStatus === option.value && <Check size={12} style={{ opacity: 0.5 }} />}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
 }
 
 export default function HistoryClient({ initialHistory }: HistoryClientProps) {
@@ -71,6 +210,12 @@ export default function HistoryClient({ initialHistory }: HistoryClientProps) {
         } finally {
             setDeletingId(null);
         }
+    };
+
+    const handleStatusChange = (id: string, newStatus: string) => {
+        setHistory(prev => prev.map(item => 
+            item.id === id ? { ...item, status: newStatus } : item
+        ));
     };
 
     return (
@@ -212,6 +357,14 @@ export default function HistoryClient({ initialHistory }: HistoryClientProps) {
                                                 year: "numeric",
                                             })}
                                         </div>
+                                        
+                                        {/* Status Dropdown */}
+                                        <StatusDropdown 
+                                            generationId={item.id}
+                                            currentStatus={item.status || "not_sent"}
+                                            onStatusChange={handleStatusChange}
+                                        />
+
                                         {/* Delete Button */}
                                         <button
                                             onClick={() => handleDelete(item.id)}

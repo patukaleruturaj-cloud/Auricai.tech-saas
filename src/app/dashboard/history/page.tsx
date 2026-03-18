@@ -12,7 +12,7 @@ export default async function HistoryPage() {
     // Query generations by Clerk user_id (TEXT column) — no join needed
     const { data: historyData, error } = await supabaseAdmin
         .from("generations")
-        .select("id, prospect_bio, tone, generated_options, subject, follow_up, created_at")
+        .select("id, prospect_bio, tone, generated_options, subject, follow_up, status, created_at")
         .eq("user_id", session.userId)
         .order("created_at", { ascending: false })
         .limit(50);

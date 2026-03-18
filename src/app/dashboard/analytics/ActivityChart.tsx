@@ -2,18 +2,20 @@
 import { memo } from "react";
 
 import {
-    AreaChart,
-    Area,
+    BarChart,
+    Bar,
     XAxis,
     YAxis,
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
+    Legend
 } from "recharts";
 
 interface ChartDataPoint {
     date: string;
-    count: number;
+    sent: number;
+    responses: number;
 }
 
 interface ActivityChartProps {
@@ -21,11 +23,11 @@ interface ActivityChartProps {
 }
 
 export const ActivityChart = memo(function ActivityChart({ data }: ActivityChartProps) {
-    if (!data || data.length === 0) {
+    if (!data || data.length === 0 || data.every(d => d.sent === 0)) {
         return (
             <div className="glass-panel" style={{ padding: "var(--spacing-8)", minHeight: "250px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "var(--spacing-4)" }}>
-                <p style={{ fontWeight: 600, fontSize: "1.125rem", marginBottom: "0.5rem" }}>No generation activity yet.</p>
-                <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>Start generating openers to see your activity trends.</p>
+                <p style={{ fontWeight: 600, fontSize: "1.125rem", marginBottom: "0.5rem" }}>No outbound activity yet.</p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>Update the status of your history items to 'Sent' to track trends.</p>
             </div>
         );
     }
@@ -33,19 +35,13 @@ export const ActivityChart = memo(function ActivityChart({ data }: ActivityChart
     return (
         <div className="glass-panel" style={{ padding: "var(--spacing-6)", marginTop: "var(--spacing-4)" }}>
             <div style={{ marginBottom: "var(--spacing-6)" }}>
-                <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "4px" }}>Generation Activity</h2>
-                <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Track your outreach generation trends.</p>
+                <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "4px" }}>Outbound Tracker</h2>
+                <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Visualize Sent vs Responses over the last 30 days.</p>
             </div>
 
-            <div style={{ width: "100%", height: "300px" }}>
+            <div style={{ width: "100%", height: "350px" }}>
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <defs>
-                            <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="var(--accent-blue)" stopOpacity={0.3} />
-                                <stop offset="95%" stopColor="var(--accent-blue)" stopOpacity={0} />
-                            </linearGradient>
-                        </defs>
+                    <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                         <XAxis
                             dataKey="date"
@@ -62,26 +58,38 @@ export const ActivityChart = memo(function ActivityChart({ data }: ActivityChart
                         />
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: "rgba(15,15,15,0.9)",
+                                backgroundColor: "rgba(15,15,15,0.95)",
                                 border: "1px solid var(--border-subtle)",
                                 borderRadius: "8px",
                                 boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
-                                color: "var(--text-primary)"
+                                color: "var(--text-primary)",
+                                fontSize: "0.875rem"
                             }}
-                            itemStyle={{ color: "var(--accent-blue)", fontWeight: "600" }}
-                            cursor={{ stroke: "rgba(255,255,255,0.1)", strokeWidth: 1 }}
+                            cursor={{ fill: "rgba(255,255,255,0.03)" }}
                         />
-                        <Area
-                            type="monotone"
-                            dataKey="count"
-                            name="Generations"
-                            stroke="var(--accent-blue)"
-                            strokeWidth={3}
-                            fillOpacity={1}
-                            fill="url(#colorCount)"
+                        <Legend 
+                            verticalAlign="top" 
+                            align="right" 
+                            iconType="circle" 
+                            wrapperStyle={{ paddingBottom: "20px", fontSize: "0.875rem" }} 
+                        />
+                        <Bar
+                            dataKey="sent"
+                            name="Sent Messages"
+                            fill="#3b82f6"
+                            radius={[4, 4, 0, 0]}
+                            maxBarSize={40}
                             animationDuration={1500}
                         />
-                    </AreaChart>
+                        <Bar
+                            dataKey="responses"
+                            name="Responses"
+                            fill="#16a34a"
+                            radius={[4, 4, 0, 0]}
+                            maxBarSize={40}
+                            animationDuration={1500}
+                        />
+                    </BarChart>
                 </ResponsiveContainer>
             </div>
         </div>
@@ -89,3 +97,4 @@ export const ActivityChart = memo(function ActivityChart({ data }: ActivityChart
 });
 
 export default ActivityChart;
+
