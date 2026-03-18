@@ -108,66 +108,74 @@ const UPGRADE_PLANS = [
     {
         slug: "starter",
         name: "Starter",
-        description: "Perfect for testing outbound strategies.",
+        description: "Get started with better replies",
         priceMonthly: plans.starter.price_monthly,
         priceYearly: plans.starter.price_yearly / 12,
+        valueLine: "150 credits (~150 personalized LinkedIn openers)",
+        usage: "Perfect for sending ~5–10 DMs/day",
         msgs: plans.starter.credits,
         features: [
-            "150 credits / month",
-            "3 strategic opener variations",
-            "Core Context Intelligence",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Standard processing",
         ],
-        buttonLabel: "Get Started",
+        buttonLabel: "Start generating better DMs",
     },
     {
         slug: "basic",
         name: "Basic",
-        description: "For individuals & early testers.",
+        description: "Consistent outreach, better conversations",
         priceMonthly: plans.basic.price_monthly,
         priceYearly: plans.basic.price_yearly / 12,
+        valueLine: "400 credits (~400 personalized LinkedIn openers)",
+        usage: "~10–20 DMs/day",
         msgs: plans.basic.credits,
         features: [
-            "400 credits / month",
-            "3 strategic opener variations",
-            "Core Context Intelligence",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Standard processing",
         ],
-        buttonLabel: "Get Started",
+        buttonLabel: "Start generating better DMs",
     },
     {
         slug: "growth",
         name: "Growth",
-        description: "For 1–2 SDR teams scaling outreach.",
+        description: "Scale outbound without losing personalization",
         priceMonthly: plans.growth.price_monthly,
         priceYearly: plans.growth.price_yearly / 12,
+        valueLine: "1,200 credits (~1,200 personalized LinkedIn openers)",
+        usage: "~30–50 DMs/day",
         msgs: plans.growth.credits,
         features: [
-            "1,200 credits / month",
-            "3 strategic opener variations",
-            "Advanced Context Depth",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Reply Rate Optimization",
             "Smart Prospect Memory",
             "Priority processing",
         ],
         popular: true,
-        buttonLabel: "Get Started",
+        buttonLabel: "Start generating better DMs",
     },
     {
         slug: "pro",
         name: "Pro",
-        description: "For elite sales teams & organizations.",
+        description: "High-volume outreach with premium quality",
         priceMonthly: plans.pro.price_monthly,
         priceYearly: plans.pro.price_yearly / 12,
+        valueLine: "3,000 credits (~3,000 personalized LinkedIn openers)",
+        usage: "50+ DMs/day",
         msgs: plans.pro.credits,
         features: [
-            "3,000 credits / month",
-            "3 strategic opener variations",
-            "Premium Context Intelligence",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Advanced Signal-Based Personalization",
             "Highest priority processing",
         ],
-        buttonLabel: "Get Started",
+        buttonLabel: "Start generating better DMs",
     },
 ];
 
@@ -797,6 +805,17 @@ export default function BillingPage() {
                ══════════════════════════════════════════ */}
             <motion.div variants={fadeInUp} transition={{ duration: 0.5 }}>
                 {/* Wraps on narrow screens — title stacks above toggle */}
+                <div style={{ textAlign: "center", marginBottom: "3rem", marginTop: "4rem" }}>
+                    <h2 style={{ fontSize: "2.25rem", fontWeight: "700", marginBottom: "1rem", letterSpacing: "-0.02em" }}>
+                        Turn more LinkedIn messages into real conversations
+                    </h2>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "1.125rem", marginBottom: "0.5rem" }}>
+                        Write highly personalized openers in seconds — without sounding templated.
+                    </p>
+                    <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "4px 12px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                        💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit</span> = 1 personalized opener
+                    </div>
+                </div>
                 <div className="billing-section-header">
                     <h3 style={{ fontSize: "1.25rem", fontWeight: "600" }}>
                         {billing?.plan === "free" ? "Upgrade Your Plan" : "Change Plan"}
@@ -918,10 +937,10 @@ export default function BillingPage() {
                                     </div>
                                 )}
 
-                                <h4 style={{ fontSize: "1.25rem", fontWeight: "600", position: "relative" }}>{plan.name}</h4>
+                                <h4 style={{ fontSize: "1.25rem", fontWeight: "600", position: "relative", marginBottom: "0.25rem" }}>{plan.name}</h4>
 
                                 {plan.description && (
-                                    <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", margin: "-0.25rem 0 0.25rem" }}>
+                                    <p style={{ color: "#fff", fontWeight: "500", fontSize: "0.875rem", marginBottom: "1rem", minHeight: "2.5rem" }}>
                                         {plan.description}
                                     </p>
                                 )}
@@ -934,12 +953,22 @@ export default function BillingPage() {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: 10 }}
                                             transition={{ duration: 0.2 }}
-                                            style={{ fontSize: "2.25rem", fontWeight: "700" }}
+                                            style={{ fontSize: "2.5rem", fontWeight: "700" }}
                                         >
                                             ${price}
                                         </motion.span>
                                     </AnimatePresence>
                                     <span style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>/mo</span>
+                                </div>
+                                {isYearly ? (
+                                    <p style={{ fontSize: "0.875rem", color: "#4ade80", marginTop: "4px" }}>Billed ${price * 12} yearly</p>
+                                ) : (
+                                    <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "4px" }}>Pay monthly. Cancel anytime.</p>
+                                )}
+
+                                <div style={{ margin: "1.25rem 0", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                                    <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "#fff", marginBottom: "4px" }}>{plan.valueLine}</p>
+                                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{plan.usage}</p>
                                 </div>
 
 

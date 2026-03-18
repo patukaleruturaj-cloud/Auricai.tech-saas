@@ -9,18 +9,20 @@ const PAID_PLANS = [
     {
         name: "Starter",
         planType: "starter",
-        description: "Perfect for testing outbound strategies.",
+        description: "Get started with better replies",
         monthlyPrice: 15,
+        valueLine: "150 credits (~150 personalized LinkedIn openers/month)",
+        usage: "Perfect for sending ~5–10 DMs/day",
         msgs: 150,
         features: [
-            "150 credits / month",
-            "3 strategic opener variations",
-            "Core Context Intelligence",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Standard processing",
         ],
         popular: false,
         theme: {
-            glowColor: "rgba(251, 146, 60, 1)", // Orange/Amber
+            glowColor: "rgba(251, 146, 60, 1)",
             shimmerColor: "rgba(251, 146, 60, 0.4)",
             bgTint: "rgba(251, 146, 60, 0.02)",
             glowBase: 0.12,
@@ -33,18 +35,20 @@ const PAID_PLANS = [
     {
         name: "Basic",
         planType: "basic",
-        description: "For founders testing outbound.",
+        description: "Consistent outreach, better conversations",
         monthlyPrice: 29,
+        valueLine: "400 credits (~400 personalized LinkedIn openers/month)",
+        usage: "~10–20 DMs/day",
         msgs: 400,
         features: [
-            "400 credits / month",
-            "3 strategic opener variations",
-            "Core Context Intelligence",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Standard processing",
         ],
         popular: false,
         theme: {
-            glowColor: "rgba(59, 130, 246, 1)", // Soft Blue
+            glowColor: "rgba(59, 130, 246, 1)",
             shimmerColor: "rgba(59, 130, 246, 0.3)",
             bgTint: "rgba(59, 130, 246, 0.01)",
             glowBase: 0.08,
@@ -57,13 +61,15 @@ const PAID_PLANS = [
     {
         name: "Growth",
         planType: "growth",
-        description: "For 1–2 SDR teams scaling outreach.",
+        description: "Scale outbound without losing personalization",
         monthlyPrice: 49,
+        valueLine: "1,200 credits (~1,200 personalized LinkedIn openers/month)",
+        usage: "~30–50 DMs/day",
         msgs: 1200,
         features: [
-            "1,200 credits / month",
-            "3 strategic opener variations",
-            "Advanced Context Depth",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Reply Rate Optimization",
             "Smart Prospect Memory",
             "Priority processing",
@@ -71,7 +77,7 @@ const PAID_PLANS = [
         ],
         popular: true, // ← MOST POPULAR
         theme: {
-            glowColor: "rgba(139, 92, 246, 1)", // Soft Purple
+            glowColor: "rgba(139, 92, 246, 1)",
             shimmerColor: "rgba(139, 92, 246, 0.4)",
             bgTint: "rgba(139, 92, 246, 0.04)",
             glowBase: 0.15,
@@ -84,19 +90,21 @@ const PAID_PLANS = [
     {
         name: "Pro",
         planType: "pro",
-        description: "For serious outbound teams maximizing reply rates.",
+        description: "High-volume outreach with premium quality",
         monthlyPrice: 69,
+        valueLine: "3,000 credits (~3,000 personalized LinkedIn openers/month)",
+        usage: "50+ DMs/day",
         msgs: 3000,
         features: [
-            "3,000 credits / month",
-            "3 strategic opener variations",
-            "Premium Context Intelligence",
+            "Personalized messages based on real profile signals",
+            "Stronger, more relevant openers that feel human",
+            "Multiple message angles to test what works",
             "Advanced Signal-Based Personalization",
             "Highest priority processing",
         ],
         popular: false,
         theme: {
-            glowColor: "rgba(16, 185, 129, 1)", // Premium Emerald
+            glowColor: "rgba(16, 185, 129, 1)",
             shimmerColor: "rgba(16, 185, 129, 0.5)",
             bgTint: "rgba(16, 185, 129, 0.02)",
             glowBase: 0.12,
@@ -120,6 +128,15 @@ export default function Pricing({
     return (
         <section>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+                <h2 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "1rem", letterSpacing: "-0.02em" }}>
+                    Turn more LinkedIn messages into real conversations
+                </h2>
+                <p style={{ color: "var(--text-secondary)", fontSize: "1.125rem", marginBottom: "0.5rem" }}>
+                    Write highly personalized openers in seconds — without sounding templated.
+                </p>
+                <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "4px 12px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "2rem", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit</span> = 1 personalized opener
+                </div>
                 {/* Billing Toggle */}
                 <div
                     style={{
@@ -300,7 +317,7 @@ export default function Pricing({
                                 style={{
                                     fontSize: "1.25rem",
                                     fontWeight: "600",
-                                    marginBottom: "0.5rem",
+                                    marginBottom: "0.25rem",
                                 }}
                             >
                                 {plan.name}
@@ -308,15 +325,16 @@ export default function Pricing({
                             <p
                                 style={{
                                     fontSize: "0.875rem",
-                                    color: "var(--text-secondary)",
-                                    marginBottom: "1.5rem",
+                                    color: "#fff",
+                                    fontWeight: "500",
+                                    marginBottom: "1rem",
                                     minHeight: "2.5rem",
                                 }}
                             >
                                 {plan.description}
                             </p>
 
-                            <div style={{ marginBottom: "1.5rem" }}>
+                            <div style={{ marginBottom: "1.25rem" }}>
                                 <span
                                     style={{
                                         fontSize: "2.5rem",
@@ -328,7 +346,7 @@ export default function Pricing({
                                 <span style={{ color: "var(--text-secondary)" }}>
                                     /mo
                                 </span>
-                                {isYearly && (
+                                {isYearly ? (
                                     <p
                                         style={{
                                             fontSize: "0.875rem",
@@ -338,19 +356,22 @@ export default function Pricing({
                                     >
                                         Billed ${displayPrice * 12} yearly
                                     </p>
-                                )}
-                                {!isYearly && (
+                                ) : (
                                     <p
                                         style={{
                                             fontSize: "0.875rem",
-                                            color: "transparent",
+                                            color: "var(--text-secondary)",
                                             marginTop: "4px",
-                                            userSelect: "none",
                                         }}
                                     >
-                                        ---
+                                        Pay monthly. Cancel anytime.
                                     </p>
                                 )}
+                            </div>
+
+                            <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                                <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "#fff", marginBottom: "4px" }}>{plan.valueLine}</p>
+                                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{plan.usage}</p>
                             </div>
 
                             {isDashboard ? (
@@ -373,7 +394,7 @@ export default function Pricing({
                                         cursor: "pointer",
                                     }}
                                 >
-                                    Upgrade
+                                    Start generating better DMs
                                 </button>
                             ) : (
                                 <button
@@ -398,7 +419,7 @@ export default function Pricing({
                                         cursor: "pointer"
                                     }}
                                 >
-                                    Get Started
+                                    Start generating better DMs
                                 </button>
                             )}
 
