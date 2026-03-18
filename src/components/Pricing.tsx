@@ -363,7 +363,7 @@ export default function Pricing({
                                             marginTop: "4px",
                                         }}
                                     >
-                                        Pay monthly. Cancel anytime.
+                                        No contracts. Upgrade or downgrade anytime.
                                     </p>
                                 )}
                             </div>

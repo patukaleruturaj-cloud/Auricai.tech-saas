@@ -977,7 +977,7 @@ export default function BillingPage() {
                                 {isYearly ? (
                                     <p style={{ fontSize: "0.875rem", color: "#4ade80", marginTop: "4px" }}>Billed ${price * 12} yearly</p>
                                 ) : (
-                                    <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "4px" }}>Pay monthly. Cancel anytime.</p>
+                                    <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "4px" }}>No contracts. Upgrade or downgrade anytime.</p>
                                 )}
 
                                 <div style={{ margin: "1.25rem 0", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
