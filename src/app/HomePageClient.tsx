@@ -1,76 +1,29 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
-import { useState, useEffect } from "react";
-import Script from "next/script";
-
+import Pricing from "@/components/Pricing";
 import HowItWorks from "@/components/HowItWorks";
 import Features from "@/components/Features";
-import Pricing from "@/components/Pricing";
 import Comparison from "@/components/Comparison";
 import FAQ from "@/components/FAQ";
 import StickyCTA from "@/components/StickyCTA";
 
-interface SEOLandingPageProps {
-  headline: string;
-  subheadline: string;
-  description: string;
-  examples: {
-    scenario: string;
-    message: string;
-    color: "blue" | "violet";
-  }[];
-  benefits: {
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-  }[];
-  ctaText: string;
-  crossLinks: {
-    title: string;
-    href: string;
-  }[];
-  problemSolution?: {
-    problem: string;
-    solution: string;
-  };
-  useCase?: {
-    title: string;
-    description: string;
-    points: string[];
-  };
-  additionalContent?: React.ReactNode;
-  faqItems?: {
-    question: string;
-    answer: string;
-  }[];
-}
-
-export default function SEOLandingPage({
-  headline,
-  subheadline,
-  description,
-  examples,
-  benefits,
-  ctaText,
-  crossLinks,
-  problemSolution,
-  useCase,
-  additionalContent,
-  faqItems
-}: SEOLandingPageProps) {
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Sparkles, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+// Metadata moved to page.tsx
+export default function Home() {
   const [demoStep, setDemoStep] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [typedOpenerIndex, setTypedOpenerIndex] = useState(0);
 
-  const demoOpeners = examples.length > 0 
-    ? examples.map(ex => ex.message)
-    : [
-        "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
-      ];
+  const demoOpeners = [
+    "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?",
+    "Hi Mark — loved your recent post about product-led growth. Noticed your background in fintech too. Would love to hear how you're thinking about PLG in that space.",
+    "Hey David — congrats on the Series B! Scaling the engineering team is usually a challenge right after. How's the transition to the new infrastructure going?",
+    "Hi Jessica — saw your talk at the GTM Summit. Your point about signal-based outreach really resonated. Are you currently using AI to help with lead research?"
+  ];
 
   // Simple animation sequence for the hero demo
   useEffect(() => {
@@ -85,6 +38,7 @@ export default function SEOLandingPage({
     let isCancelled = false;
     let timeoutId: NodeJS.Timeout;
 
+    // Reset text immediately when opener index changes
     setTypedText("");
 
     const fullText = demoOpeners[typedOpenerIndex];
@@ -96,8 +50,9 @@ export default function SEOLandingPage({
       if (currentIndex <= fullText.length) {
         setTypedText(fullText.substring(0, currentIndex));
         currentIndex++;
-        timeoutId = setTimeout(type, 30);
+        timeoutId = setTimeout(type, 30); // Slightly faster for responsiveness
       } else {
+        // Wait for 5 seconds after typing finishes
         timeoutId = setTimeout(() => {
           if (isCancelled) return;
           setTypedOpenerIndex((prev) => (prev + 1) % demoOpeners.length);
@@ -105,36 +60,17 @@ export default function SEOLandingPage({
       }
     };
 
+    // Short delay before starting to type the next one
     timeoutId = setTimeout(type, 400);
 
     return () => {
       isCancelled = true;
       clearTimeout(timeoutId);
     };
-  }, [typedOpenerIndex, demoOpeners]);
-
-  const faqSchema = faqItems ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqItems.map(item => ({
-      "@type": "Question",
-      "name": item.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.answer
-      }
-    }))
-  } : null;
+  }, [typedOpenerIndex]);
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: "var(--spacing-12)" }}>
-      {faqSchema && (
-        <Script
-          id="faq-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
       <style dangerouslySetInnerHTML={{
         __html: `
         @media (max-width: 1024px) {
@@ -171,6 +107,18 @@ export default function SEOLandingPage({
           .nav-hamburger {
             display: flex !important;
           }
+          .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5,6,10,0.98);
+            backdrop-filter: blur(20px);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+          }
           .hero-demo {
             width: 100% !important;
             max-width: 540px !important;
@@ -198,9 +146,7 @@ export default function SEOLandingPage({
           0%, 50%, 100% { opacity: 1; }
           25%, 75% { opacity: 0; }
         }
-        `
-      }} />
-
+      `}} />
       {/* Hero Section */}
       <div className="container hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center", minHeight: "80vh", padding: "4rem 0" }}>
         {/* Left Copy */}
@@ -211,18 +157,14 @@ export default function SEOLandingPage({
           className="hero-copy"
           style={{ display: "flex", flexDirection: "column", gap: "2rem", willChange: "transform, opacity" }}
         >
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1rem", background: "rgba(59, 130, 246, 0.1)", borderRadius: "100px", border: "1px solid rgba(59, 130, 246, 0.2)", color: "var(--accent-blue)", fontSize: "0.875rem", fontWeight: "600", alignSelf: "flex-start" }}>
-            <Sparkles size={14} /> {subheadline}
-          </div>
-          
           <h1 className="hero-title" style={{ fontSize: "4.5rem", fontWeight: "800", lineHeight: "1.05", letterSpacing: "-0.03em" }}>
-            {headline.split(' ').map((word, i) => (
-              i >= headline.split(' ').length - 3 ? <span key={i} className="text-gradient"> {word}</span> : <span key={i}> {word}</span>
-            ))}
+            Turn LinkedIn Cold DMs Into <br />
+            <span className="text-gradient">
+              Revenue Conversations.
+            </span>
           </h1>
-          
           <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", maxWidth: "540px", lineHeight: "1.6" }}>
-            {description}
+            Generate hyper-personalized LinkedIn openers that feel 1:1 written — at scale. Built for SDRs, founders, and outbound teams who care about reply rates.
           </p>
 
           {/* AI Typing Animation */}
@@ -242,18 +184,18 @@ export default function SEOLandingPage({
               background: "var(--accent-blue)",
               boxShadow: "0 0 40px rgba(59, 130, 246, 0.3)"
             }}>
-              {ctaText} <ArrowRight size={20} />
+              Generate My First LinkedIn DM Free <ArrowRight size={20} />
             </Link>
             <Link href="#how-it-works" className="secondary-button" style={{ padding: "1.25rem 2rem", fontSize: "1.125rem" }}>
               See How It Works
             </Link>
           </div>
           <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "-0.5rem" }}>
-            Free to start. No credit card required.
+            No scraping. No automation spam. Just relevance.
           </span>
         </motion.div>
 
-        {/* Right Demo Animation */}
+        {/* Right Demo Animation (Restored from the original) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: [0, -10, 0] }}
@@ -288,7 +230,7 @@ export default function SEOLandingPage({
                   <Image src="/logo.png" alt="AI LinkedIn opener generator dashboard" width={24} height={24} style={{ filter: "invert(1)", objectFit: "contain" }} />
                 </div>
                 <div>
-                  <p style={{ fontWeight: "600" }}>Target Lead</p>
+                  <p style={{ fontWeight: "600" }}>Sarah Jenkins</p>
                   <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>VP of Sales @ TechCorp</p>
                 </div>
               </div>
@@ -320,7 +262,7 @@ export default function SEOLandingPage({
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ padding: "var(--spacing-4)", background: "var(--bg-elevated)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-focus)", position: "relative" }}>
                   <p style={{ fontSize: "0.6875rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent-blue)", fontWeight: "600", marginBottom: "var(--spacing-2)" }}>Generated Opener</p>
                   <p style={{ fontSize: "0.9375rem", lineHeight: "1.6" }}>
-                    "{demoOpeners[typedOpenerIndex]}"
+                    "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
                   </p>
                 </motion.div>
               )}
@@ -344,114 +286,42 @@ export default function SEOLandingPage({
           <Pricing />
         </section>
 
-        {/* SEO Content Sections (Matching Homepage Layout style) */}
+        {/* SEO Content Sections */}
         <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)" }}>
           <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "left" }}>
-            
-            {/* Problem-Solution Section */}
-            {problemSolution && (
-              <div style={{ marginBottom: "4rem" }}>
-                <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-                  The Challenge vs. The Solution
-                </h2>
-                <div style={{ display: "grid", gap: "1.5rem" }}>
-                  <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid #ef4444" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem", color: "#ef4444" }}>
-                      <AlertCircle size={20} />
-                      <h3 style={{ fontSize: "1.125rem", fontWeight: "600" }}>The Problem</h3>
-                    </div>
-                    <p style={{ color: "var(--text-secondary)", lineHeight: "1.7", fontSize: "1rem" }}>
-                      {problemSolution.problem}
-                    </p>
-                  </div>
-                  <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid var(--accent-blue)" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem", color: "var(--accent-blue)" }}>
-                      <CheckCircle2 size={20} />
-                      <h3 style={{ fontSize: "1.125rem", fontWeight: "600" }}>The Solution</h3>
-                    </div>
-                    <p style={{ color: "var(--text-secondary)", lineHeight: "1.7", fontSize: "1rem" }}>
-                      {problemSolution.solution}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
+              Best AI LinkedIn Opener Generator
+            </h2>
+            <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem" }}>
+              AuricAI is the world's most intelligent <strong>AI LinkedIn opener generator</strong> and <strong>LinkedIn message generator</strong>. Unlike generic templates or automation tools that get your account flagged, AuricAI uses advanced natural language processing to analyze individual LinkedIn profiles. It identify unique career milestones, shared interests, and specific company updates to craft messages through our <strong>LinkedIn DM generator</strong> that feel like they were written after an hour of research. Whether you need a <strong>LinkedIn outreach generator</strong> or a <strong>LinkedIn cold message generator</strong>, AuricAI delivers high-converting results.
+            </p>
 
-            {/* Benefits Content */}
-            {benefits && benefits.length > 0 && (
-              <div style={{ marginBottom: "4rem" }}>
-                <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-                  Core Benefits
-                </h2>
-                <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
-                  {benefits.map((benefit, i) => (
-                    <li key={i} style={{ marginBottom: "0.5rem" }}>
-                      <strong>{benefit.title}:</strong> {benefit.description}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
+              How to Write LinkedIn Openers That Get Replies
+            </h2>
+            <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "1.5rem" }}>
+              The secret to high-converting <strong>LinkedIn outreach</strong> isn't in your pitch—it's in your opener. Using an <strong>AI LinkedIn outreach tool</strong> or a <strong>LinkedIn prospecting AI tool</strong> can significantly boost your efficiency. Most professionals ignore 90% of their InMail because it sounds like a template. To increase your reply rates with an <strong>AI tool for LinkedIn prospecting</strong>:
+            </p>
+            <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
+              <li><strong>Lead with relevance:</strong> Mention a specific achievement from their "About" section for better <strong>personalized LinkedIn outreach</strong>.</li>
+              <li><strong>Keep it short:</strong> Your first message should be under 200 characters.</li>
+              <li><strong>Ask a curiosity question:</strong> Instead of "do you have time?", ask about a specific challenge they might be facing using our <strong>LinkedIn lead generation tool</strong>.</li>
+              <li><strong>Use a natural tone:</strong> Avoid corporate jargon and "SaaS-speak".</li>
+            </ul>
 
-            {/* Use-Case Section */}
-            {useCase && (
-              <div style={{ marginBottom: "4rem" }}>
-                <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-                  {useCase.title}
-                </h2>
-                <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "1.5rem" }}>
-                  {useCase.description}
-                </p>
-                <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
-                  {useCase.points.map((point, i) => (
-                    <li key={i} style={{ marginBottom: "0.5rem" }}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Additional "Below the Fold" Content */}
-            {additionalContent && (
-              <div style={{ marginBottom: "4rem" }}>
-                {additionalContent}
-              </div>
-            )}
-
-            {/* Static Examples Demo block */}
             <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
               Examples of High-Converting LinkedIn Messages
             </h2>
             <div style={{ display: "grid", gap: "1.5rem" }}>
-              {examples.map((example, index) => (
-                <div key={index} className="glass-panel" style={{ padding: "1.5rem" }}>
-                  <p style={{ fontSize: "0.875rem", color: example.color === "blue" ? "var(--accent-blue)" : "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: {example.scenario}</p>
-                  <p style={{ color: "white", lineHeight: "1.6" }}>"{example.message}"</p>
-                </div>
-              ))}
+              <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                <p style={{ fontSize: "0.875rem", color: "var(--accent-blue)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: Funding Round</p>
+                <p style={{ color: "white", lineHeight: "1.6" }}>"Hey Sarah—congrats on the Series B! Noticed you're scaling the GTM team. Curious if ramping new SDRs is your main focus this quarter?"</p>
+              </div>
+              <div className="glass-panel" style={{ padding: "1.5rem" }}>
+                <p style={{ fontSize: "0.875rem", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: Specific Skillset</p>
+                <p style={{ color: "white", lineHeight: "1.6" }}>"Hi Mark—loved your recent post about product-led growth. Noticed your background in fintech too. Would love to hear how you're thinking about PLG in that space."</p>
+              </div>
             </div>
-          </div>
-        </section>
-
-        {/* SEO Cross-linking */}
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "2rem" }}>Explore More LinkedIn Tools</h2>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
-            <Link href="/" className="glass-panel" style={{ padding: "0.75rem 1.5rem", fontSize: "0.875rem", color: "var(--text-secondary)", transition: "all 0.2s ease" }}>
-              Homepage
-            </Link>
-            <Link href="/dashboard" className="glass-panel" style={{ padding: "0.75rem 1.5rem", fontSize: "0.875rem", color: "var(--text-secondary)", transition: "all 0.2s ease" }}>
-              Dashboard
-            </Link>
-            {crossLinks.map((link, index) => (
-              <Link 
-                key={index} 
-                href={link.href}
-                className="glass-panel"
-                style={{ padding: "0.75rem 1.5rem", fontSize: "0.875rem", color: "var(--text-secondary)", transition: "all 0.2s ease" }}
-              >
-                {link.title}
-              </Link>
-            ))}
           </div>
         </section>
 
