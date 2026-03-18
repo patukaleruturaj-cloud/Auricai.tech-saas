@@ -27,7 +27,7 @@ const PAID_PLANS = [
             bgTint: "rgba(251, 146, 60, 0.02)",
             glowBase: 0.12,
             glowHover: 0.20,
-            hoverLift: -8,
+            hoverLift: -6,
             baseScale: 1,
             hoverScale: 1.02,
         }
@@ -53,7 +53,7 @@ const PAID_PLANS = [
             bgTint: "rgba(59, 130, 246, 0.01)",
             glowBase: 0.08,
             glowHover: 0.15,
-            hoverLift: -8,
+            hoverLift: -6,
             baseScale: 1,
             hoverScale: 1.02,
         }
@@ -76,11 +76,11 @@ const PAID_PLANS = [
         theme: {
             glowColor: "rgba(139, 92, 246, 1)",
             shimmerColor: "rgba(139, 92, 246, 0.4)",
-            bgTint: "rgba(139, 92, 246, 0.08)", // Slightly different background
-            glowBase: 0.3, // Stronger glow
-            glowHover: 0.4,
-            hoverLift: -12, 
-            baseScale: 1.05, // Refined highlight
+            bgTint: "rgba(139, 92, 246, 0.04)",
+            glowBase: 0.25, // Stronger glow
+            glowHover: 0.35,
+            hoverLift: -12, // More lift
+            baseScale: 1.06, // Slightly bigger
             hoverScale: 1.08,
         }
     },
@@ -105,7 +105,7 @@ const PAID_PLANS = [
             bgTint: "rgba(16, 185, 129, 0.02)",
             glowBase: 0.12,
             glowHover: 0.20,
-            hoverLift: -8,
+            hoverLift: -6,
             baseScale: 1,
             hoverScale: 1.02,
         }
@@ -122,17 +122,8 @@ export default function Pricing({
     const [isYearly, setIsYearly] = useState(false);
 
     return (
-        <section style={{ padding: "8rem 0" }}>
+        <section>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-                <h2 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "1rem", letterSpacing: "-0.02em" }}>
-                    Turn more LinkedIn messages into real conversations
-                </h2>
-                <p style={{ color: "var(--text-secondary)", fontSize: "1.125rem", marginBottom: "0.5rem" }}>
-                    Write highly personalized openers in seconds — without sounding templated.
-                </p>
-                <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "6px 16px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "2rem", border: "1px solid rgba(255,255,255,0.1)" }}>
-                    💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit = 1 generation</span> (3 personalized opener variations + follow-up message)
-                </div>
                 {/* Billing Toggle */}
                 <div
                     style={{
@@ -195,12 +186,10 @@ export default function Pricing({
             <div
                 style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                    gap: "2.5rem",
-                    maxWidth: "1300px",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                    gap: "1.5rem",
+                    maxWidth: "1200px",
                     margin: "0 auto",
-                    alignItems: "stretch",
-                    justifyContent: "center"
                 }}
             >
                 {PAID_PLANS.map((plan, idx) => {
@@ -231,19 +220,17 @@ export default function Pricing({
                             }}
                             className="glass-panel"
                             style={{
-                                padding: "24px",
+                                padding: "2rem",
                                 position: "relative",
                                 border: plan.popular
                                     ? "2px solid var(--accent-blue)"
-                                    : "1px solid rgba(255, 255, 255, 0.06)",
+                                    : "1px solid var(--border-subtle)",
                                 zIndex: plan.popular ? 10 : 1,
-                                borderRadius: "20px",
+                                borderRadius: "1rem",
                                 display: "flex",
                                 flexDirection: "column",
-                                background: `linear-gradient(180deg, rgba(15, 15, 18, 0.95) 0%, ${plan.theme.bgTint} 100%)`,
-                                willChange: "transform, opacity",
-                                height: "100%",
-                                boxShadow: "0 10px 40px -10px rgba(0,0,0,0.5)"
+                                background: `linear-gradient(180deg, var(--bg-surface) 0%, ${plan.theme.bgTint} 100%)`,
+                                willChange: "transform, opacity"
                             }}
                         >
                             {/* Glow Layer (Hardware Accelerated & Tier-Based) */}
@@ -313,45 +300,30 @@ export default function Pricing({
                                 </div>
                             )}
 
-                            <h3
-                                style={{
-                                    fontSize: "1.25rem",
-                                    fontWeight: "600",
-                                    marginBottom: "0.25rem",
-                                }}
-                            >
-                                {plan.name}
-                            </h3>
-                            <p
-                                style={{
-                                    fontSize: "0.875rem",
-                                    color: "#fff",
-                                    fontWeight: "500",
-                                    marginBottom: "1rem",
-                                    minHeight: "2.5rem",
-                                }}
-                            >
-                                {plan.description}
-                            </p>
-
-                            <div style={{ marginBottom: "1.25rem" }}>
-                                <span
-                                    style={{
-                                        fontSize: "2.5rem",
-                                        fontWeight: "700",
-                                    }}
-                                >
-                                    ${displayPrice}
-                                </span>
-                                <span style={{ color: "var(--text-secondary)" }}>
-                                    /mo
-                                </span>
+                            {/* 1. Price (Most Dominant) */}
+                            <div style={{ marginBottom: "2rem" }}>
+                                <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
+                                    <span
+                                        style={{
+                                            fontSize: "3.5rem",
+                                            fontWeight: "800",
+                                            letterSpacing: "-0.04em",
+                                            color: "white"
+                                        }}
+                                    >
+                                        ${displayPrice}
+                                    </span>
+                                    <span style={{ color: "rgba(255,255,255,0.4)", fontWeight: "600", fontSize: "1rem" }}>
+                                        /mo
+                                    </span>
+                                </div>
                                 {isYearly ? (
                                     <p
                                         style={{
                                             fontSize: "0.875rem",
                                             color: "#4ade80",
                                             marginTop: "4px",
+                                            fontWeight: "600"
                                         }}
                                     >
                                         Billed ${displayPrice * 12} yearly
@@ -360,8 +332,9 @@ export default function Pricing({
                                     <p
                                         style={{
                                             fontSize: "0.875rem",
-                                            color: "var(--text-secondary)",
+                                            color: "rgba(255,255,255,0.4)",
                                             marginTop: "4px",
+                                            fontWeight: "500"
                                         }}
                                     >
                                         Billed monthly
@@ -369,47 +342,94 @@ export default function Pricing({
                                 )}
                             </div>
 
-                            <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                                <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "#fff", marginBottom: "4px" }}>{plan.valueLine}</p>
-                                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{plan.usage}</p>
-                            </div>
-
-                            <button
-                                onClick={() => {
-                                    if (isDashboard) {
-                                        onPlanSelect?.(plan.planType, isYearly);
-                                    } else {
-                                        window.location.href = "/sign-up";
-                                    }
-                                }}
-                                className="glow-button"
+                            {/* 2. Plan Name */}
+                            <h3
                                 style={{
-                                    width: "100%",
-                                    textAlign: "center",
-                                    display: "block",
-                                    marginBottom: "2rem",
-                                    background: "var(--accent-blue)",
-                                    border: "none",
-                                    padding: "1rem",
-                                    borderRadius: "12px",
-                                    fontSize: "1rem",
-                                    fontWeight: "600",
-                                    transition: "all 0.2s ease",
-                                    cursor: "pointer",
+                                    fontSize: "1.5rem",
+                                    fontWeight: "700",
+                                    marginBottom: "1rem", /* Increased spacing */
+                                    letterSpacing: "-0.02em",
                                     color: "white"
                                 }}
                             >
-                                Start generating better DMs
-                            </button>
+                                {plan.name}
+                            </h3>
+
+                            {/* 3. Description */}
+                            <p
+                                style={{
+                                    fontSize: "0.9375rem",
+                                    color: "rgba(255,255,255,0.5)",
+                                    fontWeight: "500",
+                                    marginBottom: "2rem",
+                                    lineHeight: "1.5",
+                                    minHeight: "3rem",
+                                }}
+                            >
+                                {plan.description}
+                            </p>
+
+                            <div style={{ marginBottom: "2rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                                <p style={{ fontSize: "0.9375rem", fontWeight: "600", color: "white", marginBottom: "6px" }}>{plan.valueLine}</p>
+                                <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", fontWeight: "500" }}>{plan.usage}</p>
+                            </div>
+
+                            {isDashboard ? (
+                                <button
+                                    onClick={() => onPlanSelect?.(plan.planType, isYearly)}
+                                    className={
+                                        plan.popular
+                                            ? "glow-button"
+                                            : "secondary-button"
+                                    }
+                                    style={{
+                                        width: "100%",
+                                        textAlign: "center",
+                                        display: "block",
+                                        marginBottom: "2rem",
+                                        background: plan.popular
+                                            ? "var(--accent-blue)"
+                                            : undefined,
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    Start generating better DMs
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        // Ensure we redirect to the correct auth flow
+                                        window.location.href = "/sign-up";
+                                    }}
+                                    className={
+                                        plan.popular
+                                            ? "glow-button"
+                                            : "secondary-button"
+                                    }
+                                    style={{
+                                        width: "100%",
+                                        textAlign: "center",
+                                        display: "block",
+                                        marginBottom: "2rem",
+                                        background: plan.popular
+                                            ? "var(--accent-blue)"
+                                            : undefined,
+                                        border: "none",
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    Start generating better DMs
+                                </button>
+                            )}
 
                             <ul
                                 style={{
                                     listStyle: "none",
                                     display: "flex",
                                     flexDirection: "column",
-                                    gap: "1rem",
+                                    gap: "0.75rem",
                                     marginTop: "auto",
-                                    padding: 0
                                 }}
                             >
                                 {plan.features.map((feature, i) => (
@@ -417,10 +437,10 @@ export default function Pricing({
                                         key={i}
                                         style={{
                                             display: "flex",
-                                            alignItems: "center",
-                                            gap: "0.875rem",
-                                            fontSize: "0.9375rem",
-                                            color: "rgba(255,255,255,0.7)",
+                                            alignItems: "flex-start",
+                                            gap: "0.75rem",
+                                            fontSize: "0.875rem",
+                                            color: "var(--text-secondary)",
                                         }}
                                     >
                                         <div style={{
@@ -434,9 +454,9 @@ export default function Pricing({
                                             justifyContent: "center",
                                             border: "1px solid rgba(59, 130, 246, 0.2)"
                                         }}>
-                                            <Check size={12} color="var(--accent-blue)" />
+                                            <Check size={12} color="var(--accent-blue)" strokeWidth={3} />
                                         </div>
-                                        <span>{feature}</span>
+                                        <span style={{ fontWeight: "600" }}>{feature}</span>
                                     </li>
                                 ))}
                             </ul>

@@ -201,12 +201,12 @@ export default function Home() {
         <Comparison />
 
         <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
-          <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.75rem" }}>
-            Simple, Scalable Pricing
-          </p>
-          <h2 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "3rem" }}>
-            Start free. Scale as your <span className="text-gradient">outbound grows.</span>
+          <h2 style={{ fontSize: "3rem", fontWeight: "800", marginBottom: "1rem", letterSpacing: "-0.04em", color: "white" }}>
+            Pricing Built for Outbound Growth
           </h2>
+          <p style={{ fontSize: "1.25rem", color: "rgba(255,255,255,0.5)", marginBottom: "4rem", fontWeight: "500" }}>
+            Start free. Upgrade as reply volume increases.
+          </p>
           <Pricing />
         </section>
 
