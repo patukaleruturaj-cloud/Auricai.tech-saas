@@ -363,7 +363,7 @@ export default function Pricing({
                                             marginTop: "4px",
                                         }}
                                     >
-                                        No contracts. Upgrade or downgrade anytime.
+                                        Billed monthly
                                     </p>
                                 )}
                             </div>
