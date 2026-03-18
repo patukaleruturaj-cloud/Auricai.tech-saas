@@ -21,12 +21,12 @@ export default function Home() {
     role: "VP Sales @ TechCorp"
   };
 
-  const outputMessage = "Hey Sarah — saw TechCorp expanding the sales team. Curious if outbound personalization is something you're exploring this quarter?";
+  const outputMessage = "Hi Sarah — saw TechCorp expanding the sales team. Curious if outbound personalization is something you're exploring this quarter?";
 
   useEffect(() => {
     const timer = setInterval(() => {
       setDemoStep((prev) => (prev + 1) % 2);
-    }, 4500); // 4.5s cycle for readability
+    }, 4000); // 4s cycle for readability
     return () => clearInterval(timer);
   }, []);
 
@@ -39,12 +39,8 @@ export default function Home() {
             grid-template-columns: 1fr !important;
             text-align: center !important;
             gap: 3rem !important;
-            padding: 2rem 1rem !important;
+            padding: 4rem 1rem !important;
             min-height: auto !important;
-          }
-          .hero-typing-card {
-            max-width: 100% !important;
-            min-height: 140px !important;
           }
           .hero-title {
             font-size: 2.75rem !important;
@@ -52,7 +48,6 @@ export default function Home() {
           }
           .hero-copy {
             align-items: center !important;
-            gap: 1.5rem !important;
           }
           .hero-cta-group {
             flex-direction: column !important;
@@ -61,12 +56,6 @@ export default function Home() {
           .hero-cta-group a {
             width: 100% !important;
             max-width: 400px !important;
-          }
-          .nav-links {
-            display: none !important;
-          }
-          .nav-hamburger {
-            display: flex !important;
           }
           .mobile-menu-overlay {
             position: fixed;
@@ -127,96 +116,87 @@ export default function Home() {
 
         {/* Right Demo Animation (SaaS UI Card) */}
         <div style={{ position: "relative", width: "100%" }}>
-          {/* Background Glow */}
-          <div style={{ 
-            position: "absolute", 
-            top: "50%", 
-            left: "50%", 
-            transform: "translate(-50%, -50%)", 
-            width: "140%", 
-            height: "140%", 
-            background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent 70%)", 
-            pointerEvents: "none", 
-            zIndex: -1 
-          }}></div>
+          {/* Subtle Gradient Glow */}
+          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "130%", height: "130%", background: "radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent 70%)", pointerEvents: "none", zIndex: -1 }}></div>
           
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.5 }}
             className="glass-panel hero-demo"
             style={{
-              padding: "0",
+              padding: "24px",
               display: "flex",
               flexDirection: "column",
+              gap: "24px",
               position: "relative",
-              overflow: "hidden",
-              borderRadius: "24px",
-              boxShadow: "0 50px 100px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)",
-              background: "rgba(10, 11, 15, 0.98)",
-              minHeight: "400px"
+              borderRadius: "20px",
+              background: "rgba(10, 11, 15, 0.95)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              boxShadow: "0 40px 100px -20px rgba(0, 0, 0, 0.6)",
+              minHeight: "420px"
             }}
           >
-            {/* macOS Style Header */}
-            <div style={{ height: "40px", background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", padding: "0 18px", gap: "10px" }}>
-              <div style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: "#ff5f56", opacity: 0.7 }} />
-              <div style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: "#ffbd2e", opacity: 0.7 }} />
-              <div style={{ width: "12px", height: "12px", borderRadius: "50%", backgroundColor: "#27c93f", opacity: 0.7 }} />
+            {/* TOP (Prospect Row + Score) */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "linear-gradient(135deg, #1e293b, #0f172a)", border: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Image src="/logo.png" alt="Sarah Jenkins" width={28} height={28} style={{ filter: "invert(1)" }} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "white" }}>{prospect.name}</h3>
+                  <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{prospect.role}</p>
+                </div>
+              </div>
+
+              {/* Score Badge */}
+              <div style={{ textAlign: "right" }}>
+                <div style={{ display: "flex", alignItems: "flex-end", flexDirection: "column" }}>
+                  <span style={{ fontSize: "1.5rem", fontWeight: "800", color: "#4ade80", lineHeight: "1" }}>Score: 82</span>
+                  <span style={{ fontSize: "0.6875rem", color: "var(--text-secondary)", fontWeight: "500", marginTop: "2px" }}>Relevance-based</span>
+                </div>
+              </div>
             </div>
 
-            <div style={{ padding: "3rem", display: "flex", flexDirection: "column", gap: "2.5rem", height: "100%" }}>
-              {/* Top: Prospect Info */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-                  <h3 style={{ fontSize: "1.5rem", fontWeight: "700", color: "white" }}>{prospect.name}</h3>
-                  <p style={{ fontSize: "1rem", color: "var(--text-secondary)" }}>{prospect.role}</p>
-                </div>
-                
-                {/* Reply Score (Conditional Visibility) */}
-                <div style={{ 
-                  textAlign: "right",
-                  opacity: demoStep === 1 ? 1 : 0,
-                  transform: demoStep === 1 ? "translateY(0)" : "translateY(-10px)",
-                  transition: "all 0.3s ease"
-                }}>
-                  <p style={{ fontSize: "1.5rem", fontWeight: "800", color: "#4ade80", lineHeight: "1" }}>82</p>
-                  <p style={{ fontSize: "0.75rem", fontWeight: "600", color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em", marginTop: "2px" }}>Reply Score</p>
-                  <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.3)" }}>Based on message clarity</p>
-                </div>
-              </div>
+            {/* MIDDLE (System State) */}
+            <div style={{ minHeight: "32px", display: "flex", alignItems: "center" }}>
+              <motion.div 
+                key={demoStep}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25 }}
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                {demoStep === 0 && (
+                  <motion.div
+                    animate={{ opacity: [1, 0.4, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent-blue)" }}
+                  />
+                )}
+                <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", letterSpacing: "0.02em" }}>
+                  {demoStep === 0 ? "Analyzing profile context..." : "Optimization complete"}
+                </p>
+              </motion.div>
+            </div>
 
-              {/* Middle: State Label */}
-              <div style={{ minHeight: "24px" }}>
-                <motion.p
-                  key={demoStep}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.25 }}
-                  style={{ fontSize: "0.9rem", color: "var(--accent-blue)", fontWeight: "600", letterSpacing: "0.02em" }}
-                >
-                  {demoStep === 0 ? "Analyzing context..." : "Personalized Output Ready"}
-                </motion.p>
-              </div>
-
-              {/* Bottom: Message Box */}
-              <div style={{ marginTop: "auto" }}>
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: demoStep === 1 ? 1 : 0.05, y: demoStep === 1 ? 0 : 10 }}
-                  transition={{ duration: 0.25 }}
-                  style={{ 
-                    padding: "2rem", 
-                    background: "rgba(255,255,255,0.02)", 
-                    border: "1px solid rgba(255,255,255,0.08)", 
-                    borderRadius: "16px",
-                    boxShadow: demoStep === 1 ? "0 20px 40px rgba(0,0,0,0.4)" : "none"
-                  }}
-                >
-                  <p style={{ fontSize: "1.125rem", lineHeight: "1.6", color: "rgba(255,255,255,0.9)", fontWeight: "400" }}>
-                    {demoStep === 1 ? `"${outputMessage}"` : "Calculating high-relevance opening line..."}
-                  </p>
-                </motion.div>
-              </div>
+            {/* BOTTOM (Output Card) */}
+            <div style={{ marginTop: "auto" }}>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: demoStep === 1 ? 1 : 0.05, y: demoStep === 1 ? 0 : 10 }}
+                transition={{ duration: 0.25 }}
+                style={{ 
+                  background: "rgba(255, 255, 255, 0.03)", 
+                  border: "1px solid rgba(255, 255, 255, 0.06)", 
+                  borderRadius: "16px", 
+                  padding: "20px"
+                }}
+              >
+                <p style={{ fontSize: "1.0625rem", lineHeight: "1.6", color: "rgba(255, 255, 255, 0.9)" }}>
+                  {demoStep === 1 ? `"${outputMessage}"` : "Processing career milestones and recent company signals..."}
+                </p>
+              </motion.div>
             </div>
           </motion.div>
         </div>
