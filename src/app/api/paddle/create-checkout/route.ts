@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 
 const PRICE_MAPPING: Record<string, string> = {
-    "starter_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY || "pri_01kkewa0zq9q2h9n4jf3dzppcz",
+    "starter_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY || "pri_01kkevcx82pwmmkz08r5am2y1n",
     "basic_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_MONTHLY || "pri_01kkeveharsajd1j8jqmjz6p8y",
     "growth_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_MONTHLY || "pri_01kkevg12ce2pemtwkqyg0ja74",
     "pro_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY || "pri_01kkevhkv3zh5v61v9yrhazk90",
@@ -10,9 +10,9 @@ const PRICE_MAPPING: Record<string, string> = {
     "growth_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY || "pri_01kkevptnbcgmn0sv5c4qs2s40",
     "pro_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY || "pri_01kkevr1h59gf7mqsf4477b1mg",
     // Addons
-    "addon_200": "pri_01kk7hem70v9mne26n9xj4047p",
-    "addon_600": "pri_01kk7htz1mhmet73e0jpvfsfdg",
-    "addon_1000": "pri_01kk7r41j1esgf3gk7k19rkkh2",
+    "addon_200": "pri_01kkewa0zq9q2h9n4jf3dzppcz",
+    "addon_600": "pri_01kkewcae9602tkhen4w72wmkd",
+    "addon_1000": "pri_01kkewd2gm0s2hbwpk7pmc5sf5",
 };
 
 export async function POST(req: Request) {

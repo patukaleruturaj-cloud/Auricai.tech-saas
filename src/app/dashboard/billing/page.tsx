@@ -195,17 +195,17 @@ const ADDON_PACKS = [
     {
         credits: 200,
         price: 12,
-        priceId: "pri_01kk7hem70v9mne26n9xj4047p",
+        priceId: "pri_01kkewa0zq9q2h9n4jf3dzppcz",
     },
     {
         credits: 600,
         price: 29,
-        priceId: "pri_01kk7htz1mhmet73e0jpvfsfdg",
+        priceId: "pri_01kkewcae9602tkhen4w72wmkd",
     },
     {
         credits: 1000,
         price: 39,
-        priceId: "pri_01kk7r41j1esgf3gk7k19rkkh2",
+        priceId: "pri_01kkewd2gm0s2hbwpk7pmc5sf5",
     },
 ];
 
