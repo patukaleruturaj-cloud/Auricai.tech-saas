@@ -14,6 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const routes = [
         '',
         '/blog',
+        '/linkedin-opener-generator',
+        '/linkedin-cold-message-generator',
+        '/ai-linkedin-outreach-tool',
+        '/linkedin-personalization-tool',
+        '/b2b-linkedin-lead-generation',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
