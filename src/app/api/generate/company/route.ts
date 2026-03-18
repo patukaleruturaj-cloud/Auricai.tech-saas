@@ -60,7 +60,7 @@ export async function POST(req: Request) {
                         allowed: false,
                         credits_remaining: 0,
                         addon_credits: 0,
-                        monthly_limit: wallet?.monthly_limit ?? 5,
+                        monthly_limit: wallet?.monthly_limit ?? 3,
                     },
                 },
                 { status: 402 }
