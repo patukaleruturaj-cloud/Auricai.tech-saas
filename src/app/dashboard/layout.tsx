@@ -88,17 +88,47 @@ export default function DashboardLayout({
 
     const refreshCredits = useCallback(async () => {
         try {
-            const res = await fetch("/api/user", { cache: "no-store" });
+            // Force completely fresh fetch bypassing all Next.js/Browser caches
+            const res = await fetch(`/api/user?t=${Date.now()}`, { 
+                cache: "no-store",
+                headers: {
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Pragma": "no-cache",
+                    "Expires": "0"
+                }
+            });
             if (res.ok) {
                 const data = await res.json();
-                const monthlyLimit = data.monthlyLimit ?? 3;
+                
+                // If the user's ID is known, we can optionally fetch the absolutely latest wallet data from Supabase directly
+                // to circumvent any backend API staleness.
+                let realCredits = data.creditsRemaining ?? 3;
+                let realMonthlyLimit = data.monthlyLimit ?? 3;
+                let realAddonCredits = data.addonCredits ?? 0;
+                let realCreditsUsed = data.creditsUsed ?? 0;
+
+                if (data.userId) {
+                    const { data: walletData } = await supabaseClient
+                        .from('wallet')
+                        .select('credits_remaining, monthly_limit, addon_credits')
+                        .eq('user_id', data.userId)
+                        .single();
+                        
+                    if (walletData) {
+                        realMonthlyLimit = walletData.monthly_limit;
+                        realCredits = walletData.credits_remaining;
+                        realAddonCredits = walletData.addon_credits;
+                        realCreditsUsed = Math.max(0, realMonthlyLimit - realCredits);
+                    }
+                }
+
                 setCredits({
                     userId: data.userId ?? "",
                     plan: data.plan ?? "free",
-                    creditsRemaining: data.creditsRemaining ?? monthlyLimit,
-                    monthlyLimit: monthlyLimit,
-                    addonCredits: data.addonCredits ?? 0,
-                    creditsUsed: data.creditsUsed ?? 0,
+                    creditsRemaining: realCredits,
+                    monthlyLimit: realMonthlyLimit,
+                    addonCredits: realAddonCredits,
+                    creditsUsed: realCreditsUsed,
                     billingInterval: data.billingInterval ?? "monthly",
                     status: data.status ?? "active",
                     paddleSubscriptionId: data.paddleSubscriptionId ?? null,

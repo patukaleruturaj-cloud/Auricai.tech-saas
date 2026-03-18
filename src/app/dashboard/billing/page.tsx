@@ -230,18 +230,46 @@ export default function BillingPage() {
 
     const fetchBilling = useCallback(async () => {
         try {
-            const res = await fetch("/api/user", { cache: "no-store" });
+            const res = await fetch(`/api/user?t=${Date.now()}`, { 
+                cache: "no-store",
+                headers: {
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Pragma": "no-cache",
+                    "Expires": "0"
+                }
+            });
             if (res.ok) {
                 const data = await res.json();
+                
+                let realCredits = data.creditsRemaining ?? PLAN_LIMITS.free;
+                let realMonthlyLimit = data.monthlyLimit ?? PLAN_LIMITS.free;
+                let realAddonCredits = data.addonCredits ?? 0;
+                let realCreditsUsed = data.creditsUsed ?? 0;
+
+                if (data.userId) {
+                    const { data: walletData } = await supabaseClient
+                        .from('wallet')
+                        .select('credits_remaining, monthly_limit, addon_credits')
+                        .eq('user_id', data.userId)
+                        .single();
+                        
+                    if (walletData) {
+                        realMonthlyLimit = walletData.monthly_limit;
+                        realCredits = walletData.credits_remaining;
+                        realAddonCredits = walletData.addon_credits;
+                        realCreditsUsed = Math.max(0, realMonthlyLimit - realCredits);
+                    }
+                }
+
                 setBilling({
                     plan: data.plan ?? "free",
                     billingInterval: data.billingInterval ?? "monthly",
                     status: data.status ?? "active",
-                    creditsRemaining: data.creditsRemaining ?? PLAN_LIMITS.free,
-                    monthlyLimit: data.monthlyLimit ?? PLAN_LIMITS.free,
-                    addonCredits: data.addonCredits ?? 0,
-                    totalCredits: data.totalCredits ?? (data.creditsRemaining + data.addonCredits),
-                    creditsUsed: data.creditsUsed ?? 0,
+                    creditsRemaining: realCredits,
+                    monthlyLimit: realMonthlyLimit,
+                    addonCredits: realAddonCredits,
+                    totalCredits: data.totalCredits ?? (realCredits + realAddonCredits),
+                    creditsUsed: realCreditsUsed,
                     nextResetDate: data.nextResetDate ?? null,
                 });
             }
