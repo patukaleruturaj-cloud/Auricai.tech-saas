@@ -1,38 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, SlidersHorizontal, TrendingUp, Layers, Users, Sparkles } from "lucide-react";
+import { Brain, SlidersHorizontal, TrendingUp, Layers, Users, Shield } from "lucide-react";
 
 const features = [
     {
         icon: Brain,
-        title: "Profile Personalization",
-        description: "Messages from real profile signals",
+        title: "Hyper-Personal Context Engine",
+        description: "Understands role, industry, company growth signals to craft messages that feel genuinely researched.",
     },
     {
         icon: SlidersHorizontal,
         title: "Tone Control",
-        description: "Match founder, SDR, enterprise tone",
+        description: "Founder tone, SDR tone, Enterprise tone — match your voice to your prospect's expectations.",
     },
     {
         icon: TrendingUp,
-        title: "Reply Optimization",
-        description: "Improve chances of getting replies",
+        title: "Reply Rate Optimization",
+        description: "Built-in AI suggestions to improve opener strength and maximize response probability.",
     },
     {
         icon: Layers,
         title: "Message Variations",
-        description: "3 different angles instantly",
+        description: "Generate 3 strategically different angles instantly. A/B test positioning without extra effort.",
     },
     {
         icon: Users,
-        title: "Signal Targeting",
-        description: "Uses role and company context",
+        title: "Signal-Based Personalization",
+        description: "AuricAI analyzes role positioning, company momentum, and recent activity signals to craft timely, relevant openers that feel intentional — not templated. Every message is built around business context, not generic compliments.",
     },
     {
-        icon: Sparkles,
-        title: "AI Score & Suggestions",
-        description: "Scores messages, suggests improvements",
+        icon: Shield,
+        title: "Smart Prospect Memory",
+        description: "Avoid repeating the same angle twice. AuricAI remembers past outreach context.",
     },
 ];
 
@@ -50,12 +50,6 @@ export default function Features() {
                 @media (min-width: 640px) {
                     .features-grid {
                         grid-template-columns: repeat(2, 1fr);
-                        gap: 1.5rem;
-                    }
-                }
-                @media (min-width: 1024px) {
-                    .features-grid {
-                        grid-template-columns: repeat(3, 1fr);
                         gap: 1.5rem;
                     }
                 }

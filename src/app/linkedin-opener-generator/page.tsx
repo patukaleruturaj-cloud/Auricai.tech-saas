@@ -94,16 +94,16 @@ export default function LinkedInOpenerGenerator() {
             Why Your LinkedIn Openers Aren't Getting Replies
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            Most LinkedIn outreach today is automated spam. People can smell a template from a mile away. If your opener starts with "I see we have similar interests" or "I was impressed by your profile," you're already losing. 
+            Most LinkedIn outreach today is automated spam. People can smell a template from a mile away. If your opener starts with "I see we have similar interests" or "I was impressed by your profile," you're already losing.
           </p>
           <p style={{ marginBottom: "1.5rem" }}>
-            The key to a high-performing <strong>LinkedIn opener</strong> is specific relevance. You need to prove that you've actually looked at their profile for more than 5 seconds. This is where an <strong>AI LinkedIn opener generator</strong> like AuricAI becomes your secret weapon. 
+            The key to a high-performing <strong>LinkedIn opener</strong> is specific relevance. You need to prove that you've actually looked at their profile for more than 5 seconds. This is where an <strong>AI LinkedIn opener generator</strong> like AuricAI becomes your secret weapon.
           </p>
           <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
             How to Use AI for Personalized Outreach
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            By leveraging our <strong>LinkedIn first message generator</strong>, you can automate the research phase of your prospecting. Simply input the profile details, and our AI will provide you with three distinct options for your <strong>LinkedIn icebreaker</strong>. 
+            By leveraging our <strong>LinkedIn first message generator</strong>, you can automate the research phase of your prospecting. Simply input the profile details, and our AI will provide you with three distinct options for your <strong>LinkedIn icebreaker</strong>.
           </p>
           <ul style={{ paddingLeft: "1.5rem", listStyleType: "disc", marginBottom: "1.5rem" }}>
             <li>Focus on their recent wins.</li>

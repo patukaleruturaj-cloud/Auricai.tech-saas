@@ -62,7 +62,7 @@ export default function StickyCTA() {
                     `}} />
                     <div className="sticky-cta-inner">
                         <p className="sticky-cta-text">
-                            Generate personalized LinkedIn DMs that get replies
+                            Start generating LinkedIn DMs in seconds
                         </p>
                         <button
                             onClick={() => window.location.href = "/sign-up"}
@@ -77,7 +77,7 @@ export default function StickyCTA() {
                                 alignItems: "center"
                             }}
                         >
-                            Generate My First DM Free <ArrowRight size={16} />
+                            Get Started Free <ArrowRight size={16} />
                         </button>
                     </div>
                 </motion.div>

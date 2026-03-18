@@ -94,16 +94,16 @@ export default function LinkedInColdMessageGenerator() {
             The Anatomy of a High-Performing Cold LinkedIn Message
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            A successful <strong>LinkedIn cold message</strong> consists of three parts: a personalized hook, a brief value proposition, and a soft call to action. Most people fail because they jump straight to the pitch. 
+            A successful <strong>LinkedIn cold message</strong> consists of three parts: a personalized hook, a brief value proposition, and a soft call to action. Most people fail because they jump straight to the pitch.
           </p>
           <p style={{ marginBottom: "1.5rem" }}>
-            Using an <strong>AI LinkedIn cold message generator</strong> allows you to perfectly execute the 'hook' every single time. By referencing a specific detail about their career or company, you earn the right to ask for their time. 
+            Using an <strong>AI LinkedIn cold message generator</strong> allows you to perfectly execute the 'hook' every single time. By referencing a specific detail about their career or company, you earn the right to ask for their time.
           </p>
           <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
             Scaling Your B2B Outbound with AI
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            Our <strong>outbound sales message generator</strong> is designed to help you scale without losing the human touch. Whether you're doing 10 or 100 messages a day, each one will feel unique and researched. 
+            Our <strong>outbound sales message generator</strong> is designed to help you scale without losing the human touch. Whether you're doing 10 or 100 messages a day, each one will feel unique and researched.
           </p>
           <ul style={{ paddingLeft: "1.5rem", listStyleType: "disc", marginBottom: "1.5rem" }}>
             <li>Identify transition periods (new roles, company growth).</li>

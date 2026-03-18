@@ -94,16 +94,16 @@ export default function LinkedInPersonalizationTool() {
             The Science of Personalized LinkedIn Outreach
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            Personalization isn't just about adding a name; it's about context. A <strong>LinkedIn personalization tool</strong> like AuricAI finds the 'why' behind the outreach. Why this person? Why now? 
+            Personalization isn't just about adding a name; it's about context. A <strong>LinkedIn personalization tool</strong> like AuricAI finds the 'why' behind the outreach. Why this person? Why now?
           </p>
           <p style={{ marginBottom: "1.5rem" }}>
-            When you use <strong>deep research LinkedIn outreach</strong>, you're signaling to the prospect that you're a professional who does their due diligence. This builds the foundational trust required for high-stakes B2B relationships. 
+            When you use <strong>deep research LinkedIn outreach</strong>, you're signaling to the prospect that you're a professional who does their due diligence. This builds the foundational trust required for high-stakes B2B relationships.
           </p>
           <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
             Moving Beyond the 'About' Section
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            Our <strong>AI LinkedIn research tool</strong> goes beyond the surface level. We analyze experience sequences, endorsed skills, and public signals to generate <strong>1:1 LinkedIn outreach</strong> that resonates on a personal level. 
+            Our <strong>AI LinkedIn research tool</strong> goes beyond the surface level. We analyze experience sequences, endorsed skills, and public signals to generate <strong>1:1 LinkedIn outreach</strong> that resonates on a personal level.
           </p>
           <ul style={{ paddingLeft: "1.5rem", listStyleType: "disc", marginBottom: "1.5rem" }}>
             <li>Avoid obvious, over-used profile details.</li>

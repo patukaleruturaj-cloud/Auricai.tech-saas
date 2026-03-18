@@ -124,6 +124,15 @@ export default function Pricing({
     return (
         <section>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+                <h2 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "1rem", letterSpacing: "-0.02em" }}>
+                    Turn more LinkedIn messages into real conversations
+                </h2>
+                <p style={{ color: "var(--text-secondary)", fontSize: "1.125rem", marginBottom: "0.5rem" }}>
+                    Write highly personalized openers in seconds — without sounding templated.
+                </p>
+                <div style={{ display: "inline-block", background: "rgba(255,255,255,0.05)", padding: "6px 16px", borderRadius: "100px", fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "2rem", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    💡 <span style={{ color: "#fff", fontWeight: 500 }}>1 credit = 1 generation</span> (3 personalized opener variations + follow-up message)
+                </div>
                 {/* Billing Toggle */}
                 <div
                     style={{
@@ -300,30 +309,45 @@ export default function Pricing({
                                 </div>
                             )}
 
-                            {/* 1. Price (Most Dominant) */}
-                            <div style={{ marginBottom: "2rem" }}>
-                                <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-                                    <span
-                                        style={{
-                                            fontSize: "3.5rem",
-                                            fontWeight: "800",
-                                            letterSpacing: "-0.04em",
-                                            color: "white"
-                                        }}
-                                    >
-                                        ${displayPrice}
-                                    </span>
-                                    <span style={{ color: "rgba(255,255,255,0.4)", fontWeight: "600", fontSize: "1rem" }}>
-                                        /mo
-                                    </span>
-                                </div>
+                            <h3
+                                style={{
+                                    fontSize: "1.25rem",
+                                    fontWeight: "600",
+                                    marginBottom: "0.25rem",
+                                }}
+                            >
+                                {plan.name}
+                            </h3>
+                            <p
+                                style={{
+                                    fontSize: "0.875rem",
+                                    color: "#fff",
+                                    fontWeight: "500",
+                                    marginBottom: "1rem",
+                                    minHeight: "2.5rem",
+                                }}
+                            >
+                                {plan.description}
+                            </p>
+
+                            <div style={{ marginBottom: "1.25rem" }}>
+                                <span
+                                    style={{
+                                        fontSize: "2.5rem",
+                                        fontWeight: "700",
+                                    }}
+                                >
+                                    ${displayPrice}
+                                </span>
+                                <span style={{ color: "var(--text-secondary)" }}>
+                                    /mo
+                                </span>
                                 {isYearly ? (
                                     <p
                                         style={{
                                             fontSize: "0.875rem",
                                             color: "#4ade80",
                                             marginTop: "4px",
-                                            fontWeight: "600"
                                         }}
                                     >
                                         Billed ${displayPrice * 12} yearly
@@ -332,9 +356,8 @@ export default function Pricing({
                                     <p
                                         style={{
                                             fontSize: "0.875rem",
-                                            color: "rgba(255,255,255,0.4)",
+                                            color: "var(--text-secondary)",
                                             marginTop: "4px",
-                                            fontWeight: "500"
                                         }}
                                     >
                                         Billed monthly
@@ -342,36 +365,9 @@ export default function Pricing({
                                 )}
                             </div>
 
-                            {/* 2. Plan Name */}
-                            <h3
-                                style={{
-                                    fontSize: "1.5rem",
-                                    fontWeight: "700",
-                                    marginBottom: "1rem", /* Increased spacing */
-                                    letterSpacing: "-0.02em",
-                                    color: "white"
-                                }}
-                            >
-                                {plan.name}
-                            </h3>
-
-                            {/* 3. Description */}
-                            <p
-                                style={{
-                                    fontSize: "0.9375rem",
-                                    color: "rgba(255,255,255,0.5)",
-                                    fontWeight: "500",
-                                    marginBottom: "2rem",
-                                    lineHeight: "1.5",
-                                    minHeight: "3rem",
-                                }}
-                            >
-                                {plan.description}
-                            </p>
-
-                            <div style={{ marginBottom: "2rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                                <p style={{ fontSize: "0.9375rem", fontWeight: "600", color: "white", marginBottom: "6px" }}>{plan.valueLine}</p>
-                                <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", fontWeight: "500" }}>{plan.usage}</p>
+                            <div style={{ marginBottom: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                                <p style={{ fontSize: "0.875rem", fontWeight: "600", color: "#fff", marginBottom: "4px" }}>{plan.valueLine}</p>
+                                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{plan.usage}</p>
                             </div>
 
                             {isDashboard ? (
@@ -443,20 +439,15 @@ export default function Pricing({
                                             color: "var(--text-secondary)",
                                         }}
                                     >
-                                        <div style={{
-                                            flexShrink: 0,
-                                            width: "20px",
-                                            height: "20px",
-                                            borderRadius: "50%",
-                                            background: "rgba(59, 130, 246, 0.15)",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            border: "1px solid rgba(59, 130, 246, 0.2)"
-                                        }}>
-                                            <Check size={12} color="var(--accent-blue)" strokeWidth={3} />
-                                        </div>
-                                        <span style={{ fontWeight: "600" }}>{feature}</span>
+                                        <Check
+                                            size={16}
+                                            color="var(--accent-blue)"
+                                            style={{
+                                                flexShrink: 0,
+                                                marginTop: "2px",
+                                            }}
+                                        />
+                                        <span>{feature}</span>
                                     </li>
                                 ))}
                             </ul>

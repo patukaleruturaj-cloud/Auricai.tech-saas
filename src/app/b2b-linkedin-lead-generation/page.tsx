@@ -94,16 +94,16 @@ export default function B2BLinkedInLeadGeneration() {
             The New Playbook for B2B LinkedIn Lead Generation
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            The days of 'spray and pray' are over. <strong>B2B LinkedIn lead generation</strong> in 2024 requires a surgeon's precision. You need to know exactly who you're talking to and why your solution matters to them at this specific moment. 
+            The days of 'spray and pray' are over. <strong>B2B LinkedIn lead generation</strong> in 2024 requires a surgeon's precision. You need to know exactly who you're talking to and why your solution matters to them at this specific moment.
           </p>
           <p style={{ marginBottom: "1.5rem" }}>
-            AuricAI's <strong>LinkedIn leads AI tool</strong> gives you the data you need to make every message count. We help you move from being a 'vendor' to a 'trusted partner' before the first meeting even starts. 
+            AuricAI's <strong>LinkedIn leads AI tool</strong> gives you the data you need to make every message count. We help you move from being a 'vendor' to a 'trusted partner' before the first meeting even starts.
           </p>
           <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
             Building a Predictable B2B Sales Pipeline
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            Our <strong>LinkedIn meeting booking tool</strong> is focused on the end goal: meetings. By consistently delivering high-quality, personalized outreach, you create a predictable flow of leads into your CRM. 
+            Our <strong>LinkedIn meeting booking tool</strong> is focused on the end goal: meetings. By consistently delivering high-quality, personalized outreach, you create a predictable flow of leads into your CRM.
           </p>
           <ul style={{ paddingLeft: "1.5rem", listStyleType: "disc", marginBottom: "1.5rem" }}>
             <li>Focus on high-value accounts.</li>

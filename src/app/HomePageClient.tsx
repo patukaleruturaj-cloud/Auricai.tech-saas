@@ -210,42 +210,30 @@ export default function Home() {
           <Pricing />
         </section>
 
-        {/* SEO Content Sections */}
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)" }}>
-          <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "left" }}>
-            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-              Best AI LinkedIn Opener Generator
-            </h2>
-            <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem" }}>
-              AuricAI is the world's most intelligent <strong>AI LinkedIn opener generator</strong> and <strong>LinkedIn message generator</strong>. Unlike generic templates or automation tools that get your account flagged, AuricAI uses advanced natural language processing to analyze individual LinkedIn profiles. It identify unique career milestones, shared interests, and specific company updates to craft messages through our <strong>LinkedIn DM generator</strong> that feel like they were written after an hour of research. Whether you need a <strong>LinkedIn outreach generator</strong> or a <strong>LinkedIn cold message generator</strong>, AuricAI delivers high-converting results.
+        {/* Results Section (Clean Product UI) */}
+        <section style={{ padding: "8rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
+          <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: "800", marginBottom: "1rem", color: "white", letterSpacing: "-0.04em" }}>Better Replies. Less Effort.</h2>
+            <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "4rem", maxWidth: "600px", margin: "0 auto 4rem" }}>
+              Write personalized LinkedIn messages using real profile context — not templates.
             </p>
 
-            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-              How to Write LinkedIn Openers That Get Replies
-            </h2>
-            <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "1.5rem" }}>
-              The secret to high-converting <strong>LinkedIn outreach</strong> isn't in your pitch—it's in your opener. Using an <strong>AI LinkedIn outreach tool</strong> or a <strong>LinkedIn prospecting AI tool</strong> can significantly boost your efficiency. Most professionals ignore 90% of their InMail because it sounds like a template. To increase your reply rates with an <strong>AI tool for LinkedIn prospecting</strong>:
-            </p>
-            <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
-              <li><strong>Lead with relevance:</strong> Mention a specific achievement from their "About" section for better <strong>personalized LinkedIn outreach</strong>.</li>
-              <li><strong>Keep it short:</strong> Your first message should be under 200 characters.</li>
-              <li><strong>Ask a curiosity question:</strong> Instead of "do you have time?", ask about a specific challenge they might be facing using our <strong>LinkedIn lead generation tool</strong>.</li>
-              <li><strong>Use a natural tone:</strong> Avoid corporate jargon and "SaaS-speak".</li>
-            </ul>
-
-            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-              Examples of High-Converting LinkedIn Messages
-            </h2>
-            <div style={{ display: "grid", gap: "1.5rem" }}>
-              <div className="glass-panel" style={{ padding: "1.5rem" }}>
-                <p style={{ fontSize: "0.875rem", color: "var(--accent-blue)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: Funding Round</p>
-                <p style={{ color: "white", lineHeight: "1.6" }}>"Hey Sarah—congrats on the Series B! Noticed you're scaling the GTM team. Curious if ramping new SDRs is your main focus this quarter?"</p>
-              </div>
-              <div className="glass-panel" style={{ padding: "1.5rem" }}>
-                <p style={{ fontSize: "0.875rem", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: Specific Skillset</p>
-                <p style={{ color: "white", lineHeight: "1.6" }}>"Hi Mark—loved your recent post about product-led growth. Noticed your background in fintech too. Would love to hear how you're thinking about PLG in that space."</p>
-              </div>
+            <div className="results-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem", marginBottom: "4rem" }}>
+              {[
+                { title: "Higher Reply Rates", desc: "Messages built on real signals" },
+                { title: "Faster Outreach", desc: "Go from minutes to seconds" },
+                { title: "Consistent Quality", desc: "Every message stays relevant" }
+              ].map((card, i) => (
+                <div key={i} className="glass-panel" style={{ padding: "2.5rem 2rem", textAlign: "left", display: "flex", flexDirection: "column", gap: "1rem", borderRadius: "20px" }}>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "white" }}>{card.title}</h3>
+                  <p style={{ color: "var(--text-secondary)", lineHeight: "1.6", fontSize: "0.9375rem" }}>{card.desc}</p>
+                </div>
+              ))}
             </div>
+
+            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", opacity: 0.6 }}>
+              Designed for founders, SDRs, and outbound teams.
+            </p>
           </div>
         </section>
 

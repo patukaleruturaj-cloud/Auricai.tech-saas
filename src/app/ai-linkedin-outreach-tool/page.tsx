@@ -94,16 +94,16 @@ export default function AILinkedinOutreachTool() {
             The Future of LinkedIn Outreach is AI-Driven
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            The era of mass-blasting generic templates is over. Prospecting today requires a high degree of intelligence and personalization. An <strong>AI LinkedIn outreach tool</strong> is no longer a luxury—it's a necessity for any team that wants to remain competitive. 
+            The era of mass-blasting generic templates is over. Prospecting today requires a high degree of intelligence and personalization. An <strong>AI LinkedIn outreach tool</strong> is no longer a luxury—it's a necessity for any team that wants to remain competitive.
           </p>
           <p style={{ marginBottom: "1.5rem" }}>
-            AuricAI provides the infrastructure for <strong>automated LinkedIn personalization</strong>. By analyzing profile data in real-time, we ensure that every message you send is grounded in reality and professionalism. 
+            AuricAI provides the infrastructure for <strong>automated LinkedIn personalization</strong>. By analyzing profile data in real-time, we ensure that every message you send is grounded in reality and professionalism.
           </p>
           <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
             Maximizing Your Efficiency with AI Outreach software
           </h2>
           <p style={{ marginBottom: "1.5rem" }}>
-            Our <strong>LinkedIn outreach AI</strong> allows you to focus on the conversations that matter, while the AI handles the mundane task of researching and drafting. 
+            Our <strong>LinkedIn outreach AI</strong> allows you to focus on the conversations that matter, while the AI handles the mundane task of researching and drafting.
           </p>
           <ul style={{ paddingLeft: "1.5rem", listStyleType: "disc", marginBottom: "1.5rem" }}>
             <li>Reduce research time by 90%.</li>

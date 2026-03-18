@@ -68,11 +68,11 @@ export default function SEOLandingPage({
   const [typedText, setTypedText] = useState("");
   const [typedOpenerIndex, setTypedOpenerIndex] = useState(0);
 
-  const demoOpeners = examples.length > 0 
+  const demoOpeners = examples.length > 0
     ? examples.map(ex => ex.message)
     : [
-        "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
-      ];
+      "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
+    ];
 
   // Simple animation sequence for the hero demo
   useEffect(() => {
@@ -216,13 +216,13 @@ export default function SEOLandingPage({
           <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1rem", background: "rgba(59, 130, 246, 0.1)", borderRadius: "100px", border: "1px solid rgba(59, 130, 246, 0.2)", color: "var(--accent-blue)", fontSize: "0.875rem", fontWeight: "600", alignSelf: "flex-start" }}>
             <Sparkles size={14} /> {subheadline}
           </div>
-          
+
           <h1 className="hero-title" style={{ fontSize: "4.5rem", fontWeight: "800", lineHeight: "1.05", letterSpacing: "-0.03em" }}>
             {headline.split(' ').map((word, i) => (
               i >= headline.split(' ').length - 3 ? <span key={i} className="text-gradient"> {word}</span> : <span key={i}> {word}</span>
             ))}
           </h1>
-          
+
           <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", maxWidth: "540px", lineHeight: "1.6" }}>
             {description}
           </p>
@@ -349,7 +349,7 @@ export default function SEOLandingPage({
         {/* SEO Content Sections (Matching Homepage Layout style) */}
         <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)" }}>
           <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "left" }}>
-            
+
             {/* Problem-Solution Section */}
             {problemSolution && (
               <div style={{ marginBottom: "4rem" }}>
@@ -445,8 +445,8 @@ export default function SEOLandingPage({
               Dashboard
             </Link>
             {crossLinks.map((link, index) => (
-              <Link 
-                key={index} 
+              <Link
+                key={index}
                 href={link.href}
                 className="glass-panel"
                 style={{ padding: "0.75rem 1.5rem", fontSize: "0.875rem", color: "var(--text-secondary)", transition: "all 0.2s ease" }}
