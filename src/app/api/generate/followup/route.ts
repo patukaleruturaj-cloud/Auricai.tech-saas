@@ -62,7 +62,78 @@ Output Format (STRICT JSON):
   ]
 }
 
-Return ONLY valid JSON. No explanations. No markdown. No text outside JSON.`;
+Return ONLY valid JSON. No explanations. No markdown. No text outside JSON.
+
+---
+
+FILLER & GENERIC LANGUAGE ELIMINATION:
+
+The output must strictly avoid all filler phrases, buzzwords, and generic commentary that do not add meaningful, specific insight.
+
+This is a STRICT rule.
+
+---
+
+PROHIBITED LANGUAGE (DO NOT USE):
+
+The model must NOT generate phrases such as:
+
+* “Smart focus”
+* “That’s critical”
+* “Key differentiator”
+* “Impressive”
+* “Great work”
+* “Interesting”
+* “Strong positioning”
+* “Love what you're building”
+* “Really like your approach”
+
+These are considered generic, low-value, and reduce message quality.
+
+---
+
+ENFORCEMENT RULE:
+
+If a phrase can be removed without changing the core meaning of the message, it MUST be removed.
+
+Every sentence must:
+
+* add specific context
+* or introduce real-world tension
+* or move toward a meaningful question
+
+---
+
+OUTPUT STANDARD:
+
+Messages must feel:
+
+* tight
+* direct
+* natural
+* written quickly by a real person
+
+NOT:
+
+* polished
+* commentary-heavy
+* AI-like
+
+---
+
+FINAL CHECK (MANDATORY):
+
+Before outputting:
+
+* Remove any unnecessary adjectives
+* Remove any praise that is not tied to a specific signal
+* Ensure the message cannot be sent to multiple people unchanged
+
+---
+
+GOAL:
+
+Eliminate all generic and filler language so the output feels sharp, intentional, and human-written.`;
 
         const userPrompt = `Prospect Bio: ${bio.substring(0, 1000)}
 Company Description: ${company || "Not provided"}
