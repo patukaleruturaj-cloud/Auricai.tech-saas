@@ -15,10 +15,10 @@ const PAID_PLANS = [
         usage: "Perfect for sending ~5–10 DMs/day",
         msgs: 150,
         features: [
-            "Personalized messages based on real profile signals",
-            "Stronger, more relevant openers that feel human",
-            "3 strategic opener variations",
-            "Standard processing",
+            "Profile-based personalized openers",
+            "3 message variations per prospect",
+            "Ready-to-send in seconds",
+            "Saves manual writing time",
         ],
         popular: false,
         theme: {
@@ -41,10 +41,10 @@ const PAID_PLANS = [
         usage: "~10–20 DMs/day",
         msgs: 400,
         features: [
-            "Better context understanding for more relevant messages",
-            "Personalized messages based on profile signals",
-            "3 strategic opener variations",
-            "Standard processing",
+            "Deeper context-based personalization",
+            "More relevant message angles",
+            "Consistent output quality",
+            "3 message variations",
         ],
         popular: false,
         theme: {
@@ -67,12 +67,10 @@ const PAID_PLANS = [
         usage: "~30–50 DMs/day",
         msgs: 1200,
         features: [
-            "Optimized for higher reply rates",
-            "Smarter message angles based on prospect signals",
-            "More natural, human-like message generation",
-            "Best for scaling outbound without losing quality",
-            "Smart Prospect Memory",
-            "Priority support",
+            "Smarter angle generation",
+            "More natural message flow",
+            "Reply-focused message outputs",
+            "Built for consistent outreach",
         ],
         popular: true, // ← MOST POPULAR
         theme: {
@@ -95,11 +93,10 @@ const PAID_PLANS = [
         usage: "50+ DMs/day",
         msgs: 3000,
         features: [
-            "Highest-quality message generation",
-            "Deep personalization based on multiple signals",
-            "Best for teams running high-volume outbound",
-            "Highest priority processing",
-            "Highest priority support",
+            "Deep multi-signal personalization",
+            "Highest-quality message outputs",
+            "Optimized for reply rates",
+            "Priority processing speed",
         ],
         popular: false,
         theme: {
