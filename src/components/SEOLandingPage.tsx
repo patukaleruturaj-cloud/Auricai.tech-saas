@@ -47,6 +47,7 @@ interface SEOLandingPageProps {
     question: string;
     answer: string;
   }[];
+  supportingLine?: string;
 }
 
 export default function SEOLandingPage({
@@ -60,7 +61,8 @@ export default function SEOLandingPage({
   problemSolution,
   useCase,
   additionalContent,
-  faqItems
+  faqItems,
+  supportingLine = "Free to start. No credit card required."
 }: SEOLandingPageProps) {
   const [demoStep, setDemoStep] = useState(0);
   const [typedText, setTypedText] = useState("");
@@ -249,7 +251,7 @@ export default function SEOLandingPage({
             </Link>
           </div>
           <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "-0.5rem" }}>
-            Free to start. No credit card required.
+            {supportingLine}
           </span>
         </motion.div>
 

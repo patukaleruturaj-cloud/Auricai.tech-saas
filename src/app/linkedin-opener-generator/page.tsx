@@ -14,10 +14,11 @@ export const metadata: Metadata = {
 export default function LinkedInOpenerGenerator() {
   return (
     <SEOLandingPage
-      subheadline="Break the Ice with AI"
-      headline="AI LinkedIn Opener Generator"
-      description="Tired of being left on read? Our AI LinkedIn opener generator crafts personalized, high-converting first messages that break the ice and start real conversations based on deep profile research."
-      ctaText="Generate Your First Opener Free"
+      subheadline="AI Powered Openers"
+      headline="Write LinkedIn Openers That Actually Get Replies"
+      description="Stop getting ignored. Generate hyper-personalized first messages in seconds using AI trained for real outreach."
+      ctaText="Generate Your First Message Now"
+      supportingLine="No templates. No guesswork. Just messages that feel human."
       problemSolution={{
         problem: "99% of LinkedIn outreach fails because the first message is a boring, generic template that looks exactly like every other spam message in your prospect's inbox.",
         solution: "AuricAI analyzes your prospect's profile, recent activity, and career history to find a unique 'hook' that makes your first message impossible to ignore."

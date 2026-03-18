@@ -14,10 +14,11 @@ export const metadata: Metadata = {
 export default function LinkedInPersonalizationTool() {
   return (
     <SEOLandingPage
-      subheadline="The End of Generic Templates"
-      headline="LinkedIn Personalization Tool"
-      description="Stop guessing what to say. Our LinkedIn personalization tool performs deep research on your prospects to find the specific details that build trust and drive high-value conversations."
-      ctaText="Personalize Your Outreach Free"
+      subheadline="Hyper Personalization"
+      headline="Deep Personalization for LinkedIn That Actually Works"
+      description="Go beyond basic templates. Create messages tailored to every prospect’s profile, content, and context."
+      ctaText="Personalize Your Messages"
+      supportingLine="Because generic outreach is dead."
       problemSolution={{
         problem: "Modern professionals are overwhelmed with generic outreach. If your message doesn't immediately prove that you've done your homework, it's destined for the archive folder.",
         solution: "AuricAI performs 'deep-dive' research into a prospect's career history, public contributions, and skill sets to craft a message so specific it couldn't have been sent to anyone else."

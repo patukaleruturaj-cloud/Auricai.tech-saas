@@ -14,10 +14,11 @@ export const metadata: Metadata = {
 export default function AILinkedinOutreachTool() {
   return (
     <SEOLandingPage
-      subheadline="Automation Meets Personalization"
-      headline="AI LinkedIn Outreach Tool"
-      description="AuricAI is the next generation of LinkedIn outreach. We combine the power of AI research with the efficiency of automation to help you scale your outbound without the spam."
-      ctaText="Start Scaling with AI"
+      subheadline="Intelligent Outreach"
+      headline="Scale Your LinkedIn Outreach Without Losing Personalization"
+      description="Automate your outreach while keeping every message unique, relevant, and human."
+      ctaText="Start Smart Outreach"
+      supportingLine="More replies. Less manual work."
       problemSolution={{
         problem: "Traditional LinkedIn automation tools are getting users banned and prospects annoyed. They send massive volumes of generic messages that destroy your company's reputation.",
         solution: "AuricAI acts as your AI research assistant. We generate hyper-specific, profile-based context that makes every automated message feel like it was hand-crafted after thirty minutes of research."
