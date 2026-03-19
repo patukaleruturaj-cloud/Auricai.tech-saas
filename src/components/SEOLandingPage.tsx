@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import Script from "next/script";
 
@@ -18,18 +18,21 @@ interface SEOLandingPageProps {
   headline: string;
   subheadline: string;
   description: string;
-  examples: {
+  ctaText: string;
+  // Hero typing animation uses examples if provided
+  examples?: {
     scenario: string;
     message: string;
     color: "blue" | "violet";
   }[];
-  benefits: {
+  supportingLine?: string;
+  // Legacy props — accepted but NOT rendered (kept so page.tsx files need no changes)
+  benefits?: {
     title: string;
     description: string;
     icon: React.ReactNode;
   }[];
-  ctaText: string;
-  crossLinks: {
+  crossLinks?: {
     title: string;
     href: string;
   }[];
@@ -47,42 +50,36 @@ interface SEOLandingPageProps {
     question: string;
     answer: string;
   }[];
-  supportingLine?: string;
 }
 
 export default function SEOLandingPage({
   headline,
   subheadline,
   description,
-  examples,
-  benefits,
   ctaText,
-  crossLinks,
-  problemSolution,
-  useCase,
-  additionalContent,
+  examples = [],
+  supportingLine = "Free to start. No credit card required.",
   faqItems,
-  supportingLine = "Free to start. No credit card required."
 }: SEOLandingPageProps) {
-  const [demoStep, setDemoStep] = useState(0);
+  const [isAnalyzing, setIsAnalyzing] = useState(true);
   const [typedText, setTypedText] = useState("");
   const [typedOpenerIndex, setTypedOpenerIndex] = useState(0);
 
   const demoOpeners = examples.length > 0
     ? examples.map(ex => ex.message)
     : [
-      "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
-    ];
+        "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
+      ];
 
-  // Simple animation sequence for the hero demo
+  // Hero left-side analyzing toggle  
   useEffect(() => {
     const timer = setInterval(() => {
-      setDemoStep((prev) => (prev + 1) % 5);
-    }, 3000);
+      setIsAnalyzing((prev) => !prev);
+    }, isAnalyzing ? 3000 : 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [isAnalyzing]);
 
-  // AI Typing animation effect
+  // AI Typing animation for demo card
   useEffect(() => {
     let isCancelled = false;
     let timeoutId: NodeJS.Timeout;
@@ -94,7 +91,6 @@ export default function SEOLandingPage({
 
     const type = () => {
       if (isCancelled) return;
-
       if (currentIndex <= fullText.length) {
         setTypedText(fullText.substring(0, currentIndex));
         currentIndex++;
@@ -108,7 +104,6 @@ export default function SEOLandingPage({
     };
 
     timeoutId = setTimeout(type, 400);
-
     return () => {
       isCancelled = true;
       clearTimeout(timeoutId);
@@ -147,10 +142,6 @@ export default function SEOLandingPage({
             padding: 2rem 1rem !important;
             min-height: auto !important;
           }
-          .hero-typing-card {
-            max-width: 100% !important;
-            min-height: 140px !important;
-          }
           .hero-title {
             font-size: 2.75rem !important;
             line-height: 1.2 !important;
@@ -175,35 +166,21 @@ export default function SEOLandingPage({
           }
           .hero-demo {
             width: 100% !important;
-            max-width: 540px !important;
+            max-width: 100% !important;
             margin: 0 auto !important;
           }
+          .results-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
-        .hero-typing-card {
-          margin-top: 1.5rem;
-          padding: 1.25rem;
-          background: rgba(15,15,15,0.4);
-          border-radius: 12px;
-          border: 1px solid rgba(255,255,255,0.06);
-          max-width: 540px;
-          min-height: 120px;
+        .hero-demo {
+          width: 100%;
+          max-width: 640px;
+          margin-left: auto;
         }
-        .cursor {
-          display: inline-block;
-          color: white;
-          width: 3px;
-          margin-left: 2px;
-          animation: blink 1s infinite;
-          vertical-align: middle;
-        }
-        @keyframes blink {
-          0%, 50%, 100% { opacity: 1; }
-          25%, 75% { opacity: 0; }
-        }
-        `
-      }} />
+      `}} />
 
-      {/* Hero Section */}
+      {/* ─── HERO (unique per SEO page) ─── */}
       <div className="container hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center", minHeight: "80vh", padding: "4rem 0" }}>
         {/* Left Copy */}
         <motion.div
@@ -218,25 +195,16 @@ export default function SEOLandingPage({
           </div>
 
           <h1 className="hero-title" style={{ fontSize: "4.5rem", fontWeight: "800", lineHeight: "1.05", letterSpacing: "-0.03em" }}>
-            {headline.split(' ').map((word, i) => (
-              i >= headline.split(' ').length - 3 ? <span key={i} className="text-gradient"> {word}</span> : <span key={i}> {word}</span>
+            {headline.split(' ').map((word, i, arr) => (
+              i >= arr.length - 3
+                ? <span key={i} className="text-gradient"> {word}</span>
+                : <span key={i}> {word}</span>
             ))}
           </h1>
 
           <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", maxWidth: "540px", lineHeight: "1.6" }}>
             {description}
           </p>
-
-          {/* AI Typing Animation */}
-          <div className="glass-panel hero-typing-card">
-            <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
-              <Sparkles size={12} style={{ display: "inline-block", marginRight: "4px", verticalAlign: "middle" }} />
-              AuricAI generating opener...
-            </p>
-            <p style={{ fontSize: "0.9375rem", lineHeight: "1.5", color: "var(--text-primary)", fontStyle: "italic", minHeight: "4.5rem", wordBreak: "break-word" }}>
-              {typedText}<span className="cursor">|</span>
-            </p>
-          </div>
 
           <div className="hero-cta-group" style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
             <Link href="/sign-up" className="glow-button" style={{
@@ -255,205 +223,133 @@ export default function SEOLandingPage({
           </span>
         </motion.div>
 
-        {/* Right Demo Animation */}
+        {/* Right Demo Animation — identical to homepage */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: [0, -10, 0] }}
-          transition={{
-            opacity: { duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.15 },
-            y: { duration: 7, ease: "easeInOut", repeat: Infinity }
-          }}
-          className="glass-panel hero-demo"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ y: -2, transition: { duration: 0.2 } }}
+          className="hero-demo"
           style={{
-            padding: "0",
-            display: "flex",
-            flexDirection: "column",
+            background: "rgba(18, 19, 24, 0.7)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "20px",
+            padding: "24px",
+            boxShadow: "0 20px 50px -10px rgba(0, 0, 0, 0.6)",
             position: "relative",
-            willChange: "transform, opacity",
-            overflow: "hidden"
+            backdropFilter: "blur(12px)",
           }}
         >
-          {/* macOS Window Header */}
-          <div style={{ height: "28px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", padding: "0 12px", gap: "6px" }}>
-            <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#ff5f56" }} />
-            <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#ffbd2e" }} />
-            <div style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#27c93f" }} />
+          {/* Background Glow */}
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.1), transparent 70%)", pointerEvents: "none" }} />
+
+          {/* Top Bar */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", paddingBottom: "12px", borderBottom: "1px solid rgba(255, 255, 255, 0.04)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <motion.div animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 10px #4ade80" }} />
+              <span style={{ fontSize: "0.6875rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "rgba(255,255,255,0.4)", fontWeight: "600" }}>Live generation</span>
+            </div>
+            <span style={{ fontSize: "0.6875rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "rgba(255,255,255,0.3)", fontWeight: "500" }}>LinkedIn Opener</span>
           </div>
 
-          <div style={{ padding: "var(--spacing-6)", display: "flex", flexDirection: "column", gap: "var(--spacing-4)" }}>
-            <div style={{ position: "absolute", top: "-10px", right: "-10px", width: "100px", height: "100px", background: "var(--accent-blue)", filter: "blur(60px)", zIndex: -1, opacity: 0.2 }}></div>
-
-            <div style={{ borderBottom: "1px solid var(--border-subtle)", paddingBottom: "var(--spacing-4)" }}>
-              <p style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-secondary)", letterSpacing: "0.05em", marginBottom: "var(--spacing-2)" }}>Target Prospect</p>
-              <div style={{ display: "flex", gap: "var(--spacing-3)", alignItems: "center" }}>
-                <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Image src="/logo.png" alt="AI LinkedIn opener generator dashboard" width={24} height={24} style={{ filter: "invert(1)", objectFit: "contain" }} />
-                </div>
-                <div>
-                  <p style={{ fontWeight: "600" }}>Target Lead</p>
-                  <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>VP of Sales @ TechCorp</p>
-                </div>
-              </div>
+          {/* Prospect Block */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+            <div style={{ width: "42px", height: "42px", borderRadius: "50%", background: "linear-gradient(45deg, #1e293b, #334155)", border: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", fontWeight: "700" }}>SJ</div>
+            <div>
+              <p style={{ fontWeight: "600", fontSize: "0.9375rem", color: "white", marginBottom: "2px" }}>Sarah Jenkins</p>
+              <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)" }}>VP Sales @ TechCorp</p>
             </div>
+          </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacing-3)", minHeight: "150px" }}>
-              {demoStep === 0 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: "var(--spacing-4)", background: "rgba(0,0,0,0.3)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  Mapping Prospect Context...
-                </motion.div>
-              )}
-              {demoStep === 1 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: "var(--spacing-4)", background: "rgba(0,0,0,0.3)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  Analyzing role authority...
-                </motion.div>
-              )}
-              {demoStep === 2 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ padding: "var(--spacing-4)", background: "rgba(0,0,0,0.3)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-subtle)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  Scanning company signals...
-                </motion.div>
-              )}
-              {demoStep === 3 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", alignItems: "center", gap: "var(--spacing-2)", padding: "var(--spacing-4)", color: "var(--text-secondary)", fontStyle: "italic" }}>
-                  <Sparkles size={16} className="text-gradient" />
-                  <p>Generating personalized opener...</p>
-                </motion.div>
-              )}
-              {demoStep >= 4 && (
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ padding: "var(--spacing-4)", background: "var(--bg-elevated)", borderRadius: "var(--radius-md)", border: "1px solid var(--border-focus)", position: "relative" }}>
-                  <p style={{ fontSize: "0.6875rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent-blue)", fontWeight: "600", marginBottom: "var(--spacing-2)" }}>Generated Opener</p>
-                  <p style={{ fontSize: "0.9375rem", lineHeight: "1.6" }}>
-                    "{demoOpeners[typedOpenerIndex]}"
-                  </p>
-                </motion.div>
-              )}
-            </div>
+          {/* Content Area */}
+          <div style={{ minHeight: "140px", position: "relative" }}>
+            {isAnalyzing ? (
+              <motion.div
+                key="analyzing"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", fontStyle: "italic" }}>Analyzing profile signals</span>
+                  <motion.span animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1] }}>.</motion.span>
+                  <motion.span animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], delay: 0.3 }}>.</motion.span>
+                  <motion.span animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1.5, repeat: Infinity, times: [0, 0.5, 1], delay: 0.6 }}>.</motion.span>
+                </div>
+                <div style={{ width: "30%", height: "4px", borderRadius: "100px", background: "rgba(255,255,255,0.04)", overflow: "hidden" }}>
+                  <motion.div animate={{ x: ["-100%", "200%"] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} style={{ width: "50%", height: "100%", background: "linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent)" }} />
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="output"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                style={{
+                  background: "rgba(25, 27, 34, 0.8)",
+                  borderRadius: "14px",
+                  padding: "18px",
+                  border: "1px solid rgba(255, 255, 255, 0.05)",
+                  position: "relative",
+                  boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.5)"
+                }}
+              >
+                {/* Score Badge */}
+                <div style={{ position: "absolute", top: "12px", right: "12px", textAlign: "right" }}>
+                  <div style={{ fontSize: "1rem", fontWeight: "700", color: "#60a5fa", lineHeight: "1" }}>82</div>
+                  <div style={{ fontSize: "0.625rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "rgba(255,255,255,0.3)", fontWeight: "600", marginTop: "2px" }}>Score</div>
+                </div>
+                <p style={{ fontSize: "0.9375rem", lineHeight: "1.6", color: "rgba(255,255,255,0.9)", marginRight: "45px" }}>
+                  {typedText || demoOpeners[typedOpenerIndex]}
+                </p>
+              </motion.div>
+            )}
           </div>
         </motion.div>
       </div>
 
+      {/* ─── BELOW HERO: EXACT HOMEPAGE COPY ─── */}
       <div id="how-it-works" className="container">
         <HowItWorks />
         <Features />
         <Comparison />
 
         <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
-          <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent-violet)", fontWeight: "600", marginBottom: "0.75rem" }}>
-            Simple, Scalable Pricing
-          </p>
-          <h2 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "3rem" }}>
-            Start free. Scale as your <span className="text-gradient">outbound grows.</span>
+          <h2 style={{ fontSize: "3rem", fontWeight: "800", marginBottom: "1rem", letterSpacing: "-0.04em", color: "white" }}>
+            Pricing Built for Outbound Growth
           </h2>
+          <p style={{ fontSize: "1.25rem", color: "rgba(255,255,255,0.5)", marginBottom: "4rem", fontWeight: "500" }}>
+            Start free. Upgrade as reply volume increases.
+          </p>
           <Pricing />
         </section>
 
-        {/* SEO Content Sections (Matching Homepage Layout style) */}
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)" }}>
-          <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "left" }}>
+        {/* Results Section */}
+        <section style={{ padding: "8rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
+          <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: "800", marginBottom: "1rem", color: "white", letterSpacing: "-0.04em" }}>Better Replies. Less Effort.</h2>
+            <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "4rem", maxWidth: "600px", margin: "0 auto 4rem" }}>
+              Write personalized LinkedIn messages using real profile context — not templates.
+            </p>
 
-            {/* Problem-Solution Section */}
-            {problemSolution && (
-              <div style={{ marginBottom: "4rem" }}>
-                <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-                  The Challenge vs. The Solution
-                </h2>
-                <div style={{ display: "grid", gap: "1.5rem" }}>
-                  <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid #ef4444" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem", color: "#ef4444" }}>
-                      <AlertCircle size={20} />
-                      <h3 style={{ fontSize: "1.125rem", fontWeight: "600" }}>The Problem</h3>
-                    </div>
-                    <p style={{ color: "var(--text-secondary)", lineHeight: "1.7", fontSize: "1rem" }}>
-                      {problemSolution.problem}
-                    </p>
-                  </div>
-                  <div className="glass-panel" style={{ padding: "1.5rem", borderLeft: "4px solid var(--accent-blue)" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem", color: "var(--accent-blue)" }}>
-                      <CheckCircle2 size={20} />
-                      <h3 style={{ fontSize: "1.125rem", fontWeight: "600" }}>The Solution</h3>
-                    </div>
-                    <p style={{ color: "var(--text-secondary)", lineHeight: "1.7", fontSize: "1rem" }}>
-                      {problemSolution.solution}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Benefits Content */}
-            {benefits && benefits.length > 0 && (
-              <div style={{ marginBottom: "4rem" }}>
-                <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-                  Core Benefits
-                </h2>
-                <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
-                  {benefits.map((benefit, i) => (
-                    <li key={i} style={{ marginBottom: "0.5rem" }}>
-                      <strong>{benefit.title}:</strong> {benefit.description}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Use-Case Section */}
-            {useCase && (
-              <div style={{ marginBottom: "4rem" }}>
-                <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-                  {useCase.title}
-                </h2>
-                <p style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "1.5rem" }}>
-                  {useCase.description}
-                </p>
-                <ul style={{ color: "var(--text-secondary)", lineHeight: "1.8", marginBottom: "2rem", paddingLeft: "1.5rem", listStyleType: "disc" }}>
-                  {useCase.points.map((point, i) => (
-                    <li key={i} style={{ marginBottom: "0.5rem" }}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Additional "Below the Fold" Content */}
-            {additionalContent && (
-              <div style={{ marginBottom: "4rem" }}>
-                {additionalContent}
-              </div>
-            )}
-
-            {/* Static Examples Demo block */}
-            <h2 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "1.5rem", color: "white" }}>
-              Examples of High-Converting LinkedIn Messages
-            </h2>
-            <div style={{ display: "grid", gap: "1.5rem" }}>
-              {examples.map((example, index) => (
-                <div key={index} className="glass-panel" style={{ padding: "1.5rem" }}>
-                  <p style={{ fontSize: "0.875rem", color: example.color === "blue" ? "var(--accent-blue)" : "var(--accent-violet)", fontWeight: "600", marginBottom: "0.5rem" }}>Scenario: {example.scenario}</p>
-                  <p style={{ color: "white", lineHeight: "1.6" }}>"{example.message}"</p>
+            <div className="results-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem", marginBottom: "4rem" }}>
+              {[
+                { title: "Higher Reply Rates", desc: "Messages built on real signals" },
+                { title: "Faster Outreach", desc: "Go from minutes to seconds" },
+                { title: "Consistent Quality", desc: "Every message stays relevant" }
+              ].map((card, i) => (
+                <div key={i} className="glass-panel" style={{ padding: "2.5rem 2rem", textAlign: "left", display: "flex", flexDirection: "column", gap: "1rem", borderRadius: "20px" }}>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "white" }}>{card.title}</h3>
+                  <p style={{ color: "var(--text-secondary)", lineHeight: "1.6", fontSize: "0.9375rem" }}>{card.desc}</p>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* SEO Cross-linking */}
-        <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.5rem", fontWeight: "600", marginBottom: "2rem" }}>Explore More LinkedIn Tools</h2>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
-            <Link href="/" className="glass-panel" style={{ padding: "0.75rem 1.5rem", fontSize: "0.875rem", color: "var(--text-secondary)", transition: "all 0.2s ease" }}>
-              Homepage
-            </Link>
-            <Link href="/dashboard" className="glass-panel" style={{ padding: "0.75rem 1.5rem", fontSize: "0.875rem", color: "var(--text-secondary)", transition: "all 0.2s ease" }}>
-              Dashboard
-            </Link>
-            {crossLinks.map((link, index) => (
-              <Link
-                key={index}
-                href={link.href}
-                className="glass-panel"
-                style={{ padding: "0.75rem 1.5rem", fontSize: "0.875rem", color: "var(--text-secondary)", transition: "all 0.2s ease" }}
-              >
-                {link.title}
-              </Link>
-            ))}
+            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", opacity: 0.6 }}>
+              Designed for founders, SDRs, and outbound teams.
+            </p>
           </div>
         </section>
 
