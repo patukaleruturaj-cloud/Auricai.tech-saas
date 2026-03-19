@@ -16,7 +16,7 @@ export default function AILinkedinOutreachTool() {
     <SEOLandingPage
       subheadline="Automation Meets Personalization"
       headline="AI LinkedIn Outreach Tool"
-      description="AuricAI is the next generation of LinkedIn outreach. We combine the power of AI research with the efficiency of automation to help you scale your outbound without the spam."
+      description="AuricAI is the next generation of LinkedIn outreach. Generate hyper-personalized LinkedIn openers that feel 1:1 written — at scale. Built for SDRs, founders, and high-growth outbound teams."
       ctaText="Start Scaling with AI"
       supportingLine="Intelligent outreach, hand-crafted results."
       problemSolution={{

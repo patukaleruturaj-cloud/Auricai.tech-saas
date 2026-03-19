@@ -16,7 +16,7 @@ export default function LinkedInOpenerGenerator() {
     <SEOLandingPage
       subheadline="Break the Ice with AI"
       headline="AI LinkedIn Opener Generator"
-      description="Tired of being left on read? Our AI LinkedIn opener generator crafts personalized, high-converting first messages that break the ice and start real conversations based on deep profile research."
+      description="Stop getting ignored. Generate hyper-personalized LinkedIn openers that feel 1:1 written — in seconds. Built for SDRs and founders who care about reply rates."
       ctaText="Generate Your First Message Now"
       supportingLine="No templates. No guesswork. Just messages that feel human."
       problemSolution={{

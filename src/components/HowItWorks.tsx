@@ -143,7 +143,7 @@ export default function HowItWorks() {
                         <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem", lineHeight: "1.5", marginBottom: "2rem", minHeight: "3rem" }}>
                             {item.description}
                         </p>
-                        
+
                         <div style={{ width: "100%", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "1.5rem" }}>
                             {item.bullets.map((bullet, i) => (
                                 <div key={i} className="hiw-bullet">

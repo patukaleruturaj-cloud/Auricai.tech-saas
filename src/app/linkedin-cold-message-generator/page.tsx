@@ -16,7 +16,7 @@ export default function LinkedInColdMessageGenerator() {
     <SEOLandingPage
       subheadline="Scale Your Outbound Revenue"
       headline="LinkedIn Cold Message Generator"
-      description="Scalable outbound doesn't have to be spammy. Generate cold messages that feel 1:1 using our intelligent LinkedIn cold message generator, built for SDRs and founders."
+      description="Scalable outbound doesn't have to be spammy. Generate hyper-personalized cold messages that feel 1:1 written — at scale. Built for SDRs, founders, and outbound teams."
       ctaText="Generate Cold Messages Free"
       supportingLine="More replies → More calls → More deals."
       problemSolution={{

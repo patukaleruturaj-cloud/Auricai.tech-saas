@@ -16,7 +16,7 @@ export default function LinkedInPersonalizationTool() {
     <SEOLandingPage
       subheadline="The End of Generic Templates"
       headline="LinkedIn Personalization Tool"
-      description="Stop guessing what to say. Our LinkedIn personalization tool performs deep research on your prospects to find the specific details that build trust and drive high-value conversations."
+      description="Stop guessing what to say. Our LinkedIn personalization tool generates hyper-personalized messages that feel 1:1 written — based on deep profile research."
       ctaText="Personalize Your Messages"
       supportingLine="Because generic outreach is dead."
       problemSolution={{

@@ -87,7 +87,7 @@ export default function Home() {
             </span>
           </h1>
           <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", maxWidth: "540px", lineHeight: "1.6" }}>
-            Write personalized LinkedIn openers in seconds. No templates. No generic outreach. Just results.
+            Generate hyper-personalized LinkedIn openers that feel 1:1 written — at scale. Built for SDRs, founders, and outbound teams who care about reply rates.
           </p>
 
           <div className="hero-cta-group" style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>

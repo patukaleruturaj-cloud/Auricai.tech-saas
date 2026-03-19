@@ -16,7 +16,7 @@ export default function B2BLinkedInLeadGeneration() {
     <SEOLandingPage
       subheadline="Your Pipeline on Autopilot"
       headline="B2B LinkedIn Lead Generation"
-      description="Turn LinkedIn into a consistent revenue engine. AuricAI helps B2B sales teams find, research, and book meetings with their ideal prospects using intelligent, personalized outreach."
+      description="Turn LinkedIn into a consistent revenue engine. AuricAI helps B2B sales teams generate hyper-personalized outreach that feels 1:1 written — for every prospect."
       ctaText="Start Generating Leads"
       supportingLine="More replies → More calls → More deals."
       problemSolution={{
