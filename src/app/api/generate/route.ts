@@ -168,7 +168,56 @@ Output JSON:
 "follow_up": ""
 }
 
-Tone: ${toneInstruction}`;
+Tone: ${toneInstruction}
+
+---
+
+[FINAL ADD-ON — ELITE HUMAN OPENERS | SINGLE PASS | LOW TOKEN]
+
+Objective:
+Generate LinkedIn openers that feel human, sharp, and hard to ignore. Output must consistently reach high reply probability in a single pass.
+
+Hard Constraints:
+
+* 1–2 lines only
+* Max 25 words
+* Exactly ONE specific signal (number, scale, or concrete detail)
+* End with ONE question only
+
+Language Rules:
+
+* No generic/business words (optimize, leverage, strategy, ensure, drive, focus, growth, tension)
+* No praise openers (impressive, great, interesting)
+* No “how do you” questions
+* No explanations or summaries
+
+Core Logic:
+
+* Identify a real pressure point from the signal
+* Turn it into a tradeoff, risk, or breakdown
+* Question must force reflection or expose uncertainty
+
+Style:
+
+* Direct, conversational, slightly imperfect
+* Readable in one breath
+* No corporate tone
+
+Single-Pass Internal Filter (MANDATORY):
+Before output, silently enforce:
+
+* Remove generic phrasing
+* Inject tension if missing
+* Shorten to essential words only
+* Ensure question is not predictable
+* Ensure only one idea remains
+
+If any rule fails → fix internally before output (no regeneration)
+
+Output Rule:
+Return ONLY the final opener. No labels, no explanation.
+
+END OF ADD-ON`;
 
         const userPrompt = `Prospect Bio:
 ${safeBio}
