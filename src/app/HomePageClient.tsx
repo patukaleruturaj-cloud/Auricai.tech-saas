@@ -68,6 +68,18 @@ export default function Home() {
           width: 100%;
           max-width: 640px;
           margin-left: auto;
+          animation: floatSmooth 7s ease-in-out infinite;
+        }
+        @keyframes floatSmooth {
+          0% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-8px) rotate(0.5deg);
+          }
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
         }
       `}} />
       {/* Hero Section */}
@@ -111,7 +123,6 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ y: -2, transition: { duration: 0.2 } }}
           className="hero-demo"
           style={{
             background: "rgba(18, 19, 24, 0.7)",
