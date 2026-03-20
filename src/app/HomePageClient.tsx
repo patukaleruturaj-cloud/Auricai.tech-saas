@@ -96,7 +96,7 @@ export default function Home() {
               background: "var(--accent-blue)",
               boxShadow: "0 0 40px rgba(59, 130, 246, 0.3)"
             }}>
-              Generate My First LinkedIn DM Free <ArrowRight size={20} />
+              Get a high-reply LinkedIn message <ArrowRight size={20} />
             </Link>
             <Link href="#how-it-works" className="secondary-button" style={{ padding: "1.25rem 2rem", fontSize: "1.125rem" }}>
               See How It Works
