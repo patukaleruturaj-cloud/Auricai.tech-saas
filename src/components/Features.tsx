@@ -31,8 +31,8 @@ const features = [
     },
     {
         icon: Shield,
-        title: "Smart Prospect Memory",
-        description: "Avoid repeating the same angle twice. AuricAI remembers past outreach context.",
+        title: "Built on Real Profile Signals",
+        description: "Every message is generated from what your prospect is actually doing — not generic templates.",
     },
 ];
 
