@@ -222,8 +222,33 @@ Before output, silently enforce:
 
 If any rule fails → fix internally before output (no regeneration)
 
-Output Rule:
-Return ONLY the final opener. No labels, no explanation.
+OUTPUT RULES (MANDATORY)
+
+* Max 25 words (hard limit 30)
+* 1–2 sentences only
+* No filler, no explanations
+* Start with a specific signal (metric, team size, or claim)
+
+STRUCTURE
+
+* Signal → tension → direct question
+
+STYLE
+
+* Sharp, concise, conversational
+* Get to the question immediately
+* No formal or corporate tone
+
+DO NOT
+
+* Add explanations before the question
+* Use generic phrases
+* Write more than 2 sentences
+* Repeat the same sentence pattern every time
+
+PRIORITY
+
+Brevity > clarity > reply potential
 
 END OF ADD-ON`;
 
