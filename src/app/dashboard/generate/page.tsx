@@ -442,6 +442,13 @@ export default function GeneratePage() {
                             rows={3}
                             placeholder="e.g. We help sales teams automate outbound workflows."
                         />
+                        <p style={{
+                            fontSize: "0.85rem",
+                            color: "var(--text-secondary)",
+                            marginTop: "8px",
+                        }}>
+                            Define your audience, outcome, and method precisely.
+                        </p>
                         <div style={{ marginTop: "12px", display: "flex", alignItems: "center", gap: "12px" }}>
                             <button
                                 onClick={handleSaveOffer}
