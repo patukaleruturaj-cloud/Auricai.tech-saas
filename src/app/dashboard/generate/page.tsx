@@ -20,6 +20,7 @@ export default function GeneratePage() {
         subjectLine: string;
         recommendedIndex?: number;
         recommendedReason?: string;
+        whyItWorks?: string[];          // 2-bullet explanation for ⭐ AI Recommended option
         credits?: { allowed: boolean; credits_remaining: number };
     } | null>(null);
     const [error, setError] = useState("");
@@ -910,6 +911,32 @@ export default function GeneratePage() {
                                         <Copy size={13} />
                                         {copiedIndex === idx ? "✓ Copied" : "Copy"}
                                     </button>
+
+                                    {/* ─── Why this works (AI Recommended only) ─── */}
+                                    {dm.is_best && result.whyItWorks && result.whyItWorks.length === 2 && (
+                                        <div style={{ marginTop: "16px" }}>
+                                            <div style={{
+                                                fontSize: "0.7rem",
+                                                textTransform: "uppercase",
+                                                letterSpacing: "0.06em",
+                                                color: "rgba(255,255,255,0.35)",
+                                                marginBottom: "6px",
+                                                fontWeight: "600",
+                                            }}>
+                                                Why this works
+                                            </div>
+                                            {result.whyItWorks.map((bullet, i) => (
+                                                <div key={i} style={{
+                                                    fontSize: "0.8rem",
+                                                    lineHeight: 1.5,
+                                                    color: "rgba(255,255,255,0.45)",
+                                                    marginBottom: i === 0 ? "2px" : 0,
+                                                }}>
+                                                    • {bullet}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}

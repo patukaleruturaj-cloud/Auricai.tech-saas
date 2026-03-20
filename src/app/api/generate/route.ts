@@ -159,14 +159,22 @@ Rules:
 Output JSON:
 {
 "options": [
+{ "text": "", "score": 0, "is_best": true, "why_it_works": ["<6-10 word bullet referencing real input signal>", "<6-10 word bullet describing psychological trigger used>"] },
 { "text": "", "score": 0, "is_best": false },
-{ "text": "", "score": 0, "is_best": true },
 { "text": "", "score": 0, "is_best": false }
 ],
 "reasoning": "",
 "subject": "",
 "follow_up": ""
 }
+
+why_it_works RULES (MANDATORY):
+- Include ONLY on the single highest-scoring option (is_best: true)
+- Exactly 2 strings, each 6-10 words
+- Bullet 1: reference a real signal from the input (team size, industry, company claim, specific number, etc.)
+- Bullet 2: name the psychological trigger used (tension, curiosity, bottleneck, contrast, uncertainty, etc.)
+- FORBIDDEN words: engaging, powerful, effective, great
+- Be specific. No generic wording.
 
 Tone: ${toneInstruction}
 
@@ -301,38 +309,62 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                         throw new Error("AI returned malformed JSON structure for openers.");
                     }
 
-                    // Format checking and cleaning
-                    const formattedOpeners = openersList.slice(0, 3).map((item: any) => {
-                        // Handle case where AI returns array of strings despite prompt
+                    // ─── PART 1: CLEAN INPUT (NO TRUST IN AI FLAGS) ───
+                    const cleanedOpeners = openersList.slice(0, 3).map((item: any) => {
                         if (typeof item === 'string') {
                             const text = item.length > 220 ? item.substring(0, 217) + "..." : item;
-                            return { text, score: 70, is_best: false };
+                            return {
+                                text,
+                                score: 70,
+                                is_best: false,
+                                why_it_works: undefined
+                            };
                         }
 
-                        // Handle correct object case
-                        const text = String(item.text || "").length > 220
-                            ? String(item.text).substring(0, 217) + "..."
-                            : String(item.text || "");
-
-                        // score: AI now returns 0–100; legacy fallback 0–10 → multiply by 10
-                        let score = typeof item.score === 'number' ? item.score : 70;
-                        if (score <= 10) score = score * 10;
-                        score = Math.max(0, Math.min(100, Math.round(score)));
-
                         return {
-                            text,
-                            score,
-                            is_best: !!item.is_best,
+                            text: (item.text || "").trim(),
+                            score: Number(item.score) || 70,
+                            is_best: false,                 // IGNORE AI VALUE
+                            why_it_works: item.why_it_works // DO NOT default to []
                         };
                     });
 
-                    // Sort by score DESC — best option first
-                    const sorted = [...formattedOpeners].sort((a, b) => b.score - a.score);
-                    // Ensure only the top-scored item is marked is_best
-                    sorted.forEach((item, idx) => { item.is_best = idx === 0; });
+                    // ─── PART 2: FORCE SINGLE BEST OPTION ───
+                    const bestIndex = cleanedOpeners.reduce((maxIdx, curr, idx, arr) =>
+                        curr.score > arr[maxIdx].score ? idx : maxIdx,
+                        0
+                    );
+
+                    const normalized = cleanedOpeners.map((opt, idx) => ({
+                        ...opt,
+                        is_best: idx === bestIndex
+                    }));
+
+                    // ─── PART 3: SORT AFTER NORMALIZATION ───
+                    const sorted = [...normalized].sort((a, b) => b.score - a.score);
+
+                    // ─── PART 4: EXTRACT WHY_IT_WORKS FROM CORRECT OPTION ───
+                    const bestOption = sorted[0];
+                    const whyItWorksRaw = bestOption?.why_it_works;
+
+                    // ─── PART 5: STRICT VALIDATION (MANDATORY) ───
+                    if (
+                        !Array.isArray(whyItWorksRaw) ||
+                        whyItWorksRaw.length !== 2 ||
+                        whyItWorksRaw.some((b: any) => {
+                            if (typeof b !== "string") return true;
+                            const wordCount = b.trim().split(/\s+/).length;
+                            return wordCount < 6 || wordCount > 10;
+                        })
+                    ) {
+                        throw new Error("Invalid why_it_works format: must be 2 strings, 6-10 words each.");
+                    }
+
+                    const whyItWorks: string[] = whyItWorksRaw.map((b: string) => b.trim());
 
                     result = {
                         openers: sorted,
+                        whyItWorks,                                 // explanation for the now-guaranteed best option
                         recommendedIndex: 0, // sorted[0] is always best
                         recommendedReason: parsed.reasoning || "Best chance of reply based on personalization and curiosity.",
                         followUp: parsed.follow_up || parsed.followUp || "Just checking in to see if you saw my previous message.",
@@ -399,6 +431,7 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
         // ─── STEP 8: RETURN RESPONSE ───
         return NextResponse.json({
             ...result,
+            whyItWorks: result.whyItWorks, // 2-bullet explanation for ⭐ AI Recommended option
             credits: {
                 allowed: deductResult.credits_remaining > 0,
                 credits_remaining: deductResult.credits_remaining,
