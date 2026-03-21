@@ -1,13 +1,7 @@
 // ─── Gemini 2.5 Flash — Direct REST API ───
 // Replaces @google/generative-ai SDK with direct fetch() for full control.
-
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_ENDPOINT =
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
-
-if (!GEMINI_API_KEY) {
-    console.warn("[ai-provider] WARNING: GEMINI_API_KEY is missing from environment variables");
-}
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 export interface AIOptions {
     temperature?: number;
@@ -17,12 +11,14 @@ export interface AIOptions {
 }
 
 export async function generateWithAI(prompt: string, options?: AIOptions): Promise<string> {
-    console.log("GENERATION STARTED");
-    console.log("Using Gemini 2.5 Flash model (direct REST API)");
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     if (!GEMINI_API_KEY) {
+        console.warn("[ai-provider] WARNING: GEMINI_API_KEY is missing from environment variables");
         throw new Error("GEMINI_API_KEY is not configured");
     }
+
+    console.log("GENERATION STARTED");
 
     const requestBody = {
         contents: [

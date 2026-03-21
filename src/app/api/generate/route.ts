@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { generateWithAI } from "@/lib/ai-provider";
 import { ensureUserProvisioned, deductCredit, refundCredit, getWallet } from "@/lib/credits";
+import { humanizeMessage } from "@/lib/humanizer";
 
 // ─── RATE LIMITING ───
 // In-memory sliding window: 10 requests per 60 seconds per user
@@ -387,12 +388,20 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
 
                     const whyItWorks: string[] = whyItWorksRaw.map((b: string) => b.trim());
 
+                    // ─── PART 6: APPLY STRICT HUMANIZATION (STRICT POST-PROCESSING) ───
+                    const humanizedOpeners = await Promise.all(
+                        sorted.map(async (opener) => ({
+                            ...opener,
+                            text: await humanizeMessage(opener.text, { bio: safeBio, offer: safeOffer })
+                        }))
+                    );
+
                     result = {
-                        openers: sorted,
+                        openers: humanizedOpeners,
                         whyItWorks,                                 // explanation for the now-guaranteed best option
                         recommendedIndex: 0, // sorted[0] is always best
                         recommendedReason: parsed.reasoning || "Best chance of reply based on personalization and curiosity.",
-                        followUp: parsed.follow_up || parsed.followUp || "Just checking in to see if you saw my previous message.",
+                        followUp: await humanizeMessage(parsed.follow_up || parsed.followUp || "Just checking in to see if you saw my previous message.", { bio: safeBio, offer: safeOffer }),
                         subjectLine: parsed.subject || parsed.subjectLine || "Quick question"
                     };
 

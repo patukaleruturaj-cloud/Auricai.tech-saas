@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateWithAI } from "@/lib/ai-provider";
+import { humanizeMessage } from "@/lib/humanizer";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -212,7 +213,14 @@ Generate exactly 2 natural follow-up variations. Return ONLY valid JSON.`;
                     throw new Error("Character limit exceeded (max 200)");
                 }
 
-                result = validFollowups.slice(0, 2);
+                // ─── PART 3: APPLY STRICT HUMANIZATION ───
+                const humanizedFollowups = await Promise.all(
+                    validFollowups.slice(0, 2).map(async (msg) => 
+                        await humanizeMessage(msg, { bio, offer })
+                    )
+                );
+
+                result = humanizedFollowups;
                 break;
 
             } catch (err: any) {
