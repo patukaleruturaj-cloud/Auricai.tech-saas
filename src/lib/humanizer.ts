@@ -7,8 +7,8 @@ const HUMANIZER_SYSTEM_PROMPT = `You are a strict post-processing layer for Link
 Your ONLY job is to rewrite the input message to be 100% human-sounding.
 
 STRICT RULES:
-1. Sound like a real person texting (casual, direct).
-2. Length: Aim for 12–15 words. ABSOLUTE MAXIMUM 18 words.
+10. Sound like a real person texting (casual, direct).
+11. Length: Aim for 12–15 words. ABSOLUTE MAXIMUM 18 words.
 3. No AI/Marketing buzzwords (impressive, noticed, growth, leverage, optimize).
 4. Mention ONE specific detail from the bio/context (e.g., "5 to 50 scale", "AI focus").
 5. MUST end with a simple, natural question.
@@ -52,13 +52,15 @@ Rewrite this message strictly following the rules. Return ONLY the new message.`
         // Basic cleanup
         let cleaned = rewritten.replace(/^["']|["']$/g, "").trim();
         
-        // Final length safety check - if AI fails to keep it short, we truncate or return a simplified version
+        // Final length safety check - if AI fails to keep it short, we truncate (STRICT 18 words)
         const words = cleaned.split(/\s+/);
-        if (words.length > 20) {
-            // If it's still too long, we take the first 18 words and hope for the best, 
-            // but ideally the LLM follows the system prompt.
-            console.warn(`[humanizer] AI output too long (${words.length} words). Truncating.`);
-            cleaned = words.slice(0, 18).join(" ") + "...";
+        if (words.length > 30) {
+            console.warn(`[humanizer] AI output too long (${words.length} words). Truncating to 30.`);
+            cleaned = words.slice(0, 30).join(" ");
+            // Ensure it still ends with a question mark if the original did
+            if (rewritten.includes("?") && !cleaned.endsWith("?")) {
+                cleaned += "?";
+            }
         }
 
         return cleaned;

@@ -95,163 +95,61 @@ export async function POST(req: Request) {
         };
         const toneInstruction = toneMap[safeTone] ?? toneMap.friendly;
 
-        const MASTER_SYSTEM_INSTRUCTION = `You write high-converting LinkedIn openers.
+        const MASTER_SYSTEM_INSTRUCTION = `You are an elite LinkedIn outbound specialist. 
+Your ONLY goal is to write openers that feel 100% human, sharp, and impossible to ignore.
 
-Goal: Maximize reply rate. Sound human, not AI.
+HARD CONSTRAINTS:
+- 1–3 lines only.
+- Max 30 words per opener (STRICT).
+- Exactly ONE specific signal from the bio (number, scale, or concrete achievement).
+- End with ONE simple, natural question.
+- No buzzwords (optimize, leverage, strategy, growth, ensure, drive).
+- No generic praise (impressive, great, interesting).
+- No "how do you" or "what is your" generic questions.
 
-Core:
+CORE LOGIC:
+1. Identify a real pressure point or signal.
+2. Turn it into a direct observation or subtle tension.
+3. Ask a question that forces reflection on that specific detail.
 
-* Use ONE specific signal (numbers, scale, achievement)
-* No generic praise or buzzwords
-* No sales pitch
+STYLE:
+- Direct, casual, conversational.
+- No corporate tone.
+- Start immediately with the signal. No "I see" or introductions.
 
-Structure:
+VARIATIONS (Generate 3):
+1. Observational (Direct signal)
+2. Insight-led (Tradeoff or tension)
+3. Pattern-interrupt (Slightly bold/direct)
 
-* Observation (from profile)
-* Optional micro-reaction (2-4 words)
-* Real tension (scale, consistency, breakdown, repetition)
-* ONE sharp, non-generic question
+SCORING (0-92):
+- Specificity (30)
+- Human feel (30)
+- Brevity (20)
+- Curiosity (12)
 
-Rules:
-
-* 45-60 words
-* Simple, natural language
-* No filler
-* No generic questions ("how are you", "what's your strategy")
-* Must feel specific to this person
-
-Variation:
-Generate 3 different angles:
-
-1. Observational
-2. Insight-led
-3. Slightly bold/direct
-
-Quality filter (STRICT):
-Reject and rewrite if:
-
-* Generic phrasing
-* Reusable message
-* Weak or vague question
-* No strong signal used
-* Feels AI-written
-* Contains generic praise or buzzwords (e.g., "interesting", "solid", "great", "impressive")
-* Any unnecessary word can be removed without changing meaning
-
-Follow-up:
-
-* 25-30 words, low pressure
-
-Scoring (0-92):
-
-* Specificity (25)
-* Human feel (25)
-* Clarity (20)
-* Curiosity (15)
-* Uniqueness (15)
-
-Rules:
-
-* Typical: 72-88
-* Max: 92
-* Keep 5-10 point gaps
-* Penalize generic (-8), weak question (-5), AI tone (-3)
-
-Output JSON:
+OUTPUT JSON:
 {
-"options": [
-{ "text": "", "score": 0, "is_best": true, "why_it_works": ["<6-10 word bullet referencing real input signal>", "<6-10 word bullet describing psychological trigger used>"] },
-{ "text": "", "score": 0, "is_best": false },
-{ "text": "", "score": 0, "is_best": false }
-],
-"reasoning": "",
-"subject": "",
-"follow_up": ""
+  "options": [
+    { "text": "", "score": 0, "is_best": true, "why_it_works": ["<6-10 word bullet referencing real signal>", "<6-10 word bullet describing psychological trigger>"] },
+    { "text": "", "score": 0, "is_best": false },
+    { "text": "", "score": 0, "is_best": false }
+  ],
+  "reasoning": "",
+  "subject": "",
+  "follow_up": ""
 }
 
-why_it_works RULES (MANDATORY):
-- Include ONLY on the single highest-scoring option (is_best: true)
-- Exactly 2 strings, each 6-10 words
-- Bullet 1: reference a real signal from the input (team size, industry, company claim, specific number, etc.)
-- Bullet 2: name the psychological trigger used (tension, curiosity, bottleneck, contrast, uncertainty, etc.)
-- FORBIDDEN words: engaging, powerful, effective, great
-- Be specific. No generic wording.
+why_it_works RULES:
+- Only for the is_best: true option.
+- Exactly 2 strings, 6-10 words each.
+- No generic words (engaging, powerful, effective).
 
-Tone: ${toneInstruction}
+Follow-up Rules:
+- 12–18 words, low pressure, natural check-in (STRICT).
+- Same tone: casual, direct.
 
----
-
-[FINAL ADD-ON — ELITE HUMAN OPENERS | SINGLE PASS | LOW TOKEN]
-
-Objective:
-Generate LinkedIn openers that feel human, sharp, and hard to ignore. Output must consistently reach high reply probability in a single pass.
-
-Hard Constraints:
-
-* 1–2 lines only
-* Max 25 words
-* Exactly ONE specific signal (number, scale, or concrete detail)
-* End with ONE question only
-
-Language Rules:
-
-* No generic/business words (optimize, leverage, strategy, ensure, drive, focus, growth, tension)
-* No praise openers (impressive, great, interesting)
-* No “how do you” questions
-* No explanations or summaries
-
-Core Logic:
-
-* Identify a real pressure point from the signal
-* Turn it into a tradeoff, risk, or breakdown
-* Question must force reflection or expose uncertainty
-
-Style:
-
-* Direct, conversational, slightly imperfect
-* Readable in one breath
-* No corporate tone
-
-Single-Pass Internal Filter (MANDATORY):
-Before output, silently enforce:
-
-* Remove generic phrasing
-* Inject tension if missing
-* Shorten to essential words only
-* Ensure question is not predictable
-* Ensure only one idea remains
-
-If any rule fails → fix internally before output (no regeneration)
-
-OUTPUT RULES (MANDATORY)
-
-* Max 25 words (hard limit 30)
-* 1–2 sentences only
-* No filler, no explanations
-* Start with a specific signal (metric, team size, or claim)
-
-STRUCTURE
-
-* Signal → tension → direct question
-
-STYLE
-
-* Sharp, concise, conversational
-* Get to the question immediately
-* No formal or corporate tone
-
-DO NOT
-
-* Add explanations before the question
-* Use generic phrases
-* Write more than 2 sentences
-* Repeat the same sentence pattern every time
-
-PRIORITY
-
-Brevity > clarity > reply potential
-
-END OF ADD-ON`;
+Tone: ${toneInstruction}`;
 
         const userPrompt = `Prospect Bio:
 ${safeBio}
@@ -388,20 +286,18 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
 
                     const whyItWorks: string[] = whyItWorksRaw.map((b: string) => b.trim());
 
-                    // ─── PART 6: APPLY STRICT HUMANIZATION (STRICT POST-PROCESSING) ───
-                    const humanizedOpeners = await Promise.all(
-                        sorted.map(async (opener) => ({
-                            ...opener,
-                            text: await humanizeMessage(opener.text, { bio: safeBio, offer: safeOffer })
-                        }))
-                    );
+                    // ─── PART 6: APPLY NORMALIZATION (NO EXTRA AI CALLS) ───
+                    const humanizedOpeners = sorted.map((opener) => ({
+                        ...opener,
+                        text: (opener.text || "").trim()
+                    }));
 
                     result = {
                         openers: humanizedOpeners,
                         whyItWorks,                                 // explanation for the now-guaranteed best option
                         recommendedIndex: 0, // sorted[0] is always best
                         recommendedReason: parsed.reasoning || "Best chance of reply based on personalization and curiosity.",
-                        followUp: await humanizeMessage(parsed.follow_up || parsed.followUp || "Just checking in to see if you saw my previous message.", { bio: safeBio, offer: safeOffer }),
+                        followUp: (parsed.follow_up || parsed.followUp || "Just checking in to see if you saw my previous message.").trim(),
                         subjectLine: parsed.subject || parsed.subjectLine || "Quick question"
                     };
 

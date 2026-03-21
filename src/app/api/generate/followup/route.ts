@@ -74,7 +74,7 @@ LANGUAGE RULES:
 
 OUTPUT RULES:
 - Return exactly 2 variations
-- 25–30 words per message
+- 12–18 words per message (STRICT)
 - One short paragraph each
 - Must end with a natural question
 - No emojis
@@ -213,14 +213,8 @@ Generate exactly 2 natural follow-up variations. Return ONLY valid JSON.`;
                     throw new Error("Character limit exceeded (max 200)");
                 }
 
-                // ─── PART 3: APPLY STRICT HUMANIZATION ───
-                const humanizedFollowups = await Promise.all(
-                    validFollowups.slice(0, 2).map(async (msg) => 
-                        await humanizeMessage(msg, { bio, offer })
-                    )
-                );
-
-                result = humanizedFollowups;
+                // ─── PART 3: APPLY NORMALIZATION (NO EXTRA AI CALLS) ───
+                result = validFollowups.slice(0, 2).map(msg => msg.trim());
                 break;
 
             } catch (err: any) {

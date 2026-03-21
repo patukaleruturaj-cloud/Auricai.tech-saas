@@ -68,7 +68,9 @@ export default function SEOLandingPage({
   const demoOpeners = examples.length > 0
     ? examples.map(ex => ex.message)
     : [
-        "Hey Sarah — noticed TechCorp expanding the sales team recently. Curious if outbound personalization is something your team is experimenting with this quarter?"
+        "Saw TechCorp's sales team growing. Is personalization still the biggest bottleneck for your SDRs?",
+        "Scaled from 5 to 50 hires last year—that's intense. How's the outreach volume lately?",
+        "Resonated with your 'empathy-led sales' post. Do you think that scales without losing quality?"
       ];
 
   // Hero left-side analyzing toggle  
