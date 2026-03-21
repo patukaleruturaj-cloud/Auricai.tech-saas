@@ -41,6 +41,17 @@ If conflict → follow this order.
 
 ---
 
+FOLLOW-UP LAYER (PRIORITY):
+
+- Keep length 1–2 lines  
+- Reference prior message (maintain context)  
+- Introduce NEW angle/insight (no repetition)  
+- Ask one simple, specific question  
+- Remove generic nudges (“just checking in”, etc.)  
+- No pitch  
+
+---
+
 ANTI-GENERIC (HARD BAN):
 
 Do NOT use:
@@ -136,9 +147,9 @@ LANGUAGE:
 
 OUTPUT:
 
-- exactly 3 messages
-- 14–22 words each
-- each ends with a question
+- exactly 1 follow-up message
+- 14–22 words
+- ends with a simple, specific question
 - no emojis
 
 ---
@@ -157,11 +168,7 @@ Reject and rewrite ONCE if:
 FORMAT:
 
 {
-  "openers": [
-    "message 1",
-    "message 2",
-    "message 3"
-  ]
+  "followup": "message content here"
 }
 
 Tone: Friendly (warm, conversational)`;
@@ -178,13 +185,12 @@ ${offer}
 Original Message Sent:
 ${originalMessage}
 
-Generate exactly 3 variations. Return ONLY valid JSON.`;
+Generate exactly 1 follow-up variation following the FOLLOW-UP LAYER rules. Return ONLY valid JSON.`;
 
         const fullPrompt = MASTER_SYSTEM_INSTRUCTION + "\n\n" + userPrompt;
 
         const FALLBACK_FOLLOWUPS = [
-            "Hey — hope you're having a good week. Not sure if my last note got buried, but curious if you've had a chance to look at how we're helpng teams like yours?",
-            "Wanted to float this to the top of your inbox. Curious if you're open to a quick swap of ideas on scaling your outbound efforts?"
+            "Hey — hope you're having a good week. Not sure if my last note got buried, but curious if you've had a chance to look at how we're helpng teams like yours?"
         ];
 
         let result;
@@ -199,7 +205,7 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                 const rawResponse = await generateWithAI(fullPrompt, {
                     temperature: 0.7,
                     top_p: 0.9,
-                    maxOutputTokens: 2048,
+                    maxOutputTokens: 1024,
                     responseMimeType: "application/json",
                 });
 
@@ -226,13 +232,20 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                     }
                 }
 
-                const openers = parsed.openers || parsed.followups || parsed.options;
-                if (!openers || !Array.isArray(openers) || openers.length === 0) {
-                    throw new Error("Malformed JSON structure");
+                // Handle both {"followup": "..."} and {"openers": ["..."]} or {"options": ["..."]} formats
+                const singleMsg = parsed.followup || (Array.isArray(parsed.openers) ? parsed.openers[0] : null) || (Array.isArray(parsed.options) ? parsed.options[0] : null);
+                
+                if (!singleMsg) {
+                    throw new Error("Malformed JSON structure: no followup found");
                 }
 
-                // Map to strings and return
-                result = openers.slice(0, 3).map(msg => (typeof msg === "string" ? msg : msg.text || "").trim());
+                const msgText = typeof singleMsg === "string" ? singleMsg : singleMsg.text || "";
+                if (!msgText) {
+                    throw new Error("Empty message content");
+                }
+
+                // Return as an array with 1 element for UI compatibility
+                result = [msgText.trim()];
                 break;
 
             } catch (err: any) {
