@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateWithAI } from "@/lib/ai-provider";
+import { globalLimit, getUserLimit } from "@/lib/ai-limiter";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -62,9 +63,13 @@ ${bio.substring(0, 1500)}`;
 
         // ─── GENERATE AI OUTPUT ───
         try {
-            const rawResponse = await generateWithAI(fullPrompt, {
-                temperature: 0.3,
-            });
+            const rawResponse = await globalLimit(() => 
+                getUserLimit(clerkId)(() => 
+                    generateWithAI(fullPrompt, {
+                        temperature: 0.3,
+                    })
+                )
+            );
 
             if (rawResponse && typeof rawResponse === "string") {
                 const cleaned = rawResponse

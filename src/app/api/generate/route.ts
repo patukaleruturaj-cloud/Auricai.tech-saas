@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { generateWithAI } from "@/lib/ai-provider";
+import { globalLimit, getUserLimit } from "@/lib/ai-limiter";
 import { ensureUserProvisioned, deductCredit, refundCredit, getWallet } from "@/lib/credits";
 import { humanizeMessage } from "@/lib/humanizer";
 
@@ -287,12 +288,16 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                     if (attempts === 2) await sleep(1500);
 
                     console.log("GENERATION STARTED");
-                    const rawResponse = await generateWithAI(fullPrompt, {
-                        temperature: 0.7,
-                        top_p: 0.9,
-                        maxOutputTokens: 4096,
-                        responseMimeType: "application/json",
-                    });
+                    const rawResponse = await globalLimit(() => 
+                        getUserLimit(clerkId)(() => 
+                            generateWithAI(fullPrompt, {
+                                temperature: 0.7,
+                                top_p: 0.9,
+                                maxOutputTokens: 4096,
+                                responseMimeType: "application/json",
+                            })
+                        )
+                    );
 
                     // Part 2: Fix JSON Parsing Errors - Robust Cleaning
                     const cleaned = rawResponse

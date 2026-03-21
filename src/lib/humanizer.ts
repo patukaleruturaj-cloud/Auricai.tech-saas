@@ -1,4 +1,5 @@
 import { generateWithAI } from "./ai-provider";
+import { globalLimit } from "./ai-limiter";
 
 /**
  * Strict ADD-ON RULES for humanizing AI output.
@@ -43,11 +44,13 @@ Original Message to Rewrite:
 Rewrite this message strictly following the rules. Return ONLY the new message.`;
 
     try {
-        const rewritten = await generateWithAI(HUMANIZER_SYSTEM_PROMPT + "\n\n" + userPrompt, {
-            temperature: 0.6,
-            top_p: 0.9,
-            maxOutputTokens: 100,
-        });
+        const rewritten = await globalLimit(() => 
+            generateWithAI(HUMANIZER_SYSTEM_PROMPT + "\n\n" + userPrompt, {
+                temperature: 0.6,
+                top_p: 0.9,
+                maxOutputTokens: 100,
+            })
+        );
 
         // Basic cleanup
         let cleaned = rewritten.replace(/^["']|["']$/g, "").trim();

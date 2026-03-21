@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { generateWithAI } from "@/lib/ai-provider";
+import { globalLimit, getUserLimit } from "@/lib/ai-limiter";
 import { humanizeMessage } from "@/lib/humanizer";
 
 export const dynamic = "force-dynamic";
@@ -202,12 +203,18 @@ Generate exactly 1 follow-up variation following the FOLLOW-UP LAYER rules. Retu
                 console.log("GENERATION STARTED (Followup)");
                 console.log("AI_PROMPT:", fullPrompt);
 
-                const rawResponse = await generateWithAI(fullPrompt, {
-                    temperature: 0.7,
-                    top_p: 0.9,
-                    maxOutputTokens: 1024,
-                    responseMimeType: "application/json",
-                });
+                const clerkId = session.userId || "anonymous";
+
+                const rawResponse = await globalLimit(() => 
+                    getUserLimit(clerkId)(() => 
+                        generateWithAI(fullPrompt, {
+                            temperature: 0.7,
+                            top_p: 0.9,
+                            maxOutputTokens: 1024,
+                            responseMimeType: "application/json",
+                        })
+                    )
+                );
 
                 console.log("AI_RAW_RESPONSE:", rawResponse);
 
