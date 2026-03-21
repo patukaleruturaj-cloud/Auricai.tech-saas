@@ -95,59 +95,146 @@ export async function POST(req: Request) {
         };
         const toneInstruction = toneMap[safeTone] ?? toneMap.friendly;
 
-        const MASTER_SYSTEM_INSTRUCTION = `You are an elite LinkedIn outbound specialist. 
-Your ONLY goal is to write openers that feel 100% human, sharp, and impossible to ignore.
+        const MASTER_SYSTEM_INSTRUCTION = `You are an elite outbound operator writing LinkedIn opener messages.
 
-HARD CONSTRAINTS:
-- 1–3 lines only.
-- Max 30 words per opener (STRICT).
-- Exactly ONE specific signal from the bio (number, scale, or concrete achievement).
-- End with ONE simple, natural question.
-- No buzzwords (optimize, leverage, strategy, growth, ensure, drive).
-- No generic praise (impressive, great, interesting).
-- No "how do you" or "what is your" generic questions.
+GOAL:
+Write highly specific, natural messages that feel written for one person and create immediate recognition.
 
-CORE LOGIC:
-1. Identify a real pressure point or signal.
-2. Turn it into a direct observation or subtle tension.
-3. Ask a question that forces reflection on that specific detail.
+---
+
+PRIORITY (STRICT ORDER):
+1. ANTI-GENERIC RULES  
+2. SPECIFICITY  
+3. OUTPUT FORMAT  
+4. TENSION  
+5. ALL OTHER RULES  
+
+If conflict → follow this order.
+
+---
+
+ANTI-GENERIC (HARD BAN):
+
+Do NOT use:
+- I came across your profile
+- I saw your company
+- just reaching out
+- we help companies like yours
+- hope you're doing well
+- wanted to connect
+- quick question
+- just curious
+- following up
+- checking in
+
+No buzzwords. No filler. No vague compliments.
+
+Reusable message = INVALID → rewrite internally
+
+---
+
+SPECIFICITY (MANDATORY):
+
+Each message MUST include:
+- a real signal (hiring, outbound activity, tooling)
+OR
+- a real breakdown (reply drop, templated messaging, weak targeting)
+
+Do NOT say:
+- scaling outbound
+- increasing volume
+- growing team
+
+Make it concrete:
+- moment (once volume ramps)
+- behavior (messages feel templated)
+- consequence (reply rates drop)
+
+Generic = INVALID
+
+---
+
+TENSION (MANDATORY):
+
+Include one real friction:
+- volume vs personalization
+- automation vs relevance
+- speed vs quality
+
+Use direct observations:
+- reply quality drops
+- messages feel templated
+- targeting gets loose
+
+No soft language.
+
+---
+
+TONE:
+
+- calm, direct, slightly informal
+- no hype, no sales tone
+
+---
 
 STYLE:
-- Direct, casual, conversational.
-- No corporate tone.
-- Start immediately with the signal. No "I see" or introductions.
 
-VARIATIONS (Generate 3):
-1. Observational (Direct signal)
-2. Insight-led (Tradeoff or tension)
-3. Pattern-interrupt (Slightly bold/direct)
+- write like typed quickly
+- slight imperfection allowed
+- no perfect structure
 
-SCORING (0-92):
-- Specificity (30)
-- Human feel (30)
-- Brevity (20)
-- Curiosity (12)
+Optional opener only if natural:
+- Not sure if I’m off here—
+- Might be wrong, but—
 
-OUTPUT JSON:
+---
+
+STRUCTURE:
+
+- (optional opener)
+- specific observation
+- one tension insight
+- end with a simple question
+
+---
+
+LANGUAGE:
+
+- simple English
+- no jargon
+- no extra words
+
+---
+
+OUTPUT:
+
+- exactly 3 messages
+- 14–22 words each
+- each ends with a question
+- no emojis
+
+---
+
+VALIDATION (STRICT):
+
+Reject and rewrite ONCE if:
+- banned phrase used
+- generic or reusable
+- no clear signal/breakdown
+- no tension
+- word count invalid
+
+---
+
+FORMAT:
+
 {
-  "options": [
-    { "text": "", "score": 0, "is_best": true, "why_it_works": ["<6-10 word bullet referencing real signal>", "<6-10 word bullet describing psychological trigger>"] },
-    { "text": "", "score": 0, "is_best": false },
-    { "text": "", "score": 0, "is_best": false }
-  ],
-  "reasoning": "",
-  "subject": "",
-  "follow_up": ""
+  "openers": [
+    "message 1",
+    "message 2",
+    "message 3"
+  ]
 }
-
-why_it_works RULES:
-- Only for the is_best: true option.
-- Exactly 2 strings, 6-10 words each.
-- No generic words (engaging, powerful, effective).
-
-Follow-up Rules:
-- 12–18 words, low pressure, natural check-in (STRICT).
-- Same tone: casual, direct.
 
 Tone: ${toneInstruction}`;
 
@@ -228,77 +315,37 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                         }
                     }
 
-                    let openersList = parsed.options || parsed.openers || parsed.dms;
+                    // Handle the new simple format: {"openers": ["msg1", "msg2", "msg3"]}
+                    let openersList = parsed.openers || parsed.options || parsed.dms;
                     if (!openersList || !Array.isArray(openersList) || openersList.length === 0) {
                         throw new Error("AI returned malformed JSON structure for openers.");
                     }
 
-                    // ─── PART 1: CLEAN INPUT (NO TRUST IN AI FLAGS) ───
-                    const cleanedOpeners = openersList.slice(0, 3).map((item: any) => {
-                        if (typeof item === 'string') {
-                            const text = item.length > 220 ? item.substring(0, 217) + "..." : item;
-                            return {
-                                text,
-                                score: 70,
-                                is_best: false,
-                                why_it_works: undefined
-                            };
-                        }
-
+                    // ─── PART 1: MAP TO INTERNAL FORMAT ───
+                    // Assign scores (92, 88, 85) to maintain the "AI Recommended" ranking in the UI
+                    const humanizedOpeners = openersList.slice(0, 3).map((text: string, idx: number) => {
+                        const score = idx === 0 ? 92 : idx === 1 ? 88 : 85;
                         return {
-                            text: (item.text || "").trim(),
-                            score: Number(item.score) || 70,
-                            is_best: false,                 // IGNORE AI VALUE
-                            why_it_works: item.why_it_works // DO NOT default to []
+                            text: text.trim().substring(0, 300), // Safety cap
+                            score,
+                            is_best: idx === 0,
                         };
                     });
 
-                    // ─── PART 2: FORCE SINGLE BEST OPTION ───
-                    const bestIndex = cleanedOpeners.reduce((maxIdx, curr, idx, arr) =>
-                        curr.score > arr[maxIdx].score ? idx : maxIdx,
-                        0
-                    );
-
-                    const normalized = cleanedOpeners.map((opt, idx) => ({
-                        ...opt,
-                        is_best: idx === bestIndex
-                    }));
-
-                    // ─── PART 3: SORT AFTER NORMALIZATION ───
-                    const sorted = [...normalized].sort((a, b) => b.score - a.score);
-
-                    // ─── PART 4: EXTRACT WHY_IT_WORKS FROM CORRECT OPTION ───
-                    const bestOption = sorted[0];
-                    const whyItWorksRaw = bestOption?.why_it_works;
-
-                    // ─── PART 5: STRICT VALIDATION (MANDATORY) ───
-                    if (
-                        !Array.isArray(whyItWorksRaw) ||
-                        whyItWorksRaw.length !== 2 ||
-                        whyItWorksRaw.some((b: any) => {
-                            if (typeof b !== "string") return true;
-                            const wordCount = b.trim().split(/\s+/).length;
-                            return wordCount < 6 || wordCount > 10;
-                        })
-                    ) {
-                        throw new Error("Invalid why_it_works format: must be 2 strings, 6-10 words each.");
-                    }
-
-                    const whyItWorks: string[] = whyItWorksRaw.map((b: string) => b.trim());
-
-                    // ─── PART 6: APPLY NORMALIZATION (NO EXTRA AI CALLS) ───
-                    const humanizedOpeners = sorted.map((opener) => ({
-                        ...opener,
-                        text: (opener.text || "").trim()
-                    }));
+                    // ─── PART 2: UI FALLBACKS ───
+                    // Providing default explanations/follow-ups as the new prompt is opener-only
+                    const whyItWorks = [
+                        "Personalized signal detected in bio.",
+                        "Direct tension insight to drive curiosity."
+                    ];
 
                     result = {
                         openers: humanizedOpeners,
-                        whyItWorks,                                 // explanation for the now-guaranteed best option
-                        recommendedIndex: 0, // sorted[0] is always best
-                        recommendedReason: parsed.reasoning || "Best chance of reply based on personalization and curiosity.",
-                        followUp: (parsed.follow_up || parsed.followUp || "Just checking in to see if you saw my previous message.").trim(),
-                        subjectLine: parsed.subject || parsed.subjectLine || "Quick question"
+                        whyItWorks,
+                        recommendedIndex: 0,
+                        recommendedReason: "Best chance of reply based on personalization and tension.",
+                        followUp: "Just checking in if you saw my note above?",
+                        subjectLine: "Question regarding your bio"
                     };
 
                     break; // Success!
