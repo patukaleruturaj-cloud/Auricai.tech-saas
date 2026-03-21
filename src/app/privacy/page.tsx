@@ -27,7 +27,7 @@ export default function PrivacyPage() {
             <section style={{ marginBottom: "2rem" }}>
                 <h2 style={{ fontSize: "1.5rem", fontWeight: "700", marginBottom: "1rem" }}>4. Contact Us</h2>
                 <p style={{ color: "var(--text-secondary)", lineHeight: "1.6" }}>
-                    If you have any questions about this Privacy Policy, please contact us at <a href="mailto:auricai155@gmail.com" style={{ color: "var(--text-secondary)", textDecoration: "underline" }}>support@auricai.tech</a>.
+                    If you have any questions about this Privacy Policy, please contact us at <a href="mailto:support@auricai.tech" style={{ color: "var(--text-secondary)", textDecoration: "underline" }}>support@auricai.tech</a>.
                 </p>
             </section>
         </LegalLayout>

@@ -32,9 +32,9 @@ export default function TermsPage() {
             </section>
 
             <section style={{ marginBottom: "2rem" }}>
-                <h2 style={{ fontSize: "1.5rem", fontWeight: "700", marginBottom: "1rem" }}>5. Limitation of Liability</h2>
+                <h2 style={{ fontSize: "1.5rem", fontWeight: "700", marginBottom: "1rem" }}>6. Contact</h2>
                 <p style={{ color: "var(--text-secondary)", lineHeight: "1.6" }}>
-                    AuricAI shall not be liable for any indirect, incidental, or consequential damages arising from your use of the service.
+                    If you have any questions regarding these Terms, please contact us at <a href="mailto:support@auricai.tech" style={{ color: "var(--text-secondary)", textDecoration: "underline" }}>support@auricai.tech</a>.
                 </p>
             </section>
         </LegalLayout>
