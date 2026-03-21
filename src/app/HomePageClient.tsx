@@ -102,6 +102,11 @@ export default function Home() {
             Generate hyper-personalized LinkedIn openers that feel 1:1 written — at scale. Built for SDRs, founders, and outbound teams who care about reply rates.
           </p>
 
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", opacity: 0.7, marginTop: "-1rem", marginBottom: "-1rem" }}>
+            Designed for desktop-based outbound workflows.
+          </p>
+
+
           <div className="hero-cta-group" style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
             <Link href="/sign-up" className="glow-button" style={{
               padding: "1.25rem 2rem", fontSize: "1.125rem", gap: "0.5rem",
