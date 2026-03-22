@@ -147,11 +147,36 @@ FOLLOW-UP RULES (MANDATORY):
 
 ---
 
+[WHY THIS WORKS — TOP OPENER]
+
+* Apply ONLY to AI Recommended opener
+* Output exactly 2 bullets
+* Each bullet:
+  • Reference a specific signal from the opener
+  • Explain why it increases reply likelihood
+* No generic phrasing
+* Max 15–20 words
+
+---
+
+[OPENER LENGTH CONTROL]
+
+* Rewrite final opener to 20–25 words ONLY
+* Keep:
+  • core signal
+  • key tension
+  • clear question
+* Remove filler, soft phrases, and repetition
+* If outside 20–25 words → regenerate
+
+---
+
 FORMAT:
 {
   "openers": ["msg 1", "msg 2", "msg 3"],
   "subject": "3–5 word subject",
-  "follow_up": "follow-up message content"
+  "follow_up": "follow-up message content",
+  "why_it_works": ["bullet 1", "bullet 2"]
 }
 
 Tone: ${toneInstruction}`;
@@ -256,14 +281,14 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
 
                     // ─── PART 2: UI FALLBACKS ───
                     // Providing default explanations/follow-ups as the new prompt is opener-only
-                    const whyItWorks = [
+                    const whyItWorksFallback = [
                         "Personalized signal detected in bio.",
                         "Direct tension insight to drive curiosity."
                     ];
 
                     result = {
                         openers: humanizedOpeners,
-                        whyItWorks,
+                        whyItWorks: parsed.why_it_works || whyItWorksFallback,
                         recommendedIndex: 0,
                         recommendedReason: "Best chance of reply based on personalization and tension.",
                         followUp: parsed.follow_up || "Just checking in—curious if the volume vs personalization trade-off I mentioned is hitting a wall lately?",
