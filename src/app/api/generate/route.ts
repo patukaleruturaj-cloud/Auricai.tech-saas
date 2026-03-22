@@ -159,15 +159,15 @@ FOLLOW-UP RULES (MANDATORY):
 
 ---
 
-[OPENER LENGTH CONTROL]
+[OPENER LENGTH CONTROL (ALL 3)]
 
-* Rewrite final opener to 20–25 words ONLY
-* Keep:
+* EACH of the 3 openers must be strictly 20–25 words ONLY
+* Each must include:
   • core signal
   • key tension
   • clear question
-* Remove filler, soft phrases, and repetition
-* If outside 20–25 words → regenerate
+* Remove filler, soft phrases, and repetition across all outputs
+* If any opener is outside 20–25 words → regenerate
 
 ---
 
