@@ -132,11 +132,6 @@ FOLLOW-UP RULES (MANDATORY):
 
 ---
 
-VALIDATION LOOP:
-Reject and rewrite if:
-- Generic, reusable, or uses banned phrases.
-- No real signal or context link.
-
 ---
 
 [HYPER-PERSONALIZATION ADD-ON]
