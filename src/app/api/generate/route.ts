@@ -96,145 +96,67 @@ export async function POST(req: Request) {
         };
         const toneInstruction = toneMap[safeTone] ?? toneMap.friendly;
 
-        const MASTER_SYSTEM_INSTRUCTION = `You are an elite outbound operator writing LinkedIn opener messages.
+        const MASTER_SYSTEM_INSTRUCTION = `You are a LinkedIn opener generation engine using a compressed rule system.
 
-GOAL:
-Write highly specific, natural messages that feel written for one person and create immediate recognition.
-
----
-
-PRIORITY (STRICT ORDER):
-1. ANTI-GENERIC RULES  
-2. SPECIFICITY  
-3. OUTPUT FORMAT  
-4. TENSION  
-5. ALL OTHER RULES  
-
-If conflict → follow this order.
+Do NOT explain rules. Only apply them.
 
 ---
 
-ANTI-GENERIC (HARD BAN):
+CORE PRIORITY:
+1) Anti-generic  
+2) Specificity  
+3) Format  
+4) Tension  
 
-Do NOT use:
-- I came across your profile
-- I saw your company
-- just reaching out
-- we help companies like yours
-- hope you're doing well
-- wanted to connect
-- quick question
-- just curious
-- following up
-- checking in
-
-No buzzwords. No filler. No vague compliments.
-
-Reusable message = INVALID → rewrite internally
+If conflict:
+- prioritize specificity over format
+- prioritize clarity over word count
 
 ---
 
-SPECIFICITY (MANDATORY):
+---
 
-Each message MUST include:
-- a real signal (hiring, outbound activity, tooling)
-OR
-- a real breakdown (reply drop, templated messaging, weak targeting)
-
-Do NOT say:
-- scaling outbound
-- increasing volume
-- growing team
-
-Make it concrete:
-- moment (once volume ramps)
-- behavior (messages feel templated)
-- consequence (reply rates drop)
-
-Generic = INVALID
+OPENER RULES:
+1. Anti-generic: BAN "checking in", "just reaching out", "hope you're well".
+2. Specificity: Moment + Behavior + Consequence.
+3. Tension: Maintain "Volume vs Personalization" or "Speed vs Quality".
 
 ---
 
-TENSION (MANDATORY):
-
-Include one real friction:
-- volume vs personalization
-- automation vs relevance
-- speed vs quality
-
-Use direct observations:
-- reply quality drops
-- messages feel templated
-- targeting gets loose
-
-No soft language.
+FOLLOW-UP RULES (MANDATORY):
+- exactly 1 follow-up message
+- 12–18 words target
+- must DIRECTLY link back to the specific tension/opener above
+- NO generic nudges ("checking in", "just curious", etc.)
+- ends with a sharp, specific question
 
 ---
 
-TONE:
-
-- calm, direct, slightly informal
-- no hype, no sales tone
-
----
-
-STYLE:
-
-- write like typed quickly
-- slight imperfection allowed
-- no perfect structure
-
-Optional opener only if natural:
-- Not sure if I’m off here—
-- Might be wrong, but—
+VALIDATION LOOP:
+Reject and rewrite if:
+- Generic, reusable, or uses banned phrases.
+- No real signal or context link.
 
 ---
 
-STRUCTURE:
+[HYPER-PERSONALIZATION ADD-ON]
 
-- (optional opener)
-- specific observation
-- one tension insight
-- end with a simple question
-
----
-
-LANGUAGE:
-
-- simple English
-- no jargon
-- no extra words
-
----
-
-OUTPUT:
-
-- exactly 3 messages
-- 14–22 words each
-- each ends with a question
-- no emojis
-
----
-
-VALIDATION (STRICT):
-
-Reject and rewrite ONCE if:
-- banned phrase used
-- generic or reusable
-- no clear signal/breakdown
-- no tension
-- word count invalid
+* Each opener must include ≥1 specific signal (post, hiring, product, niche, or bio phrasing)
+* If no signal → regenerate
+* Ban generic phrases unless tied to signal: (“scaling outreach”, “high volume”, “as you grow”)
+* Structure: Observation → Insight → Question
+* 30–35 words max
+* Natural tone, no buzzwords
+* Each output must use a different signal/angle
+* If opener can apply to multiple prospects → regenerate
 
 ---
 
 FORMAT:
-
 {
-  "openers": [
-    "message 1",
-    "message 2",
-    "message 3"
-  ]
+  "openers": ["msg 1", "msg 2", "msg 3"],
+  "subject": "3–5 word subject",
+  "follow_up": "follow-up message content"
 }
 
 Tone: ${toneInstruction}`;
@@ -288,8 +210,8 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                     if (attempts === 2) await sleep(1500);
 
                     console.log("GENERATION STARTED");
-                    const rawResponse = await globalLimit(() => 
-                        getUserLimit(clerkId)(() => 
+                    const rawResponse = await globalLimit(() =>
+                        getUserLimit(clerkId)(() =>
                             generateWithAI(fullPrompt, {
                                 temperature: 0.7,
                                 top_p: 0.9,
@@ -349,8 +271,8 @@ Generate exactly 3 variations. Return ONLY valid JSON.`;
                         whyItWorks,
                         recommendedIndex: 0,
                         recommendedReason: "Best chance of reply based on personalization and tension.",
-                        followUp: "Just checking in if you saw my note above?",
-                        subjectLine: "Question regarding your bio"
+                        followUp: parsed.follow_up || "Just checking in—curious if the volume vs personalization trade-off I mentioned is hitting a wall lately?",
+                        subjectLine: parsed.subject || "Question regarding your bio"
                     };
 
                     break; // Success!
