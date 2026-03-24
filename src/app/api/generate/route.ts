@@ -116,6 +116,9 @@ ATTENTION STANDARD:
 * The first line must create a pattern interrupt
 * Must make the reader pause, not scroll
 * Avoid neutral or agreeable openings
+* Prefer direct or slightly uncomfortable phrasing over safe wording
+* Avoid agreeable tone
+* Start with observation, not compliment
 
 HARD BANS:
 
@@ -171,8 +174,19 @@ FOLLOW-UP:
 
 * Exactly 1 message
 * 12–18 words
-* Continues same tension
-* Ends with sharp question
+* Continues the SAME tension
+* Ends with a sharp question
+* Must feel like continuation, not reminder
+* Ban: circling back, following up, quick follow-up, just checking
+* Must reference a specific detail from opener
+* Must introduce slight new angle or tension
+
+SUBJECT:
+
+* 3–5 words
+* Must create curiosity or tension
+* Must reflect a specific friction or tradeoff
+* Avoid generic phrases
 
 WHY IT WORKS (only opener 1):
 
