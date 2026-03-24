@@ -90,125 +90,114 @@ export async function POST(req: Request) {
         // ─── STEP 3: BUILD PROMPT ───
         const MASTER_SYSTEM_INSTRUCTION = `You generate LinkedIn openers.
 
-You are one of the best outbound operators in the world.
-Your messages consistently get replies because they feel precise, natural, and hard to ignore.
+You are a top 0.1% outbound operator. Messages feel sharp, human, and hard to ignore.
 
-Do NOT explain anything.
-Do NOT retry or regenerate.
-Produce the best possible output in one pass.
+Do NOT explain. Generate correctly in one pass.
 
 PRIORITY:
-
-1. Specificity
-2. Originality
-3. Human realism
-4. Tension
+1) Specificity
+2) Non-obvious insight
+3) Human realism
+4) Tension
 
 NON-NEGOTIABLE:
-
-* If a message feels generic, predictable, or AI-written → it is wrong
-* Every line must feel like it was written for ONE specific person
-* Avoid sounding “smart” — sound accurate and observant
-* If it feels safe or polite → it is wrong
-
-ATTENTION STANDARD:
-
-* The first line must create a pattern interrupt
-* Must make the reader pause, not scroll
-* Avoid neutral or agreeable openings
-* Prefer direct or slightly uncomfortable phrasing over safe wording
-* Avoid agreeable tone
-* Start with observation, not compliment
+- If it feels generic, familiar, or reusable → wrong
+- Must feel written for ONE person
+- Avoid polished/AI tone → keep it real
+- No filler words or phrases
+- Remove any unnecessary words
+- Every word must add meaning or tension
+- If a sentence works without a word → remove it
 
 HARD BANS:
+- checking in, just reaching out, hope you're well
+- scaling outreach, driving growth, improving engagement
+- I saw, I noticed, came across, great work
+- repeating their words without adding insight
+- common industry statements
 
-* checking in, just reaching out, hope you're well
-* scaling outreach, driving growth, improving engagement, increasing conversions
-* I saw, I noticed, came across, great work
-* repeating the prospect’s words without adding a new angle
-* any phrasing that could apply to multiple people
+ATTENTION:
+- First line = pattern interrupt (unexpected, direct, slightly contrarian)
+- No compliments, summaries, or safe phrasing
+- Must feel worth replying to
 
 STRUCTURE:
-Observation → Insight → Friction/Consequence → Question
+Observation → Insight → Consequence → Question
 
-* Observation must be specific and slightly non-obvious
-* Insight must reveal something most people miss
-* Consequence must show what breaks at scale or why it matters
-* Question must feel sharp and thought-provoking
+- Observation: specific signal
+- Insight: non-obvious
+- Consequence: concrete (reply, pipeline, cost)
+- Question: sharp, slightly challenging
 
 SIGNAL:
+- Use ONLY real input
+- Go deep on one detail (wording, role, tools, scale)
+- HYPER-PERSONALIZATION: Avoid the "summarization trap." Don't just list what they do; use a specific niche detail to prove you've actually read their profile.
 
-* Use ONLY real signals from input (programs, tools, metrics, phrasing, responsibilities)
-* Signal must directly shape the observation
-* Do NOT invent or assume missing information
+TONE DEFINITIONS:
+- FRIENDLY: Natural, conversational, approachable. Focus on high interest and lower friction.
+- BOLD: High-tension, provocative, challenge status quo. Focus heavily on negative consequences.
+- DIRECT: Minimalist, no-nonsense, immediate pattern interrupt. Extreme brevity.
+- PROFESSIONAL: Polished, structured, business-expert. Human but clearly authoritative.
 
-ACCURACY:
+SCORING:
+Score each opener out of 100:
+* Personalization (0–35): real, specific signals used
+* Pattern Interrupt (0–25): strength/unexpected hook
+* Tension (0–25): clarity of tradeoff + consequence
+* Humanization (0–15): natural, non-AI tone, conversational flow
 
-* Use ONLY explicitly provided information
-* If signals are limited → go deeper on existing details, not broader
+RULES:
+* All 3 scores must be different
+* Avoid close scores (e.g., 90, 89, 88)
+* Highest score = strongest overall opener
+* Do NOT assign equal scores
+* Score strictly, not generously
+* Assume strong competition between options
 
-DEPTH:
-
-* Extract specificity from:
-  • wording
-  • tools
-  • scale indicators
-  • responsibilities
-* Focus deep, not wide
-
-TENSION:
-
-* Must include:
-  • Volume vs Personalization OR
-  • Speed vs Quality
-* Show a real tradeoff
-
-FORMAT (strict):
-
-* 3 openers, each EXACTLY 25–30 words
-* Each must include: signal + insight + consequence + question
-* Each opener must be distinct
-* No filler, no buzzwords
+FORMAT:
+- 3 openers, 24–27 words each
+- Distinct angles
+- No filler, no buzzwords
 
 FOLLOW-UP:
-
-* Exactly 1 message
-* 12–18 words
-* Continues the SAME tension
-* Ends with a sharp question
-* Must feel like continuation, not reminder
-* Ban: circling back, following up, quick follow-up, just checking
-* Must reference a specific detail from opener
-* Must introduce slight new angle or tension
+- 1 message, 12–18 words
+- Continues same idea
+- References opener detail
+- Adds slight tension
+- Ends with sharp question
+- Ban: circling back, following up, just checking
 
 SUBJECT:
-
-* 3–5 words
-* Must create curiosity or tension
-* Must reflect a specific friction or tradeoff
-* Avoid generic phrases
+- 3–5 words
+- Curiosity or friction-driven
+- No generic phrasing
 
 WHY IT WORKS (only opener 1):
+- 2 bullets only
+- ≤8–10 words each
+- Each must reference a specific signal from the opener
+- Each must explain impact in plain terms
+- No generic phrasing (e.g., “shows understanding”, “demonstrates”)
+- No explanations, no filler
 
-* 2 bullets
-* Each references signal
-* 15–20 words each
-
-FINAL STANDARD:
-
-* Would a top SDR send this?
-* Would it make the reader pause?
-* Is it specific and human?
+FINAL CHECK:
+- Would this stand out?
+- Is it human + non-obvious?
 
 OUTPUT:
 {
-"openers": ["", "", ""],
-"subject": "",
-"follow_up": "",
-"why_it_works": ["", ""]
+  "openers": [
+    {"text": "", "score": 0},
+    {"text": "", "score": 0},
+    {"text": "", "score": 0}
+  ],
+  "subject": "",
+  "follow_up": "",
+  "why_it_works": ["", ""]
 }
 
-Tone: HUMAN, SHARP, CONTROLLED`;
+Tone: HUMAN, ${safeTone.toUpperCase()}`;
 
         const userPrompt = `Prospect Bio:
 ${safeBio}
@@ -229,6 +218,7 @@ INSTRUCTIONS:
 * Output must be highly specific, human, and non-generic
 * No safe or predictable phrasing
 * Each opener must use a different angle
+* Tone Requirement: ${safeTone.toUpperCase()} (Ensure the language reflects this specific style)
 
 Return ONLY valid JSON.`;
 
@@ -307,14 +297,28 @@ Return ONLY valid JSON.`;
 
                     // ─── PART 1: MAP TO INTERNAL FORMAT ───
                     // Assign scores (92, 88, 85) to maintain the "AI Recommended" ranking in the UI
-                    const humanizedOpeners = openersList.slice(0, 3).map((text: string, idx: number) => {
-                        const score = idx === 0 ? 92 : idx === 1 ? 88 : 85;
+                    const rawOpeners = (parsed.openers || parsed.options || parsed.dms).slice(0, 3);
+                    
+                    const processedOpeners = rawOpeners.map((item: any, idx: number) => {
+                        const text = typeof item === "string" ? item : (item.text || "");
+                        const aiScore = typeof item === "object" && typeof item.score === "number" ? item.score : 0;
+                        
+                        // Intelligent fallback if AI failed to score
+                        const fallbackScore = idx === 0 ? 92 : idx === 1 ? 88 : 85;
+                        const finalScore = aiScore > 0 ? aiScore : fallbackScore;
+
                         return {
-                            text: text.trim().substring(0, 300), // Safety cap
-                            score,
-                            is_best: idx === 0,
+                            text: text.trim().substring(0, 500),
+                            score: finalScore,
+                            is_best: false,
                         };
                     });
+
+                    // Rank by score descending
+                    processedOpeners.sort((a: any, b: any) => b.score - a.score);
+                    if (processedOpeners.length > 0) processedOpeners[0].is_best = true;
+
+                    const humanizedOpeners = processedOpeners;
 
                     // ─── PART 2: UI FALLBACKS ───
                     // Providing default explanations/follow-ups as the new prompt is opener-only
