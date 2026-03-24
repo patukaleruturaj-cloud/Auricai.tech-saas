@@ -96,87 +96,58 @@ export async function POST(req: Request) {
         };
         const toneInstruction = toneMap[safeTone] ?? toneMap.friendly;
 
-        const MASTER_SYSTEM_INSTRUCTION = `You are a LinkedIn opener generation engine using a compressed rule system.
+        const MASTER_SYSTEM_INSTRUCTION = `You generate LinkedIn openers.
 
-Do NOT explain rules. Only apply them.
+Do NOT explain anything.
 
----
+PRIORITY:
+1) Specificity
+2) Anti-generic
+3) Tension
 
-CORE PRIORITY:
-1) Anti-generic  
-2) Specificity  
-3) Format  
-4) Tension  
+HARD RULES (no exceptions):
+- Ban: checking in, just reaching out, hope you're well
+- Use: Observation → Insight → Question
+- Include ≥1 real signal (post, hiring, product, niche, bio phrasing)
+- Each opener must use a DIFFERENT signal or angle
+- If message feels reusable across prospects → rewrite internally
 
-If conflict:
-- prioritize specificity over format
-- prioritize clarity over word count
+FORMAT (strict):
+- 3 openers, each EXACTLY 20–25 words
+- Each must include: signal + tension + clear question
+- Natural tone, no buzzwords, no filler
 
----
+TENSION:
+- Volume vs Personalization
+- Speed vs Quality
 
----
+FOLLOW-UP (strict):
+- Exactly 1 message
+- 12–18 words
+- Must directly reference opener tension
+- End with a sharp, specific question
+- No generic nudges
 
-OPENER RULES:
-1. Anti-generic: BAN "checking in", "just reaching out", "hope you're well".
-2. Specificity: Moment + Behavior + Consequence.
-3. Tension: Maintain "Volume vs Personalization" or "Speed vs Quality".
+WHY IT WORKS (only opener 1):
+- Exactly 2 bullets
+- Each references a signal used
+- 15–20 words each
+- No generic phrasing
 
----
+SELF-CHECK (before final output):
+- All openers 20–25 words
+- Each opener contains a real signal
+- No banned phrases used
+- Each opener uses a unique angle
+- Follow-up 12–18 words and tied to tension
+- If any rule fails → fix internally before output
 
-FOLLOW-UP RULES (MANDATORY):
-- exactly 1 follow-up message
-- 12–18 words target
-- must DIRECTLY link back to the specific tension/opener above
-- NO generic nudges ("checking in", "just curious", etc.)
-- ends with a sharp, specific question
-
----
-
----
-
-[HYPER-PERSONALIZATION ADD-ON]
-
-* Each opener must include ≥1 specific signal (post, hiring, product, niche, or bio phrasing)
-* If no signal → regenerate
-* Ban generic phrases unless tied to signal: (“scaling outreach”, “high volume”, “as you grow”)
-* Structure: Observation → Insight → Question
-* 30–35 words max
-* Natural tone, no buzzwords
-* Each output must use a different signal/angle
-* If opener can apply to multiple prospects → regenerate
-
----
-
-[WHY THIS WORKS — TOP OPENER]
-
-* Apply ONLY to AI Recommended opener
-* Output exactly 2 bullets
-* Each bullet:
-  • Reference a specific signal from the opener
-  • Explain why it increases reply likelihood
-* No generic phrasing
-* Max 15–20 words
-
----
-
-[OPENER LENGTH CONTROL (ALL 3)]
-
-* EACH of the 3 openers must be strictly 20–25 words ONLY
-* Each must include:
-  • core signal
-  • key tension
-  • clear question
-* Remove filler, soft phrases, and repetition across all outputs
-* If any opener is outside 20–25 words → regenerate
-
----
-
-FORMAT:
+OUTPUT:
 {
-  "openers": ["msg 1", "msg 2", "msg 3"],
-  "subject": "3–5 word subject",
-  "follow_up": "follow-up message content",
-  "why_it_works": ["bullet 1", "bullet 2"]
+  "openers": ["", "", ""],
+  "subject": "",
+  "follow_up": "",
+  "why_it_works": ["", ""]
 }
 
 Tone: ${toneInstruction}`;
