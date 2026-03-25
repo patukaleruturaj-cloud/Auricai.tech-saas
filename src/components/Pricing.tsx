@@ -192,15 +192,7 @@ export default function Pricing({
                 </div>
             </div>
 
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                    gap: "1.5rem",
-                    maxWidth: "1200px",
-                    margin: "0 auto",
-                }}
-            >
+            <div className="pricing-grid container">
                 {PAID_PLANS.map((plan, idx) => {
                     const displayPrice = isYearly
                         ? Math.floor(plan.monthlyPrice * 0.8)
