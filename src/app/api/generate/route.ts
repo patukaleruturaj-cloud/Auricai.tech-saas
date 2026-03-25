@@ -108,6 +108,8 @@ NON-NEGOTIABLE:
 - Remove any unnecessary words
 - Every word must add meaning or tension
 - If a sentence works without a word → remove it
+- Remove filler: often, usually, most, really, truly, actually
+- No safe or average phrasing
 
 HARD BANS:
 - checking in, just reaching out, hope you're well
@@ -117,7 +119,8 @@ HARD BANS:
 - common industry statements
 
 ATTENTION:
-- First line = pattern interrupt (unexpected, direct, slightly contrarian)
+- First line = concrete situation + hidden problem/contradiction
+- Must stop scrolling (no neutral phrasing)
 - No compliments, summaries, or safe phrasing
 - Must feel worth replying to
 
@@ -125,8 +128,8 @@ STRUCTURE:
 Observation → Insight → Consequence → Question
 
 - Observation: specific signal
-- Insight: non-obvious
-- Consequence: concrete (reply, pipeline, cost)
+- Insight: non-obvious, no common patterns (e.g., “most teams”, “outbound often”), use specific, less-obvious angle, prefer counterintuitive insight
+- Consequence: tangible (meetings, replies, pipeline), no abstract impact
 - Question: sharp, slightly challenging
 
 SIGNAL:
@@ -140,12 +143,19 @@ TONE DEFINITIONS:
 - DIRECT: Minimalist, no-nonsense, immediate pattern interrupt. Extreme brevity.
 - PROFESSIONAL: Polished, structured, business-expert. Human but clearly authoritative.
 
+TENSION:
+- Show what breaks when scaling (volume vs personalization or speed vs quality)
+
 SCORING:
 Score each opener out of 100:
 * Personalization (0–35): real, specific signals used
 * Pattern Interrupt (0–25): strength/unexpected hook
 * Tension (0–25): clarity of tradeoff + consequence
 * Humanization (0–15): natural, non-AI tone, conversational flow
+
+CONSISTENCY:
+- All openers must meet elite standard
+- If one is weaker → strengthen within same generation
 
 RULES:
 * All 3 scores must be different
