@@ -81,19 +81,20 @@ export const PADDLE_PRICE_MAP: Record<string, PaddleProduct> = {
 
     // Addon Credit Packs (placeholder price IDs — replace with real ones from Paddle)
     // Addon Credit Packs
-    "pri_01kkewa0zq9q2h9n4jf3dzppcz": {
+    // Addon Credit Packs
+    [process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200 || "pri_01kkewa0zq9q2h9n4jf3dzppcz"]: {
         type: "addon",
         credits: 200,
         label: "200 Credits",
         price: 12,
     },
-    "pri_01kkewcae9602tkhen4w72wmkd": {
+    [process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600 || "pri_01kkewcae9602tkhen4w72wmkd"]: {
         type: "addon",
         credits: 600,
         label: "600 Credits",
         price: 29,
     },
-    "pri_01kkewd2gm0s2hbwpk7pmc5sf5": {
+    [process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000 || "pri_01kkewd2gm0s2hbwpk7pmc5sf5"]: {
         type: "addon",
         credits: 1000,
         label: "1000 Credits",

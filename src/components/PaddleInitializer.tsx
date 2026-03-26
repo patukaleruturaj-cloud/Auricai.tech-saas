@@ -11,7 +11,8 @@ export default function PaddleInitializer() {
             src="https://cdn.paddle.com/paddle/v2/paddle.js"
             onLoad={() => {
                 if (typeof window !== "undefined" && (window as any).Paddle) {
-                    (window as any).Paddle.Environment.set("sandbox");
+                    const env = process.env.NEXT_PUBLIC_PADDLE_ENV === 'production' ? 'production' : 'sandbox';
+                    (window as any).Paddle.Environment.set(env);
                     (window as any).Paddle.Initialize({
                         token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN!,
                         eventCallback: (event: any) => {

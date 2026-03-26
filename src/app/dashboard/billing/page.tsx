@@ -192,17 +192,17 @@ const ADDON_PACKS = [
     {
         credits: 200,
         price: 12,
-        priceId: "pri_01kkewa0zq9q2h9n4jf3dzppcz",
+        priceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200 || "pri_01kkewa0zq9q2h9n4jf3dzppcz",
     },
     {
         credits: 600,
         price: 29,
-        priceId: "pri_01kkewcae9602tkhen4w72wmkd",
+        priceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600 || "pri_01kkewcae9602tkhen4w72wmkd",
     },
     {
         credits: 1000,
         price: 39,
-        priceId: "pri_01kkewd2gm0s2hbwpk7pmc5sf5",
+        priceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000 || "pri_01kkewd2gm0s2hbwpk7pmc5sf5",
     },
 ];
 

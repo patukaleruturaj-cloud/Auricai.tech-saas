@@ -10,9 +10,9 @@ const PRICE_MAPPING: Record<string, string> = {
     "growth_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY || "pri_01kkevptnbcgmn0sv5c4qs2s40",
     "pro_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY || "pri_01kkevr1h59gf7mqsf4477b1mg",
     // Addons
-    "addon_200": "pri_01kkewa0zq9q2h9n4jf3dzppcz",
-    "addon_600": "pri_01kkewcae9602tkhen4w72wmkd",
-    "addon_1000": "pri_01kkewd2gm0s2hbwpk7pmc5sf5",
+    "addon_200": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200 || "pri_01kkewa0zq9q2h9n4jf3dzppcz",
+    "addon_600": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600 || "pri_01kkewcae9602tkhen4w72wmkd",
+    "addon_1000": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000 || "pri_01kkewd2gm0s2hbwpk7pmc5sf5",
 };
 
 export async function POST(req: Request) {
