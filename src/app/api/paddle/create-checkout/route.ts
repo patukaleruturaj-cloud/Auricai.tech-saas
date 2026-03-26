@@ -1,7 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 
+// VERIFICATION TRACE: 2026-03-27_01-57
+const DEPLOY_VERSION = "2026-03-27_01-57";
+
 export async function POST(req: Request) {
     try {
+        console.log(`[Checkout API] Request received (Version: ${DEPLOY_VERSION})`);
         const { userId } = await auth();
         if (!userId) {
             console.error("[Checkout API] Unauthorized: No userId session found.");
