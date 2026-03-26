@@ -1,11 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 
-// VERIFICATION TRACE: 2026-03-27_01-57
-const DEPLOY_VERSION = "2026-03-27_01-57";
-
 export async function POST(req: Request) {
     try {
-        console.log(`[Checkout API] Request received (Version: ${DEPLOY_VERSION})`);
         const { userId } = await auth();
         if (!userId) {
             console.error("[Checkout API] Unauthorized: No userId session found.");
@@ -41,8 +37,7 @@ export async function POST(req: Request) {
             console.error(`[Checkout API] FATAL CONFIG: Missing or invalid Paddle Price ID for '${planId}'. Received: '${priceId}'`);
             return Response.json({ 
                 error: "Configuration Error", 
-                details: `Missing NEXT_PUBLIC_PADDLE_PRICE_${planId.toUpperCase()} in environment variables.`,
-                version: DEPLOY_VERSION
+                details: `Missing NEXT_PUBLIC_PADDLE_PRICE_${planId.toUpperCase()} in environment variables.`
             }, { status: 500 });
         }
 

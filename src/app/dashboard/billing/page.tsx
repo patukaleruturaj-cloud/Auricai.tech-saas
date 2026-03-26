@@ -312,7 +312,6 @@ export default function BillingPage() {
 
     const handleCheckout = useCallback(async (planId: string) => {
         setCheckoutLoading(planId);
-        console.log(`[Checkout] Started for: ${planId}`);
         try {
             const res = await fetch("/api/paddle/create-checkout", {
                 method: "POST",
@@ -320,7 +319,6 @@ export default function BillingPage() {
                 body: JSON.stringify({ planId })
             });
             const data = await res.json();
-            console.log("[Checkout] Response data:", data);
 
             if (!res.ok) {
                 const errMsg = data?.error?.detail || data?.error || data?.details || JSON.stringify(data);
