@@ -336,10 +336,10 @@ export default function BillingPage() {
                 throw new Error(message);
             }
 
-            if (data.transaction_id && (window as any).Paddle) {
-                console.log("[Checkout] Opening Paddle Overlay for transaction:", data.transaction_id);
+            if (data.transactionId && (window as any).Paddle) {
+                console.log("[Checkout] Opening Paddle Overlay with Transaction ID:", data.transactionId);
                 (window as any).Paddle.Checkout.open({
-                    transactionId: data.transaction_id,
+                    transactionId: data.transactionId,
                     settings: {
                         displayMode: 'overlay',
                         theme: 'dark'
@@ -349,12 +349,12 @@ export default function BillingPage() {
             }
 
             if (data.checkout_url) {
-                console.log("[Checkout] Redirecting to Paddle:", data.checkout_url);
+                console.warn("[Checkout] Falling back to checkout_url (Transaction ID missing from frontend check)");
                 window.location.href = data.checkout_url;
                 return;
             }
 
-            throw new Error("Checkout URL not returned");
+            throw new Error("No transaction ID returned from server.");
         } catch (err) {
             console.error("Checkout failed:", err);
             alert(err instanceof Error ? err.message : "Checkout failed");
