@@ -41,7 +41,8 @@ export async function POST(req: Request) {
             console.error(`[Checkout API] FATAL CONFIG: Missing or invalid Paddle Price ID for '${planId}'. Received: '${priceId}'`);
             return Response.json({ 
                 error: "Configuration Error", 
-                details: `Missing NEXT_PUBLIC_PADDLE_PRICE_${planId.toUpperCase()} in environment variables.` 
+                details: `Missing NEXT_PUBLIC_PADDLE_PRICE_${planId.toUpperCase()} in environment variables.`,
+                version: DEPLOY_VERSION
             }, { status: 500 });
         }
 
