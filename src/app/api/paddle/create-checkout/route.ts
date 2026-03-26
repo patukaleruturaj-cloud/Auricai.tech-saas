@@ -1,18 +1,24 @@
 import { auth } from "@clerk/nextjs/server";
 
+const getPriceId = (envVar: string | undefined, fallback: string, label: string) => {
+    if (envVar) return envVar;
+    console.warn(`>>> [Checkout API] WARNING: Missing environment variable for ${label}. Using fallback: ${fallback}`);
+    return fallback;
+};
+
 const PRICE_MAPPING: Record<string, string> = {
-    "starter_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY || "pri_01kkevcx82pwmmkz08r5am2y1n",
-    "basic_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_MONTHLY || "pri_01kkeveharsajd1j8jqmjz6p8y",
-    "growth_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_MONTHLY || "pri_01kkevg12ce2pemtwkqyg0ja74",
-    "pro_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY || "pri_01kkevhkv3zh5v61v9yrhazk90",
-    "starter_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_YEARLY || "pri_01kkevksxjk34bp98wywqdhjq0",
-    "basic_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_YEARLY || "pri_01kkevn74qmwvrfp27zvr6anag",
-    "growth_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY || "pri_01kkevptnbcgmn0sv5c4qs2s40",
-    "pro_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY || "pri_01kkevr1h59gf7mqsf4477b1mg",
+    "starter_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY, "pri_01kkevcx82pwmmkz08r5am2y1n", "starter_monthly"),
+    "basic_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_MONTHLY, "pri_01kkeveharsajd1j8jqmjz6p8y", "basic_monthly"),
+    "growth_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_MONTHLY, "pri_01kkevg12ce2pemtwkqyg0ja74", "growth_monthly"),
+    "pro_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY, "pri_01kkevhkv3zh5v61v9yrhazk90", "pro_monthly"),
+    "starter_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_YEARLY, "pri_01kkevksxjk34bp98wywqdhjq0", "starter_yearly"),
+    "basic_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_YEARLY, "pri_01kkevn74qmwvrfp27zvr6anag", "basic_yearly"),
+    "growth_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY, "pri_01kkevptnbcgmn0sv5c4qs2s40", "growth_yearly"),
+    "pro_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY, "pri_01kkevr1h59gf7mqsf4477b1mg", "pro_yearly"),
     // Addons
-    "addon_200": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200 || "pri_01kkewa0zq9q2h9n4jf3dzppcz",
-    "addon_600": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600 || "pri_01kkewcae9602tkhen4w72wmkd",
-    "addon_1000": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000 || "pri_01kkewd2gm0s2hbwpk7pmc5sf5",
+    "addon_200": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200, "pri_01kkewa0zq9q2h9n4jf3dzppcz", "addon_200"),
+    "addon_600": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600, "pri_01kkewcae9602tkhen4w72wmkd", "addon_600"),
+    "addon_1000": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000, "pri_01kkewd2gm0s2hbwpk7pmc5sf5", "addon_1000"),
 };
 
 export async function POST(req: Request) {
