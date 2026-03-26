@@ -60,21 +60,25 @@ export async function POST(req: Request) {
             return Response.json({ error: `Invalid planId: ${planId}` }, { status: 400 });
         }
 
-        if (!process.env.PADDLE_API_KEY) {
+        const isProduction = process.env.PADDLE_ENV === 'production';
+        const paddleApiUrl = isProduction
+            ? "https://api.paddle.com/transactions"
+            : "https://sandbox-api.paddle.com/transactions";
+
+        const apiKey = process.env.PADDLE_API_KEY;
+        console.log(`[Checkout API] Creating transaction for user: ${userId}, planId: ${planId}, priceId: ${priceId}`);
+        console.log(`[Checkout API] Environment: ${process.env.PADDLE_ENV}, Endpoint: ${paddleApiUrl}`);
+        console.log(`[Checkout API] API Key present: ${!!apiKey}, Prefix: ${apiKey?.substring(0, 15)}...`);
+
+        if (!apiKey) {
             console.error("PADDLE_API_KEY is not defined");
             return Response.json({ error: "Server configuration error" }, { status: 500 });
         }
 
-        console.log(`[Checkout API] Creating transaction for user: ${userId}, planId: ${planId}, priceId: ${priceId}`);
-
-        const paddleApiUrl = process.env.PADDLE_ENV === 'production'
-            ? "https://api.paddle.com/transactions"
-            : "https://sandbox-api.paddle.com/transactions";
-
         const response = await fetch(paddleApiUrl, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
+                "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -93,8 +97,11 @@ export async function POST(req: Request) {
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Paddle API Error:", data);
-            return Response.json({ error: data.error || "Paddle API error" }, { status: 500 });
+            console.error(">>> [Checkout API] Paddle API FATAL Error:", JSON.stringify(data, null, 2));
+            return Response.json({ 
+                error: data.error || "Paddle API error",
+                details: data.error?.detail || data.message || "No detail provided"
+            }, { status: response.status });
         }
 
         if (!data.data?.checkout?.url) {
