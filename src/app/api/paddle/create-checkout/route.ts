@@ -1,24 +1,23 @@
 import { auth } from "@clerk/nextjs/server";
 
-const getPriceId = (envVar: string | undefined, fallback: string, label: string) => {
-    if (envVar) return envVar;
-    console.warn(`>>> [Checkout API] WARNING: Missing environment variable for ${label}. Using fallback: ${fallback}`);
-    return fallback;
+const getRequiredPriceId = (envVar: string | undefined, label: string) => {
+    if (envVar && envVar.startsWith("pri_")) return envVar;
+    throw new Error(`CRITICAL CONFIG ERROR: Missing or invalid Paddle Price ID for ${label}. Please set the correct NEXT_PUBLIC_PADDLE_PRICE_${label.toUpperCase()} environment variable.`);
 };
 
 const PRICE_MAPPING: Record<string, string> = {
-    "starter_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY, "pri_01kkevcx82pwmmkz08r5am2y1n", "starter_monthly"),
-    "basic_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_MONTHLY, "pri_01kkeveharsajd1j8jqmjz6p8y", "basic_monthly"),
-    "growth_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_MONTHLY, "pri_01kkevg12ce2pemtwkqyg0ja74", "growth_monthly"),
-    "pro_monthly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY, "pri_01kkevhkv3zh5v61v9yrhazk90", "pro_monthly"),
-    "starter_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_YEARLY, "pri_01kkevksxjk34bp98wywqdhjq0", "starter_yearly"),
-    "basic_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_YEARLY, "pri_01kkevn74qmwvrfp27zvr6anag", "basic_yearly"),
-    "growth_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY, "pri_01kkevptnbcgmn0sv5c4qs2s40", "growth_yearly"),
-    "pro_yearly": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY, "pri_01kkevr1h59gf7mqsf4477b1mg", "pro_yearly"),
+    "starter_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY, "starter_monthly"),
+    "basic_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_MONTHLY, "basic_monthly"),
+    "growth_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_MONTHLY, "growth_monthly"),
+    "pro_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY, "pro_monthly"),
+    "starter_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_YEARLY, "starter_yearly"),
+    "basic_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_YEARLY, "basic_yearly"),
+    "growth_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY, "growth_yearly"),
+    "pro_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY, "pro_yearly"),
     // Addons
-    "addon_200": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200, "pri_01kkewa0zq9q2h9n4jf3dzppcz", "addon_200"),
-    "addon_600": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600, "pri_01kkewcae9602tkhen4w72wmkd", "addon_600"),
-    "addon_1000": getPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000, "pri_01kkewd2gm0s2hbwpk7pmc5sf5", "addon_1000"),
+    "addon_200": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200, "addon_200"),
+    "addon_600": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600, "addon_600"),
+    "addon_1000": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000, "addon_1000"),
 };
 
 export async function POST(req: Request) {
