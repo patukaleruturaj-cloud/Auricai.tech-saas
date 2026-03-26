@@ -312,52 +312,44 @@ export default function BillingPage() {
 
     const handleCheckout = useCallback(async (planId: string) => {
         setCheckoutLoading(planId);
+        console.log(`[Checkout] Started for: ${planId}`);
         try {
             const res = await fetch("/api/paddle/create-checkout", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ planId })
             });
             const data = await res.json();
+            console.log("[Checkout] Response data:", data);
 
             if (!res.ok) {
-                console.error("Checkout API Error:", data);
-
-                const message =
-                    data?.error?.detail ||
-                    data?.error?.message ||
-                    data?.error ||
-                    data?.message ||
-                    JSON.stringify(data);
-
-                alert(message);
-                throw new Error(message);
+                const errMsg = data?.error?.detail || data?.error || data?.details || JSON.stringify(data);
+                console.error("[Checkout] API Error:", errMsg);
+                alert(`Checkout Error: ${errMsg}`);
+                return;
             }
 
-            if (data.transactionId && (window as any).Paddle) {
-                console.log("[Checkout] Opening Paddle Overlay with Transaction ID:", data.transactionId);
+            if (!(window as any).Paddle) {
+                console.error("[Checkout] Paddle.js not found. Site is likely blocked by an Ad-blocker.");
+                alert("Paddle SDK not loaded. Please disable Ad-blockers/Privacy-blockers and try again.");
+                return;
+            }
+
+            if (data.transactionId) {
+                console.log("[Checkout] Opening overlay with txn:", data.transactionId);
                 (window as any).Paddle.Checkout.open({
                     transactionId: data.transactionId,
-                    settings: {
-                        displayMode: 'overlay',
-                        theme: 'dark'
-                    }
+                    settings: { displayMode: 'overlay', theme: 'dark' }
                 });
-                return;
-            }
-
-            if (data.checkout_url) {
-                console.warn("[Checkout] Falling back to checkout_url (Transaction ID missing from frontend check)");
+            } else if (data.checkout_url) {
+                console.log("[Checkout] Redirecting to URL:", data.checkout_url);
                 window.location.href = data.checkout_url;
-                return;
+            } else {
+                alert("Error: No transaction identity returned from server.");
             }
-
-            throw new Error("No transaction ID returned from server.");
-        } catch (err) {
-            console.error("Checkout failed:", err);
-            alert(err instanceof Error ? err.message : "Checkout failed");
+        } catch (err: any) {
+            console.error("[Checkout] Client Exception:", err);
+            alert(`Client Error: ${err.message || "Failed to initiate checkout"}`);
         } finally {
             setCheckoutLoading(null);
         }
