@@ -1,25 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 
-const getRequiredPriceId = (envVar: string | undefined, label: string) => {
-    if (envVar && envVar.startsWith("pri_")) return envVar;
-    throw new Error(`CRITICAL CONFIG ERROR: Missing or invalid Paddle Price ID for ${label}. Please set the correct NEXT_PUBLIC_PADDLE_PRICE_${label.toUpperCase()} environment variable.`);
-};
-
-const PRICE_MAPPING: Record<string, string> = {
-    "starter_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY, "starter_monthly"),
-    "basic_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_MONTHLY, "basic_monthly"),
-    "growth_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_MONTHLY, "growth_monthly"),
-    "pro_monthly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY, "pro_monthly"),
-    "starter_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_YEARLY, "starter_yearly"),
-    "basic_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_YEARLY, "basic_yearly"),
-    "growth_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY, "growth_yearly"),
-    "pro_yearly": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY, "pro_yearly"),
-    // Addons
-    "addon_200": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200, "addon_200"),
-    "addon_600": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600, "addon_600"),
-    "addon_1000": getRequiredPriceId(process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000, "addon_1000"),
-};
-
 export async function POST(req: Request) {
     try {
         const { userId } = await auth();
@@ -32,6 +12,33 @@ export async function POST(req: Request) {
         if (!planId) {
             console.error("[Checkout API] Bad Request: Missing planId.");
             return Response.json({ error: "planId is required" }, { status: 400 });
+        }
+
+        // ─── RUNTIME PRICE RESOLUTION ───
+        // We resolve this per-request to ensure the latest environment variables are used
+        // and to provide helpful error messages if something was missed in Vercel.
+        const runtimePriceMapping: Record<string, string | undefined> = {
+            "starter_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_MONTHLY,
+            "basic_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_MONTHLY,
+            "growth_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_MONTHLY,
+            "pro_monthly": process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY,
+            "starter_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_STARTER_YEARLY,
+            "basic_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_BASIC_YEARLY,
+            "growth_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_GROWTH_YEARLY,
+            "pro_yearly": process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY,
+            "addon_200": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_200,
+            "addon_600": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_600,
+            "addon_1000": process.env.NEXT_PUBLIC_PADDLE_PRICE_ADDON_1000,
+        };
+
+        const priceId = runtimePriceMapping[planId] || (planId.startsWith("pri_") ? planId : null);
+
+        if (!priceId || !priceId.startsWith("pri_")) {
+            console.error(`[Checkout API] FATAL CONFIG: Missing or invalid Paddle Price ID for '${planId}'. Received: '${priceId}'`);
+            return Response.json({ 
+                error: "Configuration Error", 
+                details: `Missing NEXT_PUBLIC_PADDLE_PRICE_${planId.toUpperCase()} in environment variables.` 
+            }, { status: 500 });
         }
 
         // ─── CHECK ADDON ELIGIBILITY ───
@@ -54,13 +61,6 @@ export async function POST(req: Request) {
             }
         }
 
-        // ─── RESOLVE PRICE ID ───
-        const priceId = PRICE_MAPPING[planId] || (planId.startsWith("pri_") ? planId : null);
-        if (!priceId) {
-            console.error(`[Checkout API] Resolution failed: Could not map planId '${planId}' to a Paddle Price ID.`);
-            return Response.json({ error: "Invalid plan identifier" }, { status: 400 });
-        }
-
         // ─── ENVIRONMENT & AUTH CONFIG ───
         const isProduction = process.env.PADDLE_ENV === 'production';
         const apiKey = process.env.PADDLE_API_KEY;
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
             : "https://sandbox-api.paddle.com/transactions";
 
         if (!apiKey) {
-            console.error("[Checkout API] CRITICAL: PADDLE_API_KEY is missing from environment variables.");
+            console.error("[Checkout API] CRITICAL: PADDLE_API_KEY is missing.");
             return Response.json({ error: "Server misconfiguration" }, { status: 500 });
         }
 
@@ -79,9 +79,7 @@ export async function POST(req: Request) {
             custom_data: { user_id: userId }
         };
 
-        console.log(`[Checkout API] Environment: ${isProduction ? 'PRODUCTION' : 'SANDBOX'}`);
-        console.log(`[Checkout API] Target URL: ${paddleApiUrl}`);
-        console.log(`[Checkout API] Payload:`, JSON.stringify(payload, null, 2));
+        console.log(`[Checkout API] Env: ${isProduction ? 'PROD' : 'SANDBOX'} | Target: ${priceId}`);
 
         const response = await fetch(paddleApiUrl, {
             method: "POST",
@@ -96,14 +94,10 @@ export async function POST(req: Request) {
 
         // ─── RESPONSE LOGGING & ERROR HANDLING ───
         if (!response.ok) {
-            console.error(`>>> [Checkout API] Paddle API Reject (${response.status} ${response.statusText}):`, {
-                error: data.error,
-                meta: data.meta
-            });
+            console.error(`>>> [Checkout API] Paddle API Reject (${response.status}):`, data.error);
             
-            // Helpful hint for the user if they haven't fixed permissions yet
             if (data.error?.code === 'forbidden') {
-                console.error("[Checkout API] HINT: This key lacks 'transaction.read' or 'transaction.write' permissions.");
+                console.error("[Checkout API] HINT: The Paddle API key lacks permission to create/read transactions.");
             }
 
             return Response.json({ 
@@ -116,9 +110,9 @@ export async function POST(req: Request) {
         console.log(`[Checkout API] Transaction Created: ${transactionId}`);
 
         return Response.json({
-            transactionId, // Standard name requested
-            transaction_id: transactionId, // Support legacy if any
-            checkout_url: data.data.checkout?.url // Backwards compatibility for now
+            transactionId,
+            transaction_id: transactionId,
+            checkout_url: data.data.checkout?.url
         });
 
     } catch (error: any) {
