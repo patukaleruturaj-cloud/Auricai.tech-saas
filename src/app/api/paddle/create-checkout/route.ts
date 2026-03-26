@@ -25,16 +25,19 @@ export async function POST(req: Request) {
     try {
         const { userId } = await auth();
         if (!userId) {
+            console.error("[Checkout API] Unauthorized access attempt");
             return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         const { planId } = await req.json();
+        if (!planId) {
+            console.error("[Checkout API] Missing planId in request body");
+            return Response.json({ error: "planId is required" }, { status: 400 });
+        }
 
-        // ─── ADDON CHECK ───
+        // ─── ADDON COMPATIBILITY CHECK ───
         if (planId?.startsWith("addon_")) {
             const { supabaseAdmin } = await import("@/lib/supabase-admin");
-
-            // Fetch subscription status from the unified view
             const { data: userStats, error: dbError } = await supabaseAdmin
                 .from("user_credit_view")
                 .select("subscription_status")
@@ -42,44 +45,43 @@ export async function POST(req: Request) {
                 .single();
 
             if (dbError || !userStats) {
-                console.error("[Checkout API] Failed to fetch user subscription status:", dbError);
+                console.error("[Checkout API] Database error during subscription check:", dbError);
                 return Response.json({ error: "Failed to verify subscription status" }, { status: 500 });
             }
 
             if (userStats.subscription_status !== "active") {
-                console.warn(`[Checkout API] Blocked add-on purchase for user ${userId} (Status: ${userStats.subscription_status})`);
-                return Response.json({
-                    error: "Active subscription required to purchase extra credits."
-                }, { status: 403 });
+                console.warn(`[Checkout API] Forbidden addon purchase attempt by user ${userId} (Status: ${userStats.subscription_status})`);
+                return Response.json({ error: "Active subscription required to purchase extra credits." }, { status: 403 });
             }
         }
 
-        if (!planId) {
-            console.error("[Checkout API] Missing planId in request body");
-            return Response.json({ error: "planId is required" }, { status: 400 });
-        }
-
-        // Try mapping, or use directly if it looks like a Paddle price ID (starts with pri_)
+        // ─── PRICE ID RESOLUTION ───
         const priceId = PRICE_MAPPING[planId] || (planId.startsWith("pri_") ? planId : null);
         if (!priceId) {
-            console.error(`[Checkout API] Invalid or unmapped planId: ${planId}`);
+            console.error(`[Checkout API] Unmapped or invalid planId provided: ${planId}`);
             return Response.json({ error: `Invalid planId: ${planId}` }, { status: 400 });
         }
 
+        // ─── ENVIRONMENT & AUTHENTICATION ───
         const isProduction = process.env.PADDLE_ENV === 'production';
+        const apiKey = process.env.PADDLE_API_KEY;
         const paddleApiUrl = isProduction
             ? "https://api.paddle.com/transactions"
             : "https://sandbox-api.paddle.com/transactions";
 
-        const apiKey = process.env.PADDLE_API_KEY;
-        console.log(`[Checkout API] Creating transaction for user: ${userId}, planId: ${planId}, priceId: ${priceId}`);
-        console.log(`[Checkout API] Environment: ${process.env.PADDLE_ENV}, Endpoint: ${paddleApiUrl}`);
-        console.log(`[Checkout API] API Key present: ${!!apiKey}, Prefix: ${apiKey?.substring(0, 15)}...`);
-
         if (!apiKey) {
-            console.error("PADDLE_API_KEY is not defined");
+            console.error("[Checkout API] CRITICAL ERROR: PADDLE_API_KEY is missing from environment");
             return Response.json({ error: "Server configuration error" }, { status: 500 });
         }
+
+        // ─── PADDLE REQUEST PREPARATION ───
+        const payload = {
+            items: [{ price_id: priceId, quantity: 1 }],
+            custom_data: { user_id: userId }
+        };
+
+        console.log(`[Checkout API] Initiating ${isProduction ? 'PRODUCTION' : 'SANDBOX'} checkout`);
+        console.log(`[Checkout API] Request Payload:`, JSON.stringify({ ...payload, items: [{ price_id: priceId, quantity: 1 }] }, null, 2));
 
         const response = await fetch(paddleApiUrl, {
             method: "POST",
@@ -87,41 +89,39 @@ export async function POST(req: Request) {
                 "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                items: [
-                    {
-                        price_id: priceId,
-                        quantity: 1
-                    }
-                ],
-                custom_data: {
-                    user_id: userId
-                }
-            })
+            body: JSON.stringify(payload)
         });
 
         const data = await response.json();
 
+        // ─── ERROR HANDLING ───
         if (!response.ok) {
-            console.error(">>> [Checkout API] Paddle API FATAL Error:", JSON.stringify(data, null, 2));
+            console.error(">>> [Checkout API] Paddle API authorization/request failed:", {
+                status: response.status,
+                statusText: response.statusText,
+                error: data.error,
+                requestId: data.meta?.request_id
+            });
             return Response.json({ 
-                error: data.error || "Paddle API error",
-                details: data.error?.detail || data.message || "No detail provided"
+                error: data.error?.code || "Paddle API error",
+                details: data.error?.detail || "No additional information provided from Paddle."
             }, { status: response.status });
         }
 
+        // ─── SUCCESS RESPONSE ───
         if (!data.data?.checkout?.url) {
-            console.error("Paddle Response missing checkout URL:", data);
-            return Response.json({ error: "Checkout URL not returned from Paddle" }, { status: 500 });
+            console.error("[Checkout API] Paddle response missing checkout URL:", data);
+            return Response.json({ error: "Failed to generate checkout URL" }, { status: 500 });
         }
 
+        console.log(`[Checkout API] Successfully created transaction ID: ${data.data.id}`);
         return Response.json({
             checkout_url: data.data.checkout.url,
             transaction_id: data.data.id
         });
 
     } catch (error: any) {
-        console.error("Checkout error:", error);
-        return Response.json({ error: error.message }, { status: 500 });
+        console.error("[Checkout API] Unexpected exception:", error);
+        return Response.json({ error: "Internal server error" }, { status: 500 });
     }
 }
