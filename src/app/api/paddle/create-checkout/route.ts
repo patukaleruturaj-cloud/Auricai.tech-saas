@@ -67,8 +67,14 @@ export async function POST(req: Request) {
         }
 
         // ─── ENVIRONMENT & AUTH CONFIG ───
-        const isProduction = process.env.PADDLE_ENV === 'production';
-        const apiKey = process.env.PADDLE_API_KEY;
+        const apiKey = process.env.PADDLE_API_KEY || "";
+        let isProduction = process.env.PADDLE_ENV === 'production';
+        
+        // Fail-safe: If API key is live, we MUST use production API
+        if (apiKey.startsWith("live_")) {
+            isProduction = true;
+        }
+
         const paddleApiUrl = isProduction
             ? "https://api.paddle.com/transactions"
             : "https://sandbox-api.paddle.com/transactions";
